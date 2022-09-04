@@ -1,0 +1,3 @@
+CREATE SCHEMA main;
+CREATE USER im PASSWORD 'password';
+GRANT ALL ON SCHEMA main TO im;

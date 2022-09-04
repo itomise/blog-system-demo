@@ -1,0 +1,26 @@
+version: '2.0'
+services:
+  local-db:
+    image: postgres:latest
+    container_name: local-db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: local
+    ports:
+      - 15432:5432
+    volumes:
+      - ./db/local/data:/var/lib/postgresql/data
+      - ./db/local/init:/docker-entrypoint-initdb.d
+  flyway-local:
+    image: flyway/flyway:latest
+    environment:
+      FLYWAY_URL: jdbc:postgresql://local-db:5432/local
+      FLYWAY_USER: im
+      FLYWAY_PASSWORD: password
+      FLYWAY_SCHEMAS: main
+    volumes:
+      - ./db:/flyway/sql
+    depends_on:
+      - local-db
+    command: info
