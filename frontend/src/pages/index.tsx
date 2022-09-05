@@ -7,7 +7,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>都道府県別の総人口推移グラフ</title>
+        <title>itomise blog</title>
       </Head>
       <IndexPage />
     </>
