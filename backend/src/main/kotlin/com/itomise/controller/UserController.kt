@@ -1,6 +1,8 @@
 package com.itomise.controller
 
-import com.itomise.com.itomise.usercase.interactors.user.GetUserInteractor
+import com.itomise.com.itomise.controller.requestModel.user.UpdateUserRequestModel
+import com.itomise.com.itomise.controller.responseModel.user.GetUserListResponseModel
+import com.itomise.com.itomise.controller.responseModel.user.GetUserResponseModel
 import com.itomise.com.itomise.usercase.interfaces.user.IGetUserUseCase
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -16,30 +18,21 @@ fun Application.userRouting() {
     routing {
         route("/user") {
             get("") {
-                call.respondText("Hello World!")
-            }
-            post("") {
-                val request = call.receive<UserPostRequestType>()
-
                 val result = getUserUseCase.handle()
 
-                val response = UserPostResponseModel(
-                    result.id.value,
-                    result.name
+                val response = GetUserListResponseModel(
+                    result.map {
+                        GetUserResponseModel(it.id.value, it.name)
+                    }
                 )
 
-                call.respond(HttpStatusCode.Created, response)
+                call.respond(HttpStatusCode.OK, response)
+            }
+            post("") {
+                val request = call.receive<UpdateUserRequestModel>()
+
+                call.respond(HttpStatusCode.Created, request)
             }
         }
     }
 }
-
-data class UserPostRequestType(
-    val name: String,
-    val type: String?
-)
-
-data class UserPostResponseModel(
-    val id: String,
-    val name: String
-)

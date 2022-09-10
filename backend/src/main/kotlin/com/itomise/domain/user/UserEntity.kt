@@ -7,9 +7,9 @@ data class UserEntity(
     val name: String
 )
 
-object Users: Table() {
-    val id = varchar("id", 255)
-    val name = varchar("name", 255)
+object UserTable: Table(name = "users") {
+    val id = varchar(name = "id", length = 255)
+    val name = varchar(name = "name", length = 255)
 
     override val primaryKey = PrimaryKey(id)
 }
