@@ -13,15 +13,3 @@ services:
     volumes:
       - ./db/local/data:/var/lib/postgresql/data
       - ./db/local/init:/docker-entrypoint-initdb.d
-  flyway-local:
-    image: flyway/flyway:latest
-    environment:
-      FLYWAY_URL: jdbc:postgresql://local-db:5432/local
-      FLYWAY_USER: root
-      FLYWAY_PASSWORD: root
-      FLYWAY_SCHEMAS: main
-    volumes:
-      - ./db:/flyway/sql
-    depends_on:
-      - local-db
-    command: info
