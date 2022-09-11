@@ -6,12 +6,13 @@ val exposed_version: String by project
 val h2_version: String by project
 val koin_version: String by project
 val postgresql_version: String by project
+val hikaricp_version: String by project
 
 plugins {
     application
     kotlin("jvm") version "1.7.10"
     id("io.ktor.plugin") version "2.1.0"
-                id("org.jetbrains.kotlin.plugin.serialization") version "1.7.10"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.7.10"
 }
 
 group = "com.itomise"
@@ -32,7 +33,8 @@ dependencies {
     implementation("io.ktor:ktor-server-core-jvm:$ktor_version")
     // server
     implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
-    implementation("com.h2database:h2:$h2_version")
+    // cp
+    implementation("com.zaxxer:HikariCP:$hikaricp_version")
     // serialization
     implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktor_version")
     implementation("io.ktor:ktor-serialization-jackson:$ktor_version")
@@ -40,11 +42,11 @@ dependencies {
     // logging
     implementation("io.ktor:ktor-server-call-logging:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
-    // orm:exposed
+    // orm
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
-    // orm:koin
+    // injection
     implementation("io.insert-koin:koin-ktor:$koin_version")
     implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
     // database

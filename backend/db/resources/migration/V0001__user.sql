@@ -7,4 +7,4 @@ create table users
 );
 
 grant all on users to im;
-create index users_id on users (id)
+create index users_id on users (id);

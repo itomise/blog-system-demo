@@ -1,10 +1,10 @@
 package com.itomise
 
+import com.itomise.com.itomise.infrastructure.dao.DataBaseFactory
 import com.itomise.com.itomise.plugin.injection
 import com.itomise.com.itomise.plugin.logging
 import com.itomise.com.itomise.plugin.routing
 import com.itomise.com.itomise.plugin.serialization
-import com.itomise.com.itomise.utils.dao.DataBaseFactory
 import io.ktor.server.application.*
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -18,8 +18,8 @@ fun Application.module() {
     logging()
 
     DataBaseFactory.init(
-        url = environment.config.propertyOrNull("db.url")!!.getString(),
-        user = environment.config.propertyOrNull("db.user")?.getString() ?: "",
-        password = environment.config.propertyOrNull("db.password")?.getString() ?: ""
+        url = environment.config.propertyOrNull("app.db.url")!!.getString(),
+        user = environment.config.propertyOrNull("app.db.user")?.getString() ?: "",
+        password = environment.config.propertyOrNull("app.db.password")?.getString() ?: ""
     )
 }

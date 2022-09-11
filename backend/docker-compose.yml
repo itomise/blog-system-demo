@@ -3,9 +3,10 @@ services:
   local-db:
     image: postgres:latest
     container_name: local-db
+    restart: always
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
       POSTGRES_DB: local
     ports:
       - 15432:5432
@@ -16,8 +17,8 @@ services:
     image: flyway/flyway:latest
     environment:
       FLYWAY_URL: jdbc:postgresql://local-db:5432/local
-      FLYWAY_USER: im
-      FLYWAY_PASSWORD: password
+      FLYWAY_USER: root
+      FLYWAY_PASSWORD: root
       FLYWAY_SCHEMAS: main
     volumes:
       - ./db:/flyway/sql
