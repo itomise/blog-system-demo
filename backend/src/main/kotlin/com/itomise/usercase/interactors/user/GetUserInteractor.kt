@@ -12,10 +12,11 @@ inline fun <reified T> getKoinInstance(): T {
     }.value
 }
 
-class GetUserInteractor: IGetUserUseCase {
+class GetUserInteractor : IGetUserUseCase {
     private val userRepository = getKoinInstance<IUserRepository>()
 
     override fun handle(): List<UserEntity> {
+
         return userRepository.getList()
     }
 }

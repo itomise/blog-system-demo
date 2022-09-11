@@ -1,4 +1,4 @@
-package com.itomise.com.itomise.module
+package com.itomise.com.itomise.plugin
 
 import com.itomise.com.itomise.domain.user.interfaces.IUserRepository
 import com.itomise.com.itomise.infrastructure.repositories.user.UserRepository

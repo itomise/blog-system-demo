@@ -1,8 +1,9 @@
 package com.itomise
 
-import com.itomise.com.itomise.module.injection
-import com.itomise.com.itomise.module.routing
-import com.itomise.com.itomise.module.serialization
+import com.itomise.com.itomise.plugin.injection
+import com.itomise.com.itomise.plugin.logging
+import com.itomise.com.itomise.plugin.routing
+import com.itomise.com.itomise.plugin.serialization
 import com.itomise.com.itomise.utils.dao.DataBaseFactory
 import io.ktor.server.application.*
 
@@ -14,6 +15,7 @@ fun Application.module() {
     serialization()
     injection()
     routing()
+    logging()
 
     DataBaseFactory.init(
         url = environment.config.propertyOrNull("db.url")!!.getString(),

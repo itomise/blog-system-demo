@@ -1,4 +1,4 @@
-package com.itomise.com.itomise.module
+package com.itomise.com.itomise.plugin
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import io.ktor.serialization.jackson.*
