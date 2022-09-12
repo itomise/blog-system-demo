@@ -1,9 +1,14 @@
 package com.itomise.controller
 
-import com.itomise.com.itomise.controller.requestModel.user.UpdateUserRequestModel
-import com.itomise.com.itomise.controller.responseModel.user.GetUserListResponseModel
-import com.itomise.com.itomise.controller.responseModel.user.GetUserResponseModel
+import com.itomise.com.itomise.controller.requestModel.CreateUserRequestModel
+import com.itomise.com.itomise.controller.requestModel.DeleteUserRequestModel
+import com.itomise.com.itomise.controller.requestModel.UpdateUserRequestModel
+import com.itomise.com.itomise.controller.responseModel.GetUserListResponseModel
+import com.itomise.com.itomise.controller.responseModel.GetUserResponseModel
+import com.itomise.com.itomise.usercase.interfaces.user.ICreateUserUseCase
+import com.itomise.com.itomise.usercase.interfaces.user.IDeleteUserUseCase
 import com.itomise.com.itomise.usercase.interfaces.user.IGetUserUseCase
+import com.itomise.com.itomise.usercase.interfaces.user.IUpdateUserUseCase
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -14,6 +19,9 @@ import org.koin.ktor.ext.inject
 fun Application.userRouting() {
 
     val getUserUseCase: IGetUserUseCase by inject()
+    val createUserUseCase: ICreateUserUseCase by inject()
+    val updateUserUseCase: IUpdateUserUseCase by inject()
+    val deleteUserUseCase: IDeleteUserUseCase by inject()
 
     routing {
         route("/user") {
@@ -21,17 +29,36 @@ fun Application.userRouting() {
                 val result = getUserUseCase.handle()
 
                 val response = GetUserListResponseModel(
-                    result.map {
-                        GetUserResponseModel(it.id.value, it.name)
+                    result.users.map {
+                        GetUserResponseModel(it.id, it.name)
                     }
                 )
 
                 call.respond(HttpStatusCode.OK, response)
             }
+
             post("") {
                 val request = call.receive<UpdateUserRequestModel>()
 
-                call.respond(HttpStatusCode.Created, request)
+                createUserUseCase.handle(request.id, request.name)
+
+                call.respond(HttpStatusCode.OK)
+            }
+
+            put("") {
+                val request = call.receive<CreateUserRequestModel>()
+
+                updateUserUseCase.handle(request.id, request.name)
+
+                call.respond(HttpStatusCode.OK)
+            }
+
+            delete("") {
+                val request = call.receive<DeleteUserRequestModel>()
+
+                deleteUserUseCase.handle(request.id)
+
+                call.respond(HttpStatusCode.OK)
             }
         }
     }

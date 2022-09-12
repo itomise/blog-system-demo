@@ -1,4 +1,4 @@
-package com.itomise.com.itomise.controller.responseModel.user
+package com.itomise.com.itomise.controller.responseModel
 
 data class GetUserListResponseModel(val users: List<GetUserResponseModel>)
 

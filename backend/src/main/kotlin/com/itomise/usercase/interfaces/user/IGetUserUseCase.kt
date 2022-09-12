@@ -1,7 +1,9 @@
 package com.itomise.com.itomise.usercase.interfaces.user
 
-import com.itomise.com.itomise.domain.user.UserEntity
-
 interface IGetUserUseCase {
-    fun handle(): List<UserEntity>
+    fun handle(): GetUserUseCaseOutputDto
 }
+
+data class GetUserUseCaseOutputDto(val users: List<GetUserUseCaseOutputDtoUser>)
+
+data class GetUserUseCaseOutputDtoUser(val id: String, val name: String)

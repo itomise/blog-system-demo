@@ -1,22 +1,21 @@
 package com.itomise.com.itomise.usercase.interactors.user
 
 import com.itomise.com.itomise.domain.user.UserEntity
-import com.itomise.com.itomise.domain.user.interfaces.IUserRepository
+import com.itomise.com.itomise.domain.user.UserId
+import com.itomise.com.itomise.infrastructure.dao.UserDaoEntity
+import com.itomise.com.itomise.usercase.interfaces.user.GetUserUseCaseOutputDto
+import com.itomise.com.itomise.usercase.interfaces.user.GetUserUseCaseOutputDtoUser
 import com.itomise.com.itomise.usercase.interfaces.user.IGetUserUseCase
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-
-inline fun <reified T> getKoinInstance(): T {
-    return object : KoinComponent {
-        val value: T by inject()
-    }.value
-}
+import com.itomise.infrastructure.dbQuery
 
 class GetUserInteractor : IGetUserUseCase {
-    private val userRepository = getKoinInstance<IUserRepository>()
+    override fun handle(): GetUserUseCaseOutputDto {
+        val users = dbQuery {
+            UserDaoEntity.all().map { UserEntity(UserId(it.id.value), it.name) }
+        }
 
-    override fun handle(): List<UserEntity> {
-
-        return userRepository.getList()
+        return GetUserUseCaseOutputDto(
+            users = users.map { GetUserUseCaseOutputDtoUser(it.id.value, it.name) }
+        )
     }
 }
