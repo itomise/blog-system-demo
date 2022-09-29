@@ -1,4 +1,4 @@
-package com.itomise.com.itomise.plugin
+package com.itomise.com.itomise.module
 
 import com.itomise.com.itomise.usercase.interactors.user.CreateUserInteractor
 import com.itomise.com.itomise.usercase.interactors.user.DeleteUserInteractor
