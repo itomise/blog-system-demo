@@ -34,6 +34,7 @@ dependencies {
     // server
     implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-cors:$ktor_version")
+    implementation("io.ktor:ktor-server-status-pages:$ktor_version")
     // cp
     implementation("com.zaxxer:HikariCP:$hikaricp_version")
     // serialization

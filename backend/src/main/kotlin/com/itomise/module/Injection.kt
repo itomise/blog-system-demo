@@ -1,5 +1,7 @@
 package com.itomise.com.itomise.module
 
+import com.itomise.com.itomise.domain.user.interfaces.IUserRepository
+import com.itomise.com.itomise.infrastructure.repositories.user.UserRepository
 import com.itomise.com.itomise.usercase.interactors.user.CreateUserInteractor
 import com.itomise.com.itomise.usercase.interactors.user.DeleteUserInteractor
 import com.itomise.com.itomise.usercase.interactors.user.GetUserInteractor
@@ -22,9 +24,14 @@ val useCaseModule = module {
     singleOf(::DeleteUserInteractor) { bind<IDeleteUserUseCase>() }
 }
 
+val repositoryModule = module {
+    singleOf(::UserRepository) { bind<IUserRepository>() }
+}
+
 fun Application.injection() {
     install(Koin) {
         SLF4JLogger()
         modules(useCaseModule)
+        modules(repositoryModule)
     }
 }

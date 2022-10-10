@@ -1,7 +1,7 @@
 package com.itomise.com.itomise.usercase.interfaces.user
 
 interface IGetUserUseCase {
-    fun handle(): GetUserUseCaseOutputDto
+    suspend fun handle(): GetUserUseCaseOutputDto
 }
 
 data class GetUserUseCaseOutputDto(val users: List<GetUserUseCaseOutputDtoUser>)

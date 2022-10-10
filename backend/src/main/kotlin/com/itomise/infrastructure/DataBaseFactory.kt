@@ -1,19 +1,14 @@
 package com.itomise.infrastructure
 
-import com.itomise.com.itomise.infrastructure.dao.UserDao
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.Schema
 import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 object DataBaseFactory {
-    public val allDaoList: List<Table> = listOf(
-        UserDao
-    )
-
     fun init(url: String, user: String, password: String) {
         Database.connect(
             hikari(
@@ -22,12 +17,6 @@ object DataBaseFactory {
                 password = password
             )
         )
-        transaction {
-            SchemaUtils.setSchema(Schema("main"))
-            allDaoList.forEach {
-                SchemaUtils.create(it)
-            }
-        }
     }
 
     private fun hikari(url: String, user: String, password: String): HikariDataSource {
@@ -46,7 +35,7 @@ object DataBaseFactory {
     }
 }
 
-fun <T> dbQuery(block: () -> T): T = transaction {
+suspend fun <T> dbQuery(block: suspend () -> T): T = newSuspendedTransaction(Dispatchers.IO) {
     SchemaUtils.setSchema(Schema("main"))
     block()
 }

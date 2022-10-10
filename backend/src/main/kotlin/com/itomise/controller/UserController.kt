@@ -40,7 +40,7 @@ fun Application.userRouting() {
             post("") {
                 val request = call.receive<UpdateUserRequestModel>()
 
-                createUserUseCase.handle(request.id, request.name)
+                createUserUseCase.handle(request.id, request.name, request.email)
 
                 call.respond(HttpStatusCode.OK)
             }

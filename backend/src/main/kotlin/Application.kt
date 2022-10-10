@@ -3,6 +3,7 @@ package com.itomise
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.itomise.com.itomise.module.injection
 import com.itomise.com.itomise.module.routing
+import com.itomise.com.itomise.module.statusPage
 import com.itomise.infrastructure.DataBaseFactory
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
@@ -50,6 +51,8 @@ fun Application.module() {
     injection()
 
     routing()
+
+    statusPage()
 
     DataBaseFactory.init(
         url = environment.config.propertyOrNull("app.db.url")!!.getString(),

@@ -1,9 +1,7 @@
 package com.itomise
 
-import com.itomise.infrastructure.DataBaseFactory.allDaoList
 import io.ktor.server.config.*
 import io.ktor.server.testing.*
-import org.jetbrains.exposed.sql.SchemaUtils
 
 class BaseTestApplication() {
     companion object {
@@ -23,10 +21,7 @@ class BaseTestApplication() {
         }
 
         private fun refreshDatabase() {
-            allDaoList.forEach {
-                SchemaUtils.drop(it)
-                SchemaUtils.create(it)
-            }
+            TODO("後で実装")
         }
     }
 }

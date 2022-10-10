@@ -1,4 +1,4 @@
-package com.itomise.com.itomise.domain.user
+package com.itomise.com.itomise.domain.user.vo
 
 data class UserId(val value: String) {
     companion object {
