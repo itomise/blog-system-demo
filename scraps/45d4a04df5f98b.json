@@ -1,0 +1,19 @@
+{
+  "title": "Next.js メモ",
+  "closed": false,
+  "archived": false,
+  "created_at": "2021-03-09",
+  "comments": [
+    {
+      "author": "itomise",
+      "created_at": "2021-03-09",
+      "body_markdown": "Next.jsで `next dev` を立ち上げながら、別ターミナルで `next build` すると、development でビルドされいるファイルが production のビルドで上書きされてしまって、 `next dev` で立ち上げているページが見れなくなってしまいます。\n以下のようにdevとprodでビルドディレクトリを分けることで、同時に行っても問題なく作業していけました。\nexport のたびに ローカルサーバを閉じていてかなり非効率だったのでよかったです。\n\n```js:next.config.js\nconst isProd = process.env.NODE_ENV === 'production'\n\nconst nextConfig = {\n  distDir: isProd ? 'build' : '.next',\n}\n\nmodule.exports = nextConfig\n\n```",
+      "body_updated_at": "2021-03-09"
+    },
+    {
+      "author": "itomise",
+      "created_at": "2021-03-22",
+      "body_markdown": "DOMの操作をしたいときは CSS Modules の クラス名とかを取得して操作しないようにする。\nちゃんと useRef でやる（あたりまえだけど）\nタイミングが変になったりしたので改めてメモ\n\n```js\nconst divRef = useRef<HTMLDivElement>(null)\n\nuseEffect(() => {\n  if (!divRef.current) return\n  divRef.current.classList.add('active')\n}, [])\n\nreturn (\n  <div ref={divRef}></div>\n)\n```"
+    }
+  ]
+}
