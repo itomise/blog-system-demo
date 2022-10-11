@@ -38,7 +38,7 @@ fun Application.userRouting() {
             }
 
             post("") {
-                val request = call.receive<UpdateUserRequestModel>()
+                val request = call.receive<CreateUserRequestModel>()
 
                 createUserUseCase.handle(request.id, request.name, request.email)
 
@@ -46,7 +46,7 @@ fun Application.userRouting() {
             }
 
             put("") {
-                val request = call.receive<CreateUserRequestModel>()
+                val request = call.receive<UpdateUserRequestModel>()
 
                 updateUserUseCase.handle(request.id, request.name)
 

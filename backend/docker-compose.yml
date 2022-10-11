@@ -13,3 +13,15 @@ services:
     volumes:
       - ./db/local/data:/var/lib/postgresql/data
       - ./db/local/init:/docker-entrypoint-initdb.d
+  test-db:
+    image: postgres:latest
+    container_name: test-db
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: local
+    ports:
+      - 55432:5432
+    volumes:
+      - ./db/local/init:/docker-entrypoint-initdb.d
