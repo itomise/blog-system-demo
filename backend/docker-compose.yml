@@ -23,8 +23,6 @@ services:
       POSTGRES_DB: local
     ports:
       - 55432:5432
-    volumes:
-      - ./db/local/init:/docker-entrypoint-initdb.d
   flyway:
     image: flyway/flyway:latest
     volumes:
