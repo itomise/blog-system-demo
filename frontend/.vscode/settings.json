@@ -3,8 +3,5 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "cSpell.words": [
-    "interactor",
-    "Resas"
-  ]
+  "cSpell.words": ["interactor"]
 }
