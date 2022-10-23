@@ -3,8 +3,8 @@ package com.itomise.controller
 import com.itomise.com.itomise.controller.requestModel.CreateUserRequestModel
 import com.itomise.com.itomise.controller.requestModel.DeleteUserRequestModel
 import com.itomise.com.itomise.controller.requestModel.UpdateUserRequestModel
-import com.itomise.com.itomise.controller.responseModel.GetUserListResponseModel
-import com.itomise.com.itomise.controller.responseModel.GetUserResponseModel
+import com.itomise.com.itomise.controller.responseModel.GetListUserResponseModel
+import com.itomise.com.itomise.controller.responseModel.GetListUserResponseModelUser
 import com.itomise.com.itomise.usercase.interfaces.user.ICreateUserUseCase
 import com.itomise.com.itomise.usercase.interfaces.user.IDeleteUserUseCase
 import com.itomise.com.itomise.usercase.interfaces.user.IGetUserUseCase
@@ -28,9 +28,9 @@ fun Application.userRouting() {
             get("") {
                 val result = getUserUseCase.handle()
 
-                val response = GetUserListResponseModel(
+                val response = GetListUserResponseModel(
                     result.users.map {
-                        GetUserResponseModel(it.id, it.name)
+                        GetListUserResponseModelUser(it.id, it.name)
                     }
                 )
 

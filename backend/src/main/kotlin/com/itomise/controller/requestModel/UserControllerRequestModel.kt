@@ -1,7 +1,9 @@
 package com.itomise.com.itomise.controller.requestModel
 
-data class CreateUserRequestModel(val id: String, val name: String, val email: String)
+import java.util.UUID
 
-data class UpdateUserRequestModel(val id: String, val name: String, val email: String)
+data class CreateUserRequestModel(val id: UUID, val name: String, val email: String)
 
-data class DeleteUserRequestModel(val id: String)
+data class UpdateUserRequestModel(val id: UUID, val name: String, val email: String)
+
+data class DeleteUserRequestModel(val id: UUID)

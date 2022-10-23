@@ -1,5 +1,7 @@
 package com.itomise.com.itomise.controller.responseModel
 
-data class GetUserListResponseModel(val users: List<GetUserResponseModel>)
+import java.util.*
 
-data class GetUserResponseModel(val id: String, val name: String)
+data class GetListUserResponseModel(val users: List<GetListUserResponseModelUser>)
+
+data class GetListUserResponseModelUser(val id: UUID, val name: String)

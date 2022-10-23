@@ -5,10 +5,11 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.BaseTestApplication.Companion.appTestApplication
 import com.itomise.BaseTestApplication.Companion.cleanUp
 import com.itomise.com.itomise.controller.requestModel.CreateUserRequestModel
-import com.itomise.com.itomise.controller.responseModel.GetUserListResponseModel
+import com.itomise.com.itomise.controller.responseModel.GetListUserResponseModel
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import java.util.*
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -24,13 +25,14 @@ class GetUserListTest {
         client.get("/user").apply {
             assertEquals(HttpStatusCode.OK, this.status)
 
-            val res = objectMapper.readValue<GetUserListResponseModel>(this.bodyAsText())
+            val res = objectMapper.readValue<GetListUserResponseModel>(this.bodyAsText())
             assertEquals(0, res.users.size)
         }
     }
 
     @Test
     fun `ユーザー一覧が取得できること`() = appTestApplication {
+        val userId = UUID.randomUUID()
 
         val objectMapper = jacksonObjectMapper()
 
@@ -39,7 +41,7 @@ class GetUserListTest {
             setBody(
                 objectMapper.writeValueAsString(
                     CreateUserRequestModel(
-                        id = "test",
+                        id = userId,
                         name = "テスト太郎",
                         email = "test@example.com"
                     )
@@ -52,10 +54,10 @@ class GetUserListTest {
         client.get("/user").apply {
             assertEquals(HttpStatusCode.OK, this.status)
 
-            val res = objectMapper.readValue<GetUserListResponseModel>(this.bodyAsText())
+            val res = objectMapper.readValue<GetListUserResponseModel>(this.bodyAsText())
             assertEquals(1, res.users.size)
             res.users[0].run {
-                assertEquals("test", this.id)
+                assertEquals(userId, this.id)
                 assertEquals("テスト太郎", this.name)
             }
         }
