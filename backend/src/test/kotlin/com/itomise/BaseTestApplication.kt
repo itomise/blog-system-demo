@@ -22,10 +22,6 @@ class BaseTestApplication() {
                     setUpTables()
                 }
 
-                // 全てのテーブルを初期化
-//                refreshDatabase()
-//                execMigration()
-
                 block()
             }
         }
