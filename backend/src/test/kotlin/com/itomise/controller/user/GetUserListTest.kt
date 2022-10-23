@@ -57,6 +57,7 @@ class GetUserListTest {
             res.users[0].run {
                 assertEquals(createdUser.id, this.id)
                 assertEquals("テスト太郎", this.name)
+                assertEquals("test@example.com", this.email)
             }
         }
     }

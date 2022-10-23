@@ -14,7 +14,7 @@ class GetUserInteractor : IGetUserUseCase {
         }
 
         return IGetUserUseCase.OutputDto(
-            users = users.map { IGetUserUseCase.OutputDtoUser(it.id.value, it.name) }
+            users = users.map { IGetUserUseCase.OutputDtoUser(it.id.value, it.name, it.email.value) }
         )
     }
 }

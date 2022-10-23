@@ -31,7 +31,7 @@ fun Application.userRouting() {
 
                 val response = GetListUserResponseModel(
                     result.users.map {
-                        GetListUserResponseModelUser(it.id, it.name)
+                        GetListUserResponseModelUser(it.id, it.name, it.email)
                     }
                 )
 
