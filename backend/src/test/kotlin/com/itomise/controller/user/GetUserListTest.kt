@@ -22,7 +22,7 @@ class GetUserListTest {
     fun `ユーザーが0の場合空の配列が返ること`() = appTestApplication {
         val objectMapper = jacksonObjectMapper()
 
-        client.get("/user").apply {
+        client.get("/users").apply {
             assertEquals(HttpStatusCode.OK, this.status)
 
             val res = objectMapper.readValue<GetListUserResponseModel>(this.bodyAsText())
@@ -36,7 +36,7 @@ class GetUserListTest {
 
         val objectMapper = jacksonObjectMapper()
 
-        val response = client.post("/user") {
+        val response = client.post("/users") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -51,7 +51,7 @@ class GetUserListTest {
 
         assertEquals(HttpStatusCode.OK, response.status)
 
-        client.get("/user").apply {
+        client.get("/users").apply {
             assertEquals(HttpStatusCode.OK, this.status)
 
             val res = objectMapper.readValue<GetListUserResponseModel>(this.bodyAsText())

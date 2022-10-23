@@ -24,7 +24,7 @@ fun Application.userRouting() {
     val deleteUserUseCase: IDeleteUserUseCase by inject()
 
     routing {
-        route("/user") {
+        route("/users") {
             get("") {
                 val result = getUserUseCase.handle()
 
