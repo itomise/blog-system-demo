@@ -64,7 +64,10 @@ class BaseTestApplication() {
                 .forEach { path ->
                     Files.readAllLines(path)
                         .filter { it.toString().isNotBlank() }
-                        .forEach { sqlString += it.toString() }
+                        .forEach {
+                            val str = it.toString()
+                            sqlString += " $str"
+                        }
                 }
             return sqlString
         }
