@@ -5,11 +5,11 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.BaseTestApplication.Companion.appTestApplication
 import com.itomise.BaseTestApplication.Companion.cleanUp
 import com.itomise.com.itomise.controller.requestModel.CreateUserRequestModel
+import com.itomise.com.itomise.controller.responseModel.CreateUserResponseModel
 import com.itomise.com.itomise.controller.responseModel.GetListUserResponseModel
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import java.util.*
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -32,8 +32,6 @@ class GetUserListTest {
 
     @Test
     fun `ユーザー一覧が取得できること`() = appTestApplication {
-        val userId = UUID.randomUUID()
-
         val objectMapper = jacksonObjectMapper()
 
         val response = client.post("/users") {
@@ -41,7 +39,6 @@ class GetUserListTest {
             setBody(
                 objectMapper.writeValueAsString(
                     CreateUserRequestModel(
-                        id = userId,
                         name = "テスト太郎",
                         email = "test@example.com"
                     )
@@ -50,6 +47,7 @@ class GetUserListTest {
         }
 
         assertEquals(HttpStatusCode.OK, response.status)
+        val createdUser = objectMapper.readValue<CreateUserResponseModel>(response.bodyAsText())
 
         client.get("/users").apply {
             assertEquals(HttpStatusCode.OK, this.status)
@@ -57,7 +55,7 @@ class GetUserListTest {
             val res = objectMapper.readValue<GetListUserResponseModel>(this.bodyAsText())
             assertEquals(1, res.users.size)
             res.users[0].run {
-                assertEquals(userId, this.id)
+                assertEquals(createdUser.id, this.id)
                 assertEquals("テスト太郎", this.name)
             }
         }

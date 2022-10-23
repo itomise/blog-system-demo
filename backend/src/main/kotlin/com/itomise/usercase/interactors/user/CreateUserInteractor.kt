@@ -8,23 +8,29 @@ import com.itomise.com.itomise.domain.user.vo.UserId
 import com.itomise.com.itomise.usercase.interfaces.user.ICreateUserUseCase
 import com.itomise.com.itomise.util.getKoinInstance
 import com.itomise.infrastructure.dbQuery
+import java.util.*
 
 class CreateUserInteractor : ICreateUserUseCase {
     private val userRepository = getKoinInstance<IUserRepository>()
 
-    override suspend fun handle(command: ICreateUserUseCase.Command) {
-        dbQuery {
+    override suspend fun handle(command: ICreateUserUseCase.Command): UserId {
+        val userId = dbQuery {
             if (UserService().duplicateEmail(Email(command.email))) {
                 throw IllegalArgumentException("指定されたEmailは既に使用されています。")
             }
 
+            val createUserId = UserId(UUID.randomUUID())
+            
             userRepository.save(
                 User.create(
-                    id = UserId(command.id),
+                    id = createUserId,
                     name = command.name,
                     email = Email(command.email)
                 )
             )
+            return@dbQuery createUserId
         }
+
+        return userId
     }
 }

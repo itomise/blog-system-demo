@@ -3,6 +3,7 @@ package com.itomise.controller
 import com.itomise.com.itomise.controller.requestModel.CreateUserRequestModel
 import com.itomise.com.itomise.controller.requestModel.DeleteUserRequestModel
 import com.itomise.com.itomise.controller.requestModel.UpdateUserRequestModel
+import com.itomise.com.itomise.controller.responseModel.CreateUserResponseModel
 import com.itomise.com.itomise.controller.responseModel.GetListUserResponseModel
 import com.itomise.com.itomise.controller.responseModel.GetListUserResponseModelUser
 import com.itomise.com.itomise.usercase.interfaces.user.ICreateUserUseCase
@@ -40,15 +41,14 @@ fun Application.userRouting() {
             post("") {
                 val request = call.receive<CreateUserRequestModel>()
 
-                createUserUseCase.handle(
+                val userId = createUserUseCase.handle(
                     ICreateUserUseCase.Command(
-                        id = request.id,
                         name = request.name,
                         email = request.email
                     )
                 )
 
-                call.respond(HttpStatusCode.OK)
+                call.respond(HttpStatusCode.OK, CreateUserResponseModel(userId.value))
             }
 
             put("") {
