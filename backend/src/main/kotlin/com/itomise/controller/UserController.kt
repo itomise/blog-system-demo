@@ -40,7 +40,13 @@ fun Application.userRouting() {
             post("") {
                 val request = call.receive<CreateUserRequestModel>()
 
-                createUserUseCase.handle(request.id, request.name, request.email)
+                createUserUseCase.handle(
+                    ICreateUserUseCase.Command(
+                        id = request.id,
+                        name = request.name,
+                        email = request.email
+                    )
+                )
 
                 call.respond(HttpStatusCode.OK)
             }
@@ -48,7 +54,11 @@ fun Application.userRouting() {
             put("") {
                 val request = call.receive<UpdateUserRequestModel>()
 
-                updateUserUseCase.handle(request.id, request.name)
+                updateUserUseCase.handle(
+                    IUpdateUserUseCase.Command(
+                        id = request.id, name = request.name
+                    )
+                )
 
                 call.respond(HttpStatusCode.OK)
             }
@@ -56,7 +66,7 @@ fun Application.userRouting() {
             delete("") {
                 val request = call.receive<DeleteUserRequestModel>()
 
-                deleteUserUseCase.handle(request.id)
+                deleteUserUseCase.handle(IDeleteUserUseCase.Command(request.id))
 
                 call.respond(HttpStatusCode.OK)
             }

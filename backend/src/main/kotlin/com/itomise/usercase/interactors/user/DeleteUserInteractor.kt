@@ -5,14 +5,13 @@ import com.itomise.com.itomise.domain.user.vo.UserId
 import com.itomise.com.itomise.usercase.interfaces.user.IDeleteUserUseCase
 import com.itomise.com.itomise.util.getKoinInstance
 import com.itomise.infrastructure.dbQuery
-import java.util.UUID
 
 class DeleteUserInteractor : IDeleteUserUseCase {
     private val userRepository = getKoinInstance<IUserRepository>()
 
-    override suspend fun handle(id: UUID) {
+    override suspend fun handle(command: IDeleteUserUseCase.Command) {
         dbQuery {
-            val targetUser = userRepository.findByUserId(UserId(id))
+            val targetUser = userRepository.findByUserId(UserId(command.id))
             if (targetUser != null) {
                 userRepository.delete(targetUser)
             } else {
