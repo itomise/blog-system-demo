@@ -1,51 +1,37 @@
-import React from 'react'
+import { useCreateUser } from '@/services/user/api/useCreateUser'
+import { useUserList } from '@/services/user/api/useUserList'
+import React, { useState } from 'react'
 
 export const IndexPage: React.FC = () => {
-  const onClickGet = async () => {
-    try {
-      const res = await fetch('http://localhost:8080/user', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-      })
-      const json = res.json()
-      console.log(res.type)
-      console.log('success', json)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  const onClickPost = async () => {
-    try {
-      const res = await fetch('http://localhost:8080/user', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          id: 'client_test',
-          name: 'クライアントテストマン',
-        }),
-      })
-      console.log(res.type)
-      const json = res.json()
-
-      console.log('success', json)
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  const { users } = useUserList()
+  const createUserMutation = useCreateUser()
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState<string>('')
 
   return (
     <main>
-      <p>
-        <button onClick={onClickGet}>ゲット</button>
-        <button onClick={onClickPost}>ポスト</button>
-      </p>
+      <ul>
+        {users?.map((user) => (
+          <li key={user.id}>
+            <p>{user.id}</p>
+            <p>{user.name}</p>
+            <p>{user.email}</p>
+          </li>
+        ))}
+      </ul>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          createUserMutation.mutate({
+            name,
+            email,
+          })
+        }}
+      >
+        <input name="name" onChange={(e) => setName(e.target.value)} />
+        <input name="email" onChange={(e) => setEmail(e.target.value)} />
+        <button type="submit">送信</button>
+      </form>
     </main>
   )
 }
