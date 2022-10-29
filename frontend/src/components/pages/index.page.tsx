@@ -27,9 +27,8 @@ export const IndexPage: React.FC = () => {
           schema={schema}
         >
           {({ register, formState: { errors } }) => (
-            <Stack spacing={10} sx={{ marginTop: 10 }}>
+            <Stack spacing="md" mt="md">
               <InputField label="名前" error={errors.name} registration={register('name')} required />
-
               <InputField
                 label="メールアドレス"
                 type="email"
@@ -50,7 +49,7 @@ export const IndexPage: React.FC = () => {
                   <Text>{user.id}</Text>
                 </Group>
                 <Group>
-                  <Text sx={{ width: 40, flexShrink: 0, wordWrap: 'unset' }}>name:</Text>
+                  <Text sx={{ width: 40, flexShrink: 0 }}>name:</Text>
                   <Text>{user.name}</Text>
                 </Group>
                 <Group>
