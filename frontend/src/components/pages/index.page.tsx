@@ -1,37 +1,58 @@
 import { useCreateUser } from '@/services/user/api/useCreateUser'
 import { useUserList } from '@/services/user/api/useUserList'
-import React, { useState } from 'react'
+import { Button, Card, Container, Grid, Stack, Text } from '@mantine/core'
+import React from 'react'
+import { z } from 'zod'
+import { Form } from '../shared/form/Form'
+import { InputField } from '../shared/form/InputField'
+
+const schema = z.object({
+  name: z.string().min(5).max(255),
+  email: z.string().email(),
+})
+
+type RegisterFormType = z.infer<typeof schema>
 
 export const IndexPage: React.FC = () => {
   const { users } = useUserList()
   const createUserMutation = useCreateUser()
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState<string>('')
 
   return (
-    <main>
-      <ul>
-        {users?.map((user) => (
-          <li key={user.id}>
-            <p>{user.id}</p>
-            <p>{user.name}</p>
-            <p>{user.email}</p>
-          </li>
-        ))}
-      </ul>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          createUserMutation.mutate({
-            name,
-            email,
-          })
-        }}
-      >
-        <input name="name" onChange={(e) => setName(e.target.value)} />
-        <input name="email" onChange={(e) => setEmail(e.target.value)} />
-        <button type="submit">送信</button>
-      </form>
-    </main>
+    <Container>
+      <main>
+        <Form<RegisterFormType>
+          onSubmit={(data) => {
+            createUserMutation.mutate(data)
+          }}
+          schema={schema}
+        >
+          {({ register, formState: { errors } }) => (
+            <Stack spacing={10} sx={{ marginTop: 10 }}>
+              <InputField label="名前" error={errors.name} registration={register('name')} required />
+
+              <InputField
+                label="メールアドレス"
+                type="email"
+                error={errors.email}
+                registration={register('email')}
+                required
+              />
+              <Button type="submit">送信</Button>
+            </Stack>
+          )}
+        </Form>
+        <Grid mt={20}>
+          {users?.map((user) => (
+            <Grid.Col key={user.id} span={4}>
+              <Card shadow="sm" radius="md">
+                <Text>{user.id}</Text>
+                <Text>{user.name}</Text>
+                <Text>{user.email}</Text>
+              </Card>
+            </Grid.Col>
+          ))}
+        </Grid>
+      </main>
+    </Container>
   )
 }
