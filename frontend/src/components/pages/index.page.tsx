@@ -1,6 +1,6 @@
 import { useCreateUser } from '@/services/user/api/useCreateUser'
 import { useUserList } from '@/services/user/api/useUserList'
-import { Button, Card, Container, Grid, Stack, Text } from '@mantine/core'
+import { Button, Card, Container, Grid, Group, Stack, Text } from '@mantine/core'
 import React from 'react'
 import { z } from 'zod'
 import { Form } from '../shared/form/Form'
@@ -45,9 +45,18 @@ export const IndexPage: React.FC = () => {
           {users?.map((user) => (
             <Grid.Col key={user.id} span={4}>
               <Card shadow="sm" radius="md">
-                <Text>{user.id}</Text>
-                <Text>{user.name}</Text>
-                <Text>{user.email}</Text>
+                <Group noWrap>
+                  <Text sx={{ width: 40, flexShrink: 0 }}>id:</Text>
+                  <Text>{user.id}</Text>
+                </Group>
+                <Group>
+                  <Text sx={{ width: 40, flexShrink: 0, wordWrap: 'unset' }}>name:</Text>
+                  <Text>{user.name}</Text>
+                </Group>
+                <Group>
+                  <Text sx={{ width: 40, flexShrink: 0 }}>email:</Text>
+                  <Text>{user.email}</Text>
+                </Group>
               </Card>
             </Grid.Col>
           ))}
