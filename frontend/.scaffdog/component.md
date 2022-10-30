@@ -1,6 +1,6 @@
 ---
 name: 'component'
-root: 'src/components/pages'
+root: 'src'
 output: '**/*'
 questions:
   name: 'Please enter a page name.'
