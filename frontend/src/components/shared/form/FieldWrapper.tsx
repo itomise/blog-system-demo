@@ -1,6 +1,5 @@
-import { Input, InputWrapperProps } from '@mantine/core'
-import React from 'react'
 import { FieldError } from 'react-hook-form'
+import { Input, InputWrapperProps } from '@mantine/core'
 
 type Props = Omit<InputWrapperProps, 'error'> & {
   error: FieldError | undefined

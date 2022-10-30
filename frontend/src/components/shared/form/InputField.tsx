@@ -1,7 +1,6 @@
-import React from 'react'
 import { UseFormRegisterReturn } from 'react-hook-form'
-import { FieldWrapper, FieldWrapperPassThroughProps } from './FieldWrapper'
 import { Input } from './Input'
+import { FieldWrapper, FieldWrapperPassThroughProps } from './FieldWrapper'
 
 type InputFieldProps = FieldWrapperPassThroughProps & {
   type?: 'text' | 'email' | 'password'

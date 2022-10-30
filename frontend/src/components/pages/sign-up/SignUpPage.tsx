@@ -1,26 +1,25 @@
-import { useCreateUser } from '@/services/user/api/useCreateUser'
-import { useUserList } from '@/services/user/api/useUserList'
-import { Button, Card, Container, Grid, Group, Stack, Text } from '@mantine/core'
-import React from 'react'
 import { z } from 'zod'
-import { Form } from '../shared/form/Form'
-import { InputField } from '../shared/form/InputField'
+import { Button, Card, Container, Grid, Group, Stack, Text } from '@mantine/core'
+import { useUserList } from '@/services/user/api/useUserList'
+import { useCreateUser } from '@/services/user/api/useCreateUser'
+import { InputField } from '@/components/shared/form/InputField'
+import { Form } from '@/components/shared/form/Form'
 
 const schema = z.object({
   name: z.string().min(5).max(255),
   email: z.string().email(),
 })
 
-type RegisterFormType = z.infer<typeof schema>
+type SignUpFormType = z.infer<typeof schema>
 
-export const IndexPage: React.FC = () => {
+export const SignUpPage: React.FC = () => {
   const { users } = useUserList()
   const createUserMutation = useCreateUser()
 
   return (
     <Container>
       <main>
-        <Form<RegisterFormType>
+        <Form<SignUpFormType>
           onSubmit={(data) => {
             createUserMutation.mutate(data)
           }}

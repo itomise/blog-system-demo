@@ -1,9 +1,8 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import { QueryClientProvider } from '@tanstack/react-query'
-import type { AppProps } from 'next/app'
-import { queryClient } from '@/libs/react-query'
 import Head from 'next/head'
+import type { AppProps } from 'next/app'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { MantineProvider } from '@mantine/core'
+import { queryClient } from '@/libs/react-query'
 
 const MyApp = ({ Component, pageProps }: AppProps) => (
   <>
