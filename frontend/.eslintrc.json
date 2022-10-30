@@ -13,6 +13,19 @@
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "warn",
     "react/require-default-props": "off",
-    "react/jsx-props-no-spreading": "off"
+    "react/jsx-props-no-spreading": "off",
+    "react/react-in-jsx-scope": "off",
+    "import/order": [
+      "warn",
+      {
+        "alphabetize": {
+          "order": "desc",
+          "caseInsensitive": true
+        }
+      }
+    ]
+  },
+  "globals": {
+    "React": true
   }
 }
