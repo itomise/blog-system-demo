@@ -5,8 +5,8 @@ import { InputField } from '@/components/shared/form/InputField'
 import { Form } from '@/components/shared/form/Form'
 
 const schema = z.object({
-  email: z.string().min(5).max(255),
-  password: z.string().email(),
+  email: z.string().min(5).max(255).email(),
+  password: z.string(),
 })
 
 type SignUpFormType = z.infer<typeof schema>
