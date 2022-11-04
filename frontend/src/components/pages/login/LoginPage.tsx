@@ -20,7 +20,7 @@ export const LoginPage: React.FC = () => {
       <main>
         <Center sx={{ width: '100%', height: '100vh' }}>
           <Paper p={80} radius="md" sx={{ maxWidth: 500, width: '100%' }}>
-            <Title order={1} align="center" color="gray.7">
+            <Title order={1} align="center">
               ログイン
             </Title>
             <Form<SignUpFormType>
