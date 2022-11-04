@@ -14,9 +14,10 @@ export const InputField: React.FC<InputFieldProps> = ({
   className,
   error,
   registration,
+  placeholder,
   ...rest
 }) => (
   <FieldWrapper label={label} error={error} {...rest}>
-    <Input type={type} className={className} {...registration} invalid={!!error} />
+    <Input type={type} className={className} {...registration} placeholder={placeholder} invalid={!!error} />
   </FieldWrapper>
 )
