@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { Button, Center, Container, Paper, Stack, useMantineTheme } from '@mantine/core'
+import { Button, Center, Container, Paper, Stack, Title, useMantineTheme } from '@mantine/core'
 import { useCreateUser } from '@/services/user/api/useCreateUser'
 import { InputField } from '@/components/shared/form/InputField'
 import { Form } from '@/components/shared/form/Form'
@@ -20,6 +20,9 @@ export const LoginPage: React.FC = () => {
       <main>
         <Center sx={{ width: '100%', height: '100vh' }}>
           <Paper p={80} radius="md" sx={{ maxWidth: 500, width: '100%' }}>
+            <Title order={1} align="center" color="gray.7">
+              ログイン
+            </Title>
             <Form<SignUpFormType>
               onSubmit={(data) => {
                 // login
@@ -27,7 +30,7 @@ export const LoginPage: React.FC = () => {
               schema={schema}
             >
               {({ register, formState: { errors } }) => (
-                <Stack spacing="md">
+                <Stack spacing="md" mt="md">
                   <InputField
                     label="メールアドレス"
                     type="email"

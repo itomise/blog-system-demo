@@ -21,7 +21,7 @@ export const Form = <TFormValues extends Record<string, unknown> = Record<string
 }: FormProps<TFormValues>) => {
   const methods = useForm<TFormValues>({ ...options, resolver: schema && zodResolver(schema) })
   return (
-    <form className={className} onSubmit={methods.handleSubmit(onSubmit)} id={id}>
+    <form className={className} onSubmit={methods.handleSubmit(onSubmit)} id={id} noValidate>
       {children(methods)}
     </form>
   )
