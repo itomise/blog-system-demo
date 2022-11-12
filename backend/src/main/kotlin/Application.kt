@@ -1,6 +1,7 @@
 package com.itomise
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.itomise.com.itomise.module.authentication
 import com.itomise.com.itomise.module.injection
 import com.itomise.com.itomise.module.routing
 import com.itomise.com.itomise.module.statusPage
@@ -44,11 +45,13 @@ fun Application.module() {
         allowMethod(HttpMethod.Patch)
         allowMethod(HttpMethod.Delete)
         allowHeader(HttpHeaders.ContentType)
-        exposeHeader("X-Requested-With")
+        allowHeader("X-Requested-With")
         allowCredentials = true
     }
 
     injection()
+
+    authentication()
 
     routing()
 

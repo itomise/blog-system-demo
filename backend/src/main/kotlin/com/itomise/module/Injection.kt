@@ -2,10 +2,14 @@ package com.itomise.com.itomise.module
 
 import com.itomise.com.itomise.domain.user.interfaces.IUserRepository
 import com.itomise.com.itomise.infrastructure.repositories.user.UserRepository
+import com.itomise.com.itomise.usercase.interactors.auth.LoginInteractor
+import com.itomise.com.itomise.usercase.interactors.auth.MeInteractor
 import com.itomise.com.itomise.usercase.interactors.user.CreateUserInteractor
 import com.itomise.com.itomise.usercase.interactors.user.DeleteUserInteractor
 import com.itomise.com.itomise.usercase.interactors.user.GetUserInteractor
 import com.itomise.com.itomise.usercase.interactors.user.UpdateUserInteractor
+import com.itomise.com.itomise.usercase.interfaces.auth.ILoginUseCase
+import com.itomise.com.itomise.usercase.interfaces.auth.IMeUseCase
 import com.itomise.com.itomise.usercase.interfaces.user.ICreateUserUseCase
 import com.itomise.com.itomise.usercase.interfaces.user.IDeleteUserUseCase
 import com.itomise.com.itomise.usercase.interfaces.user.IGetUserUseCase
@@ -22,6 +26,9 @@ val useCaseModule = module {
     singleOf(::CreateUserInteractor) { bind<ICreateUserUseCase>() }
     singleOf(::UpdateUserInteractor) { bind<IUpdateUserUseCase>() }
     singleOf(::DeleteUserInteractor) { bind<IDeleteUserUseCase>() }
+    singleOf(::LoginInteractor) { bind<ILoginUseCase>() }
+    singleOf(::MeInteractor) { bind<IMeUseCase>() }
+
 }
 
 val repositoryModule = module {

@@ -1,6 +1,6 @@
-import { MutationConfig, queryClient } from '@/libs/react-query'
-import { userRepository } from '@/repositories/user'
 import { useMutation } from '@tanstack/react-query'
+import { userRepository } from '@/repositories/user'
+import { MutationConfig, queryClient } from '@/libs/react-query'
 
 const { createUser, getUserList } = userRepository
 

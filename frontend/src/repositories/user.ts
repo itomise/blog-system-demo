@@ -1,7 +1,7 @@
-import { appAxios } from '@/libs/axios'
-import { QueryRepositoryType } from '@/libs/react-query'
 import { UUID } from '@/types'
 import { User } from '@/services/user/types'
+import { QueryRepositoryType } from '@/libs/react-query'
+import { appAxios } from '@/libs/axios'
 
 export type GetListUserResponse = {
   users: User[]

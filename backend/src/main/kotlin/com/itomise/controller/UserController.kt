@@ -12,6 +12,7 @@ import com.itomise.com.itomise.usercase.interfaces.user.IGetUserUseCase
 import com.itomise.com.itomise.usercase.interfaces.user.IUpdateUserUseCase
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -23,52 +24,54 @@ fun Application.userRouting() {
     val createUserUseCase: ICreateUserUseCase by inject()
     val updateUserUseCase: IUpdateUserUseCase by inject()
     val deleteUserUseCase: IDeleteUserUseCase by inject()
-
+    
     routing {
         route("/users") {
-            get("") {
-                val result = getUserUseCase.handle()
+            authenticate("auth-session") {
+                get("") {
+                    val result = getUserUseCase.handle()
 
-                val response = GetListUserResponseModel(
-                    result.users.map {
-                        GetListUserResponseModelUser(it.id, it.name, it.email)
-                    }
-                )
-
-                call.respond(HttpStatusCode.OK, response)
-            }
-
-            post("") {
-                val request = call.receive<CreateUserRequestModel>()
-
-                val userId = createUserUseCase.handle(
-                    ICreateUserUseCase.Command(
-                        name = request.name,
-                        email = request.email
+                    val response = GetListUserResponseModel(
+                        result.users.map {
+                            GetListUserResponseModelUser(it.id, it.name, it.email)
+                        }
                     )
-                )
 
-                call.respond(HttpStatusCode.OK, CreateUserResponseModel(userId.value))
-            }
+                    call.respond(HttpStatusCode.OK, response)
+                }
 
-            put("") {
-                val request = call.receive<UpdateUserRequestModel>()
+                post("") {
+                    val request = call.receive<CreateUserRequestModel>()
 
-                updateUserUseCase.handle(
-                    IUpdateUserUseCase.Command(
-                        id = request.id, name = request.name
+                    val userId = createUserUseCase.handle(
+                        ICreateUserUseCase.Command(
+                            name = request.name,
+                            email = request.email
+                        )
                     )
-                )
 
-                call.respond(HttpStatusCode.OK)
-            }
+                    call.respond(HttpStatusCode.OK, CreateUserResponseModel(userId.value))
+                }
 
-            delete("") {
-                val request = call.receive<DeleteUserRequestModel>()
+                put("") {
+                    val request = call.receive<UpdateUserRequestModel>()
 
-                deleteUserUseCase.handle(IDeleteUserUseCase.Command(request.id))
+                    updateUserUseCase.handle(
+                        IUpdateUserUseCase.Command(
+                            id = request.id, name = request.name
+                        )
+                    )
 
-                call.respond(HttpStatusCode.OK)
+                    call.respond(HttpStatusCode.OK)
+                }
+
+                delete("") {
+                    val request = call.receive<DeleteUserRequestModel>()
+
+                    deleteUserUseCase.handle(IDeleteUserUseCase.Command(request.id))
+
+                    call.respond(HttpStatusCode.OK)
+                }
             }
         }
     }
