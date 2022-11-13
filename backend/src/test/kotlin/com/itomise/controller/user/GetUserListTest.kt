@@ -4,9 +4,11 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.BaseTestApplication.Companion.appTestApplication
 import com.itomise.BaseTestApplication.Companion.cleanUp
-import com.itomise.com.itomise.controller.requestModel.CreateUserRequestModel
-import com.itomise.com.itomise.controller.responseModel.CreateUserResponseModel
+import com.itomise.com.itomise.controller.requestModel.LoginRequestModel
+import com.itomise.com.itomise.controller.requestModel.SignUpRequestModel
 import com.itomise.com.itomise.controller.responseModel.GetListUserResponseModel
+import com.itomise.com.itomise.controller.responseModel.SignUpResponseModel
+import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -18,36 +20,40 @@ class GetUserListTest {
     @AfterTest
     fun after() = cleanUp()
 
-    @Test
-    fun `ユーザーが0の場合空の配列が返ること`() = appTestApplication {
-        val objectMapper = jacksonObjectMapper()
-
-        client.get("/users").apply {
-            assertEquals(HttpStatusCode.OK, this.status)
-
-            val res = objectMapper.readValue<GetListUserResponseModel>(this.bodyAsText())
-            assertEquals(0, res.users.size)
-        }
-    }
+    private val objectMapper = jacksonObjectMapper()
 
     @Test
     fun `ユーザー一覧が取得できること`() = appTestApplication {
-        val objectMapper = jacksonObjectMapper()
+        val client = createClient {
+            install(HttpCookies)
+        }
 
-        val response = client.post("/users") {
+        val signUpResponse = client.post("/auth-session/sign-up") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
-                    CreateUserRequestModel(
+                    SignUpRequestModel(
                         name = "テスト太郎",
-                        email = "test@example.com"
+                        email = "test@example.com",
+                        password = "test"
                     )
                 )
             )
         }
 
-        assertEquals(HttpStatusCode.OK, response.status)
-        val createdUser = objectMapper.readValue<CreateUserResponseModel>(response.bodyAsText())
+        val signUpRes = objectMapper.readValue<SignUpResponseModel>(signUpResponse.bodyAsText())
+
+        client.post("/auth-session/login") {
+            contentType(ContentType.Application.Json)
+            setBody(
+                objectMapper.writeValueAsString(
+                    LoginRequestModel(
+                        email = "test@example.com",
+                        password = "test"
+                    )
+                )
+            )
+        }
 
         client.get("/users").apply {
             assertEquals(HttpStatusCode.OK, this.status)
@@ -55,7 +61,7 @@ class GetUserListTest {
             val res = objectMapper.readValue<GetListUserResponseModel>(this.bodyAsText())
             assertEquals(1, res.users.size)
             res.users[0].run {
-                assertEquals(createdUser.id, this.id)
+                assertEquals(signUpRes.userId, this.id)
                 assertEquals("テスト太郎", this.name)
                 assertEquals("test@example.com", this.email)
             }
