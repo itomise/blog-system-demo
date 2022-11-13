@@ -2,6 +2,7 @@ package com.itomise.com.itomise.controller
 
 import com.itomise.com.itomise.controller.requestModel.LoginRequestModel
 import com.itomise.com.itomise.controller.requestModel.SignUpRequestModel
+import com.itomise.com.itomise.controller.responseModel.MeResponseModel
 import com.itomise.com.itomise.controller.responseModel.SignUpResponseModel
 import com.itomise.com.itomise.domain.auth.UserPrincipal
 import com.itomise.com.itomise.usercase.interfaces.auth.ILoginUseCase
@@ -64,7 +65,13 @@ fun Application.authRouting() {
                     val result = meUseCase.handle(principal.id)
 
                     if (result != null) {
-                        call.respond(HttpStatusCode.OK, result)
+                        call.respond(
+                            HttpStatusCode.OK, MeResponseModel(
+                                id = result.id,
+                                email = result.email,
+                                name = result.name
+                            )
+                        )
                     } else {
                         call.respond(HttpStatusCode.BadRequest)
                     }

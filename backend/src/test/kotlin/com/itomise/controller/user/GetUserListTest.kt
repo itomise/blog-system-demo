@@ -80,4 +80,12 @@ class GetUserListTest {
             }
         }
     }
+
+    @Test
+    fun `未ログイン状態でユーザ一覧を叩くと401になること`() = appTestApplication {
+        val client = createClient { install(HttpCookies) }
+        client.get("/users").apply {
+            assertEquals(HttpStatusCode.Unauthorized, this.status)
+        }
+    }
 }
