@@ -20,7 +20,7 @@ class UserRepository : IUserRepository {
         return UserTable
             .slice(UserTable.id, UserTable.name, UserTable.email)
             .selectAll()
-            .orderBy(UserTable.name to SortOrder.DESC)
+            .orderBy(UserTable.name)
             .map(::resultRowToUserEntity)
     }
 

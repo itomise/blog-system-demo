@@ -1,10 +1,13 @@
 package com.itomise
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.com.itomise.domain.auth.UserPrincipal
-import com.itomise.com.itomise.domain.user.vo.UserId
 import com.itomise.com.itomise.usercase.interfaces.user.ICreateUserUseCase
 import com.itomise.com.itomise.util.getKoinInstance
+import io.ktor.client.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.config.*
@@ -23,8 +26,6 @@ import java.util.*
 
 class BaseTestApplication() {
     companion object {
-        private val objectMapper = jacksonObjectMapper()
-
         fun appTestApplication(
             block: suspend ApplicationTestBuilder.() -> Unit
         ) {
@@ -33,22 +34,25 @@ class BaseTestApplication() {
                     config = ApplicationConfig("application.test.conf")
                 }
                 application {
+                    // application が起動してからでないと DB などが立ち上がっていないため
                     setUpTables()
                     routing {
                         post("/login-for-testing") {
-                            val requestBody = call.receive<UserId>()
+                            val request = call.receive<CreateTestUserRequest>()
                             val createUserUseCase = getKoinInstance<ICreateUserUseCase>()
                             val result = createUserUseCase.handle(
                                 ICreateUserUseCase.Command(
-                                    name = "testtest",
-                                    email = "testtest@example.com"
+                                    name = request.name,
+                                    email = request.email
                                 )
                             )
-
-                            call.sessions.set(UserPrincipal(requestBody.toString()))
-                            val sessionCookie = call.sessions.get<UserPrincipal>()
+                            call.sessions.set(UserPrincipal(result.value.toString()))
                             call.respond(
-                                HttpStatusCode.OK,
+                                HttpStatusCode.OK, TestUser(
+                                    id = result.value,
+                                    name = request.name,
+                                    email = request.email,
+                                )
                             )
                         }
                     }
@@ -58,11 +62,36 @@ class BaseTestApplication() {
             }
         }
 
-        suspend fun ApplicationTestBuilder.authSessionUser(
-            userId: UUID
-        ) {
-
+        suspend fun authSessionUserForTest(
+            client: HttpClient,
+            name: String = "テスト太郎",
+            email: String = "${UUID.randomUUID()}@example.com",
+        ): TestUser {
+            val objectMapper = jacksonObjectMapper()
+            val loginRes = client.post("/login-for-testing") {
+                contentType(ContentType.Application.Json)
+                setBody(
+                    objectMapper.writeValueAsString(
+                        CreateTestUserRequest(
+                            name = name,
+                            email = email
+                        )
+                    )
+                )
+            }
+            return objectMapper.readValue(loginRes.bodyAsText())
         }
+
+        private data class CreateTestUserRequest(
+            val name: String,
+            val email: String
+        )
+
+        data class TestUser(
+            val id: UUID,
+            val name: String,
+            val email: String
+        )
 
         private fun setUpTables() {
             transaction {
@@ -77,7 +106,7 @@ class BaseTestApplication() {
             }
         }
 
-        fun cleanUp() {
+        fun cleanup() {
             // test が fail すると Koin が残ったままになるため
             if (GlobalContext.getOrNull() != null) {
                 stopKoin()
