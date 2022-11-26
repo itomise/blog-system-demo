@@ -1,9 +1,8 @@
 package com.itomise.com.itomise.module
 
 import com.itomise.com.itomise.domain.auth.UserPrincipal
-import com.itomise.com.itomise.domain.user.interfaces.IUserRepository
+import com.itomise.com.itomise.infrastructure.RedisFactory
 import com.itomise.com.itomise.infrastructure.SessionStorageRedis
-import com.itomise.com.itomise.util.getKoinInstance
 import com.itomise.getEnvConfig
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -14,13 +13,12 @@ import io.ktor.util.*
 
 fun Application.authentication() {
     val isDev = environment.developmentMode
-    val userRepository = getKoinInstance<IUserRepository>()
     val secretSignKey = hex(getEnvConfig("app.session.signKey"))
 
     install(Sessions) {
         cookie<UserPrincipal>("user_session", SessionStorageRedis()) {
             cookie.path = "/"
-            cookie.maxAgeInSeconds = 60 * 60 * 24 * 2
+            cookie.maxAgeInSeconds = RedisFactory.SESSION_EXPIRES_DURATION
             cookie.httpOnly = true
             if (!isDev) {
                 cookie.secure = true
