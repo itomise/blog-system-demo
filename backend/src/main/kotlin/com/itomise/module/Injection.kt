@@ -28,7 +28,6 @@ val useCaseModule = module {
     singleOf(::DeleteUserInteractor) { bind<IDeleteUserUseCase>() }
     singleOf(::LoginInteractor) { bind<ILoginUseCase>() }
     singleOf(::MeInteractor) { bind<IMeUseCase>() }
-
 }
 
 val repositoryModule = module {

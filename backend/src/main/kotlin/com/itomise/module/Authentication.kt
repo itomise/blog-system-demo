@@ -3,7 +3,9 @@ package com.itomise.com.itomise.module
 import com.itomise.com.itomise.domain.auth.UserPrincipal
 import com.itomise.com.itomise.domain.user.interfaces.IUserRepository
 import com.itomise.com.itomise.domain.user.vo.UserId
+import com.itomise.com.itomise.infrastructure.redisClient
 import com.itomise.com.itomise.util.getKoinInstance
+import com.itomise.getEnvConfig
 import com.itomise.infrastructure.dbQuery
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -16,10 +18,10 @@ import java.util.*
 fun Application.authentication() {
     val isDev = environment.developmentMode
     val userRepository = getKoinInstance<IUserRepository>()
+    val secretSignKey = hex(getEnvConfig("app.session.signKey"))
 
     install(Sessions) {
-        val secretSignKey = hex("6819b57a326945c1968f45236589")
-        cookie<UserPrincipal>("user_session", SessionStorageMemory()) {
+        cookie<UserPrincipal>("user_session", SessionStorageRedis()) {
             cookie.path = "/"
             cookie.maxAgeInSeconds = 60 * 60 * 24 * 2
             cookie.httpOnly = true
@@ -47,5 +49,19 @@ fun Application.authentication() {
                 call.respond(HttpStatusCode.Unauthorized)
             }
         }
+    }
+}
+
+class SessionStorageRedis : SessionStorage {
+    override suspend fun write(id: String, value: String) {
+        redisClient.set(id, value)
+    }
+
+    override suspend fun read(id: String): String {
+        return redisClient.get(id) ?: throw NoSuchElementException("Session $id not found")
+    }
+
+    override suspend fun invalidate(id: String) {
+        redisClient.del(id)
     }
 }

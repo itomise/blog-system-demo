@@ -25,6 +25,18 @@ services:
       - 55432:5432
     volumes:
       - ./db/local/init:/docker-entrypoint-initdb.d
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - 16379:6379
+    volumes:
+      - ./db/redis/local:/data
+  test-redis:
+    image: redis:latest
+    container_name: test-redis
+    ports:
+      - 56379:6379
   flyway:
     image: flyway/flyway:latest
     volumes:

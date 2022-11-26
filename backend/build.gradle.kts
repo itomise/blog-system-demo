@@ -38,6 +38,8 @@ dependencies {
     // auth
     implementation("io.ktor:ktor-server-sessions:$ktor_version")
     implementation("io.ktor:ktor-server-auth:$ktor_version")
+    // redis
+    implementation("io.github.crackthecodeabhi:kreds:0.8")
     // cp
     implementation("com.zaxxer:HikariCP:$hikaricp_version")
     // serialization
