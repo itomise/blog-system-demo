@@ -7,6 +7,7 @@ val h2_version: String by project
 val koin_version: String by project
 val postgresql_version: String by project
 val hikaricp_version: String by project
+val kreds_version: String by project
 
 plugins {
     application
@@ -39,7 +40,7 @@ dependencies {
     implementation("io.ktor:ktor-server-sessions:$ktor_version")
     implementation("io.ktor:ktor-server-auth:$ktor_version")
     // redis
-    implementation("io.github.crackthecodeabhi:kreds:0.8")
+    implementation("io.github.crackthecodeabhi:kreds:$kreds_version")
     // cp
     implementation("com.zaxxer:HikariCP:$hikaricp_version")
     // serialization
