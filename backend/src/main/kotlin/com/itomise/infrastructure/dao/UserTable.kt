@@ -8,6 +8,6 @@ import org.jetbrains.exposed.sql.javatime.datetime
 object UserTable : UUIDTable(name = "users", columnName = "id") {
     val createdAt = datetime(name = "created_at").defaultExpression(CurrentDateTime())
     val updatedAt = datetime(name = "updated_at").defaultExpression(CurrentDateTime())
-    val name = varchar(name = "name", length = 255)
-    val email = varchar(name = "email", length = 255)
+    val name = varchar(name = "name", length = 50)
+    val email = varchar(name = "email", length = 100)
 }

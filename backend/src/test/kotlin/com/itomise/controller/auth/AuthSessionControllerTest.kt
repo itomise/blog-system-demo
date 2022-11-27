@@ -28,7 +28,7 @@ class AuthSessionControllerTest {
         val client = createClient { install(HttpCookies) }
 
         val name = "テスト太郎"
-        val email = "example@example.com"
+        val email = "${UUID.randomUUID()}@example.com"
         val password = UUID.randomUUID()
 
         val signUpRes = client.post("/auth-session/sign-up") {
@@ -75,7 +75,7 @@ class AuthSessionControllerTest {
     @Test
     fun `未ログイン状態でMeを叩くとUnauthorizedになること`() = appTestApplication {
         val client = createClient { install(HttpCookies) }
-        
+
         client.get("/auth-session/me").apply {
             assertEquals(HttpStatusCode.Unauthorized, this.status)
         }

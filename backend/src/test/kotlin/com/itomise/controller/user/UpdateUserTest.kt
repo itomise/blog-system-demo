@@ -30,14 +30,17 @@ class UpdateUserTest {
 
         authSessionUserForTest(client)
 
+        val email = "${UUID.randomUUID()}@example.com"
+        val password = "${UUID.randomUUID()}"
+
         val createRes = client.post("/users") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
                     CreateUserRequestModel(
                         "test太郎",
-                        "test@example.com",
-                        "${UUID.randomUUID()}"
+                        email,
+                        password
                     ),
                 )
             )
@@ -54,7 +57,7 @@ class UpdateUserTest {
             res.users.find { it.id == createResBody.id }?.run {
                 assertEquals(createResBody.id, this.id)
                 assertEquals("test太郎", this.name)
-                assertEquals("test@example.com", this.email)
+                assertEquals(email, this.email)
             }
         }
 
@@ -76,7 +79,7 @@ class UpdateUserTest {
             res.users.find { it.id == createResBody.id }?.run {
                 assertEquals(createResBody.id, this.id)
                 assertEquals("test太郎1", this.name)
-                assertEquals("test@example.com", this.email)
+                assertEquals(email, this.email)
             }
         }
     }

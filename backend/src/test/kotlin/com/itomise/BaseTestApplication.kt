@@ -43,15 +43,17 @@ class BaseTestApplication() {
                             val result = createUserUseCase.handle(
                                 ICreateUserUseCase.Command(
                                     name = request.name,
-                                    email = request.email
+                                    email = request.email,
+                                    password = request.password
                                 )
                             )
-                            call.sessions.set(UserPrincipal(result.value.toString()))
+                            call.sessions.set(UserPrincipal(result.toString()))
                             call.respond(
                                 HttpStatusCode.OK, TestUser(
-                                    id = result.value,
+                                    id = result,
                                     name = request.name,
                                     email = request.email,
+                                    password = request.password,
                                 )
                             )
                         }
@@ -66,6 +68,7 @@ class BaseTestApplication() {
             client: HttpClient,
             name: String = "テスト太郎",
             email: String = "${UUID.randomUUID()}@example.com",
+            password: String = "${UUID.randomUUID()}"
         ): TestUser {
             val objectMapper = jacksonObjectMapper()
             val loginRes = client.post("/login-for-testing") {
@@ -74,7 +77,8 @@ class BaseTestApplication() {
                     objectMapper.writeValueAsString(
                         CreateTestUserRequest(
                             name = name,
-                            email = email
+                            email = email,
+                            password = password
                         )
                     )
                 )
@@ -84,13 +88,15 @@ class BaseTestApplication() {
 
         private data class CreateTestUserRequest(
             val name: String,
-            val email: String
+            val email: String,
+            val password: String
         )
 
         data class TestUser(
             val id: UUID,
             val name: String,
-            val email: String
+            val email: String,
+            val password: String
         )
 
         private fun setUpTables() {

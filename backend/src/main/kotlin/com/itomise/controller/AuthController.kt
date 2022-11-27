@@ -48,11 +48,12 @@ fun Application.authRouting() {
                 val result = createUserUseCase.handle(
                     ICreateUserUseCase.Command(
                         name = request.name,
-                        email = request.email
+                        email = request.email,
+                        password = request.password
                     )
                 )
 
-                call.respond(HttpStatusCode.OK, SignUpResponseModel(result.value))
+                call.respond(HttpStatusCode.OK, SignUpResponseModel(result))
             }
             get("/logout") {
                 call.sessions.clear<UserPrincipal>()

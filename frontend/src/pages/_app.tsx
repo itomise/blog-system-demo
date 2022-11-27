@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
 import { QueryClientProvider } from '@tanstack/react-query'
+import { NotificationsProvider } from '@mantine/notifications'
 import { MantineProvider } from '@mantine/core'
 import { theme } from '@/styles/theme'
 import { queryClient } from '@/libs/react-query'
@@ -13,7 +14,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
     </Head>
     <QueryClientProvider client={queryClient}>
       <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
-        <Component {...pageProps} />
+        <NotificationsProvider position="bottom-left">
+          <Component {...pageProps} />
+        </NotificationsProvider>
       </MantineProvider>
     </QueryClientProvider>
   </>

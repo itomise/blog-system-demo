@@ -1,6 +1,8 @@
 package com.itomise.com.itomise.module
 
+import com.itomise.com.itomise.domain.auth.interfaces.IUserLoginInfoRepository
 import com.itomise.com.itomise.domain.user.interfaces.IUserRepository
+import com.itomise.com.itomise.infrastructure.repositories.auth.UserLoginInfoRepository
 import com.itomise.com.itomise.infrastructure.repositories.user.UserRepository
 import com.itomise.com.itomise.usercase.interactors.auth.LoginInteractor
 import com.itomise.com.itomise.usercase.interactors.auth.MeInteractor
@@ -32,6 +34,7 @@ val useCaseModule = module {
 
 val repositoryModule = module {
     singleOf(::UserRepository) { bind<IUserRepository>() }
+    singleOf(::UserLoginInfoRepository) { bind<IUserLoginInfoRepository>() }
 }
 
 fun Application.injection() {

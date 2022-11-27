@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.Schema
 import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 object DataBaseFactory {
@@ -35,7 +36,7 @@ object DataBaseFactory {
     }
 }
 
-suspend fun <T> dbQuery(block: suspend () -> T): T = newSuspendedTransaction(Dispatchers.IO) {
+suspend fun <T> dbQuery(block: suspend (transaction: Transaction) -> T): T = newSuspendedTransaction(Dispatchers.IO) {
     SchemaUtils.setSchema(Schema("main"))
-    block()
+    block(this)
 }

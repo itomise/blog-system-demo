@@ -1,12 +1,12 @@
 package com.itomise.com.itomise.domain.user
 
 import com.itomise.com.itomise.domain.common.vo.Email
-import com.itomise.com.itomise.domain.user.vo.UserId
+import java.util.*
 
 class User private constructor(
-    val id: UserId,
+    val id: UUID,
+    val email: Email,
     val name: String,
-    val email: Email
 ) {
     init {
         require(name.isNotBlank()) { "ユーザー名は1文字以上である必要があります。" }
@@ -21,15 +21,15 @@ class User private constructor(
 
     fun changeName(name: String) = User(
         id = this.id,
+        email = this.email,
         name = name,
-        email = this.email
     )
 
     companion object {
-        fun create(id: UserId, name: String, email: Email) = User(
+        fun create(id: UUID, email: Email, name: String) = User(
             id = id,
+            email = email,
             name = name,
-            email = email
         )
     }
 }

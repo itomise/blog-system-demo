@@ -47,11 +47,12 @@ fun Application.userRouting() {
                     val userId = createUserUseCase.handle(
                         ICreateUserUseCase.Command(
                             name = request.name,
-                            email = request.email
+                            email = request.email,
+                            password = request.password
                         )
                     )
 
-                    call.respond(HttpStatusCode.OK, CreateUserResponseModel(userId.value))
+                    call.respond(HttpStatusCode.OK, CreateUserResponseModel(userId))
                 }
 
                 put("/{userId}") {
@@ -60,7 +61,8 @@ fun Application.userRouting() {
 
                     updateUserUseCase.handle(
                         IUpdateUserUseCase.Command(
-                            id = UUID.fromString(userId), name = request.name
+                            id = UUID.fromString(userId),
+                            name = request.name,
                         )
                     )
 

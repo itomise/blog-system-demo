@@ -1,8 +1,9 @@
 import { z } from 'zod'
+import { useRouter } from 'next/router'
+import { showNotification } from '@mantine/notifications'
 import { Button, Center, Container, Paper, Stack, Title, useMantineTheme } from '@mantine/core'
-import { useUserList } from '@/services/user/api/useUserList'
-import { useCreateUser } from '@/services/user/api/useCreateUser'
 import { PasswordRegex } from '@/services/auth/constant'
+import { useSignup } from '@/services/auth/api/useSignup'
 import { InputField } from '@/components/shared/form/InputField'
 import { Form } from '@/components/shared/form/Form'
 
@@ -15,8 +16,23 @@ const schema = z.object({
 type SignUpFormType = z.infer<typeof schema>
 
 export const SignUpPage: React.FC = () => {
-  const { users } = useUserList()
-  const createUserMutation = useCreateUser()
+  const router = useRouter()
+  const { mutate, isLoading } = useSignup({
+    onSuccess: () => {
+      showNotification({
+        message: '仮登録が完了しました。メールアドレスをご確認ください。',
+        color: 'green',
+      })
+      router.push('/login')
+    },
+    onError: (e) => {
+      showNotification({
+        color: 'red',
+        title: '登録に失敗しました。',
+        message: e.message,
+      })
+    },
+  })
   const theme = useMantineTheme()
 
   return (
@@ -27,12 +43,7 @@ export const SignUpPage: React.FC = () => {
             <Title order={1} align="center">
               新規登録
             </Title>
-            <Form<SignUpFormType>
-              onSubmit={(data) => {
-                createUserMutation.mutate(data)
-              }}
-              schema={schema}
-            >
+            <Form<SignUpFormType> onSubmit={(data) => mutate(data)} schema={schema}>
               {({ register, formState: { errors } }) => (
                 <Stack spacing="md" mt="md">
                   <InputField label="名前" error={errors.name} registration={register('name')} required />
@@ -50,7 +61,9 @@ export const SignUpPage: React.FC = () => {
                     registration={register('password')}
                     required
                   />
-                  <Button type="submit">送信</Button>
+                  <Button type="submit" loading={isLoading}>
+                    送信
+                  </Button>
                 </Stack>
               )}
             </Form>
