@@ -20,7 +20,7 @@ class LoginInteractor : ILoginUseCase {
 
             val isValidPassword = UserLoginInfoService.checkValidPassword(
                 password = command.password,
-                loginUserInfo = loginUserInfo
+                userLoginInfo = loginUserInfo
             )
             if (!isValidPassword) return@dbQuery null
 

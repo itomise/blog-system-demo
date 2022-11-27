@@ -13,7 +13,7 @@ class UserLoginInfoService {
             HashAlgorithm.SECOND to "SHA3-256"
         )
         private const val STRETCHING_COUNT = 1500
-        
+
         suspend fun isDuplicateUser(userLoginInfo: UserLoginInfo): Boolean {
             return userLoginInfoRepository.findByEmail(userLoginInfo.email) != null
         }
@@ -34,10 +34,10 @@ class UserLoginInfoService {
 
         fun checkValidPassword(
             password: String,
-            loginUserInfo: UserLoginInfo,
+            userLoginInfo: UserLoginInfo,
         ): Boolean {
-            val hash = this.generatePasswordHash(password, loginUserInfo.passwordSalt, loginUserInfo.hashAlgorithmId)
-            return hash == loginUserInfo.passwordHash
+            val hash = this.generatePasswordHash(password, userLoginInfo.passwordSalt, userLoginInfo.hashAlgorithmId)
+            return hash == userLoginInfo.passwordHash
         }
     }
 }
