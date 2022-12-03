@@ -1,17 +1,30 @@
 import { UUID } from '@/types'
 import { appAxios } from '@/libs/axios'
 
-export type LoginRequest = {
+export type LoginWithSessionRequest = {
   email: string
   password: string
 }
 
-export type LoginResponse = {
+export type LoginWithSessionResponse = {
   userId: UUID
 }
 
-const loginWithSession = async (payload: LoginRequest) => {
-  const { data } = await appAxios.post<LoginResponse>('/auth-session/login', payload)
+const loginWithSession = async (payload: LoginWithSessionRequest) => {
+  const { data } = await appAxios.post<LoginWithSessionResponse>('/auth-session/login', payload)
+  return data
+}
+
+export type LoginWithJwtRequest = {
+  email: string
+  password: string
+}
+export type LoginWithJwtResponse = {
+  userId: UUID
+}
+
+const loginWithJwt = async (payload: LoginWithJwtRequest) => {
+  const { data } = await appAxios.post<LoginWithJwtResponse>('/auth-jwt/login', payload)
   return data
 }
 
@@ -29,5 +42,6 @@ const signup = async (payload: SignupRequest) => {
 
 export const authRepository = {
   loginWithSession,
+  loginWithJwt,
   signup,
 }

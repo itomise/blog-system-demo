@@ -2,10 +2,7 @@ package com.itomise
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.itomise.com.itomise.infrastructure.RedisFactory
-import com.itomise.com.itomise.module.authentication
-import com.itomise.com.itomise.module.injection
-import com.itomise.com.itomise.module.routing
-import com.itomise.com.itomise.module.statusPage
+import com.itomise.com.itomise.module.*
 import com.itomise.infrastructure.DataBaseFactory
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
@@ -20,6 +17,8 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 @Suppress("unused") // Referenced in application.conf
 fun Application.module() {
+    configureEnvironmentVariables()
+
     // serialization
     install(ContentNegotiation) {
         jackson {
@@ -39,7 +38,7 @@ fun Application.module() {
     }
 
     // cors
-    val allowHost = getEnvConfig("app.allowHost")
+    val allowHost = envConfig.allowHost
     install(CORS) {
         allowHost(host = allowHost, schemes = listOf("http", "https"))
         allowMethod(HttpMethod.Options)
@@ -48,6 +47,7 @@ fun Application.module() {
         allowMethod(HttpMethod.Delete)
         allowHeader(HttpHeaders.ContentType)
         allowHeader("X-Requested-With")
+        allowHeader("Authorization")
         allowCredentials = true
     }
 
@@ -59,13 +59,11 @@ fun Application.module() {
 
     statusPage()
 
-    RedisFactory.init(getEnvConfig("app.redis.endpoint"))
+    RedisFactory.init(envConfig.redis.endpoint)
 
     DataBaseFactory.init(
-        url = getEnvConfig("app.db.url"),
-        user = getEnvConfig("app.db.user"),
-        password = getEnvConfig("app.db.password")
+        url = envConfig.db.url,
+        user = envConfig.db.user,
+        password = envConfig.db.password
     )
 }
-
-fun Application.getEnvConfig(path: String): String = environment.config.propertyOrNull(path)!!.getString()

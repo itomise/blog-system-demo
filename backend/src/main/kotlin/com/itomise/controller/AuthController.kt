@@ -4,6 +4,8 @@ import com.itomise.com.itomise.controller.requestModel.LoginRequestModel
 import com.itomise.com.itomise.controller.requestModel.SignUpRequestModel
 import com.itomise.com.itomise.controller.responseModel.MeResponseModel
 import com.itomise.com.itomise.controller.responseModel.SignUpResponseModel
+import com.itomise.com.itomise.controller.utils.createJwt
+import com.itomise.com.itomise.controller.utils.userSessionPrincipal
 import com.itomise.com.itomise.domain.auth.UserPrincipal
 import com.itomise.com.itomise.usercase.interfaces.auth.ILoginUseCase
 import com.itomise.com.itomise.usercase.interfaces.auth.IMeUseCase
@@ -11,11 +13,14 @@ import com.itomise.com.itomise.usercase.interfaces.user.ICreateUserUseCase
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
+import io.ktor.server.http.content.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import org.koin.ktor.ext.inject
+import java.io.File
 
 fun Application.authRouting() {
     val loginUseCase: ILoginUseCase by inject()
@@ -61,7 +66,7 @@ fun Application.authRouting() {
             }
             authenticate("auth-session") {
                 get("/me") {
-                    val principal = call.userPrincipal()
+                    val principal = call.userSessionPrincipal()
 
                     val result = meUseCase.handle(principal.id)
 
@@ -79,10 +84,67 @@ fun Application.authRouting() {
                 }
             }
         }
+        route("/auth-jwt") {
+            post("/login") {
+                val request = call.receive<LoginRequestModel>()
+
+                val result = loginUseCase.handle(
+                    ILoginUseCase.Command(
+                        email = request.email,
+                        password = request.password
+                    )
+                )
+
+                if (result == null) {
+                    call.respond(HttpStatusCode.BadRequest)
+                    return@post
+                }
+
+                val token = createJwt(result.id.toString())
+
+                call.respond(HttpStatusCode.OK, hashMapOf("token" to token))
+            }
+            get("/hello") {
+                val principal = call.principal<JWTPrincipal>()
+                val username = principal!!.payload.getClaim("username").asString()
+                val expiresAt = principal.expiresAt?.time?.minus(System.currentTimeMillis())
+                call.respondText("Hello, $username! Token is expired at $expiresAt ms.")
+            }
+            get("/logout") {
+                call.sessions.clear<UserPrincipal>()
+                call.respond(HttpStatusCode.OK)
+            }
+
+        }
+        static(".well-known") {
+            staticRootFolder = File("certs")
+            file("jwks.json")
+        }
+        authenticate("auth-jwt") {
+            get("/me") {
+                val principal = call.userSessionPrincipal()
+
+                val result = meUseCase.handle(principal.id)
+
+                if (result != null) {
+                    call.respond(
+                        HttpStatusCode.OK, MeResponseModel(
+                            id = result.id,
+                            email = result.email,
+                            name = result.name
+                        )
+                    )
+                } else {
+                    call.respond(HttpStatusCode.BadRequest)
+                }
+            }
+            get("/hello") {
+                val principal = call.principal<JWTPrincipal>()
+                val username = principal!!.payload.getClaim("userId").asString()
+                val expiresAt = principal.expiresAt?.time?.minus(System.currentTimeMillis())
+                call.respondText("Hello, $username! Token is expired at $expiresAt ms.")
+            }
+        }
     }
 }
 
-fun ApplicationCall.userPrincipal(): UserPrincipal {
-    val principal = authentication.principal<UserPrincipal>()
-    return principal ?: throw IllegalArgumentException("invalid principal")
-}

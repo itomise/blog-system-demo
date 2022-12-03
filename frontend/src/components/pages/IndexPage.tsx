@@ -16,8 +16,11 @@ export const IndexPage: React.FC = () => {
             <Paper radius="md" p={80}>
               <Title order={1}>Todo List</Title>
               <Stack spacing="md" align="center" mt="lg">
-                <InternalLink href="/login">
-                  <Button>ログインはこちら</Button>
+                <InternalLink href="/login-with-session">
+                  <Button>ログインはこちら (Session)</Button>
+                </InternalLink>
+                <InternalLink href="/login-with-jwt">
+                  <Button>ログインはこちら (Jwt)</Button>
                 </InternalLink>
                 <InternalLink href="/sign-up">
                   <Button>登録はこちら</Button>

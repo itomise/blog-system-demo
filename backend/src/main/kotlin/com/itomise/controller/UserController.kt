@@ -5,7 +5,7 @@ import com.itomise.com.itomise.controller.requestModel.UpdateUserRequestModel
 import com.itomise.com.itomise.controller.responseModel.CreateUserResponseModel
 import com.itomise.com.itomise.controller.responseModel.GetListUserResponseModel
 import com.itomise.com.itomise.controller.responseModel.GetListUserResponseModelUser
-import com.itomise.com.itomise.controller.userPrincipal
+import com.itomise.com.itomise.controller.utils.userSessionPrincipal
 import com.itomise.com.itomise.usercase.interfaces.user.ICreateUserUseCase
 import com.itomise.com.itomise.usercase.interfaces.user.IDeleteUserUseCase
 import com.itomise.com.itomise.usercase.interfaces.user.IGetUserUseCase
@@ -71,7 +71,7 @@ fun Application.userRouting() {
 
                 delete("/{userId}") {
                     val userId = call.parameters["userId"] ?: return@delete throw IllegalArgumentException()
-                    val principal = call.userPrincipal()
+                    val principal = call.userSessionPrincipal()
 
                     if (userId == principal.id) {
                         throw IllegalArgumentException()
