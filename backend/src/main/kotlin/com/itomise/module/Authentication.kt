@@ -5,8 +5,6 @@ import com.auth0.jwk.JwkProviderBuilder
 import com.itomise.com.itomise.domain.auth.UserPrincipal
 import com.itomise.com.itomise.infrastructure.RedisFactory
 import com.itomise.com.itomise.infrastructure.SessionStorageRedis
-import com.itomise.com.itomise.util.getKoinInstance
-import com.itomise.com.itomise.util.security.token.ITokenService
 import com.itomise.com.itomise.util.security.token.TokenConfig
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -23,7 +21,6 @@ lateinit var jwtTokenConfig: TokenConfig
 fun Application.authentication() {
     val isDev = environment.developmentMode
     val secretSignKey = hex(envConfig.session.signKey)
-    val tokenService = getKoinInstance<ITokenService>()
 
     install(Sessions) {
         cookie<UserPrincipal>("user_session", SessionStorageRedis()) {
@@ -71,7 +68,7 @@ fun Application.authentication() {
                     JWTPrincipal(credential.payload)
                 } else null
             }
-            challenge { defaultScheme, realm ->
+            challenge { _, _ ->
                 call.respond(HttpStatusCode.Unauthorized, "Token is not valid or has expired")
             }
         }
