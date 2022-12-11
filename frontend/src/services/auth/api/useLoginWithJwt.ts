@@ -3,7 +3,7 @@ import { authRepository } from '@/repositories/auth'
 import { MutationConfig } from '@/libs/react-query'
 
 type Options = {
-  config?: MutationConfig<typeof authRepository.loginWithSession>
+  config?: MutationConfig<typeof authRepository.loginWithJwt>
 }
 
 export const useLoginWithJwt = ({ config }: Options = {}) =>

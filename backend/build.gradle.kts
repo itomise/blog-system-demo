@@ -8,6 +8,7 @@ val koin_version: String by project
 val postgresql_version: String by project
 val hikaricp_version: String by project
 val kreds_version: String by project
+val commons_codec: String by project
 
 plugins {
     application
@@ -40,6 +41,8 @@ dependencies {
     implementation("io.ktor:ktor-server-sessions:$ktor_version")
     implementation("io.ktor:ktor-server-auth-jwt:$ktor_version")
     implementation("io.ktor:ktor-server-auth:$ktor_version")
+    implementation("commons-codec:commons-codec:$commons_codec")
+
     // redis
     implementation("io.github.crackthecodeabhi:kreds:$kreds_version")
     // cp

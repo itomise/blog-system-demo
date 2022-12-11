@@ -10,5 +10,8 @@ fun Application.statusPage() {
         exception<IllegalArgumentException> { call, _ ->
             call.respond(HttpStatusCode.BadRequest)
         }
+        exception<IllegalHeaderException> { call, _ ->
+            call.respond(HttpStatusCode.Forbidden)
+        }
     }
 }

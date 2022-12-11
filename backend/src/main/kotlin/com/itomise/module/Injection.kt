@@ -16,6 +16,8 @@ import com.itomise.com.itomise.usercase.interfaces.user.ICreateUserUseCase
 import com.itomise.com.itomise.usercase.interfaces.user.IDeleteUserUseCase
 import com.itomise.com.itomise.usercase.interfaces.user.IGetUserUseCase
 import com.itomise.com.itomise.usercase.interfaces.user.IUpdateUserUseCase
+import com.itomise.com.itomise.util.security.token.ITokenService
+import com.itomise.com.itomise.util.security.token.TokenService
 import io.ktor.server.application.*
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
@@ -37,10 +39,15 @@ val repositoryModule = module {
     singleOf(::UserLoginInfoRepository) { bind<IUserLoginInfoRepository>() }
 }
 
+val serviceModule = module {
+    singleOf(::TokenService) { bind<ITokenService>() }
+}
+
 fun Application.injection() {
     install(Koin) {
         SLF4JLogger()
         modules(useCaseModule)
         modules(repositoryModule)
+        modules(serviceModule)
     }
 }

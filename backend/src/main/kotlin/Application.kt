@@ -55,6 +55,8 @@ fun Application.module() {
 
     authentication()
 
+    csrfValidation()
+
     routing()
 
     statusPage()

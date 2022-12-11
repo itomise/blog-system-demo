@@ -1,7 +1,9 @@
 import { z } from 'zod'
+import { useState } from 'react'
 import Head from 'next/head'
-import { Button, Center, Container, Paper, Stack, Title, useMantineTheme } from '@mantine/core'
+import { Button, Center, Container, Paper, Stack, Title, useMantineTheme, Text } from '@mantine/core'
 import { useLoginWithJwt } from '@/services/auth/api/useLoginWithJwt'
+import { useGetMeWithJwt } from '@/services/auth/api/useGetMeWithJwt'
 import { appAxios } from '@/libs/axios'
 import { InputField } from '@/components/shared/form/InputField'
 import { Form } from '@/components/shared/form/Form'
@@ -14,7 +16,13 @@ const schema = z.object({
 type FormType = z.infer<typeof schema>
 
 export const LoginWithJwtPage: React.FC = () => {
-  const loginMutation = useLoginWithJwt()
+  const [jwtToken, setJwtToken] = useState<string | undefined>()
+  const getMeRes = useGetMeWithJwt(jwtToken)
+  const { mutate } = useLoginWithJwt({
+    config: {
+      onSuccess: (res) => setJwtToken(res.token),
+    },
+  })
   const theme = useMantineTheme()
 
   return (
@@ -31,7 +39,7 @@ export const LoginWithJwtPage: React.FC = () => {
               </Title>
               <Form<FormType>
                 onSubmit={(data) => {
-                  loginMutation.mutate(data)
+                  mutate(data)
                 }}
                 schema={schema}
               >
@@ -61,25 +69,16 @@ export const LoginWithJwtPage: React.FC = () => {
               <Stack spacing={2} mt="lg">
                 <Button
                   onClick={async () => {
-                    const res = await appAxios.get('/hello', {
-                      headers: {
-                        Authorization:
-                          'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJodHRwOi8vMC4wLjAuMDo4MDgwLyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNjcwMDY2NzY4LCJ1c2VySWQiOiIxNDUyYmRmYy05YjI5LTRiNjItOTEyMy1mMTllNWQ3YjY4MTUifQ.TCc4RPfGFn2V2vO__xVy-iYl6yScGEooMeyv2GSKVXREoGIiko971Q88sJV58xsPwDsdX0Z0OcNI_SHYkNDZdg',
-                      },
-                    })
-                    console.log(res.data)
-                  }}
-                >
-                  get me api
-                </Button>
-                <Button
-                  onClick={async () => {
                     appAxios.get('/auth-jwt/logout')
                   }}
                 >
                   ログアウト
                 </Button>
               </Stack>
+
+              <Text variant="text" size="sm" mt="lg">
+                ログイン状態 : {getMeRes ?? '未ログイン'}
+              </Text>
             </Paper>
           </Center>
         </main>

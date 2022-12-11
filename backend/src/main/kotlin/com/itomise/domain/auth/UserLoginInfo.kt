@@ -1,6 +1,6 @@
 package com.itomise.com.itomise.domain.auth
 
-import com.itomise.com.itomise.domain.common.vo.Email
+import com.itomise.com.itomise.domain.user.vo.Email
 import java.time.LocalDateTime
 import java.util.*
 

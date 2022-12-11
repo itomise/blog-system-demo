@@ -27,6 +27,7 @@ data class EnvConfig(
 
     data class EnvConfigJwt(
         val privateKey: String,
+        val publicKeyId: String,
         val issuer: String,
         val audience: String,
         val realm: String,
@@ -51,6 +52,7 @@ fun Application.configureEnvironmentVariables() {
         ),
         jwt = EnvConfig.EnvConfigJwt(
             privateKey = getConfig("app.jwt.privateKey"),
+            publicKeyId = getConfig("app.jwt.publicKeyId"),
             issuer = getConfig("app.jwt.issuer"),
             audience = getConfig("app.jwt.audience"),
             realm = getConfig("app.jwt.realm"),

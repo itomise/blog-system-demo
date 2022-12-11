@@ -1,8 +1,8 @@
 package com.itomise.com.itomise.infrastructure.repositories.user
 
-import com.itomise.com.itomise.domain.common.vo.Email
 import com.itomise.com.itomise.domain.user.User
 import com.itomise.com.itomise.domain.user.interfaces.IUserRepository
+import com.itomise.com.itomise.domain.user.vo.Email
 import com.itomise.com.itomise.infrastructure.dao.UserTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

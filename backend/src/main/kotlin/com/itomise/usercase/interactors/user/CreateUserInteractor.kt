@@ -3,10 +3,10 @@ package com.itomise.com.itomise.usercase.interactors.user
 import com.itomise.com.itomise.domain.auth.UserLoginInfo
 import com.itomise.com.itomise.domain.auth.UserLoginInfoService
 import com.itomise.com.itomise.domain.auth.interfaces.IUserLoginInfoRepository
-import com.itomise.com.itomise.domain.common.vo.Email
 import com.itomise.com.itomise.domain.user.User
 import com.itomise.com.itomise.domain.user.UserService
 import com.itomise.com.itomise.domain.user.interfaces.IUserRepository
+import com.itomise.com.itomise.domain.user.vo.Email
 import com.itomise.com.itomise.usercase.interfaces.user.ICreateUserUseCase
 import com.itomise.com.itomise.util.getKoinInstance
 import com.itomise.infrastructure.dbQuery

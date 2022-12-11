@@ -1,6 +1,6 @@
 package com.itomise.com.itomise.domain.user
 
-import com.itomise.com.itomise.domain.common.vo.Email
+import com.itomise.com.itomise.domain.user.vo.Email
 import java.util.*
 
 class User private constructor(

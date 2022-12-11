@@ -4,7 +4,7 @@ import com.itomise.com.itomise.domain.auth.EmailValidationStatus
 import com.itomise.com.itomise.domain.auth.HashAlgorithm
 import com.itomise.com.itomise.domain.auth.UserLoginInfo
 import com.itomise.com.itomise.domain.auth.UserLoginInfoService
-import com.itomise.com.itomise.domain.common.vo.Email
+import com.itomise.com.itomise.domain.user.vo.Email
 import com.itomise.com.itomise.module.repositoryModule
 import com.itomise.com.itomise.module.useCaseModule
 import org.koin.core.context.startKoin

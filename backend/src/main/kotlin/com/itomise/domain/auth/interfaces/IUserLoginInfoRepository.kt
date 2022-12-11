@@ -1,7 +1,7 @@
 package com.itomise.com.itomise.domain.auth.interfaces
 
 import com.itomise.com.itomise.domain.auth.UserLoginInfo
-import com.itomise.com.itomise.domain.common.vo.Email
+import com.itomise.com.itomise.domain.user.vo.Email
 import java.util.*
 
 

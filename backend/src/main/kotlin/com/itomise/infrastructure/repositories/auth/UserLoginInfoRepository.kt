@@ -4,7 +4,7 @@ import com.itomise.com.itomise.domain.auth.EmailValidationStatus
 import com.itomise.com.itomise.domain.auth.HashAlgorithm
 import com.itomise.com.itomise.domain.auth.UserLoginInfo
 import com.itomise.com.itomise.domain.auth.interfaces.IUserLoginInfoRepository
-import com.itomise.com.itomise.domain.common.vo.Email
+import com.itomise.com.itomise.domain.user.vo.Email
 import com.itomise.com.itomise.infrastructure.dao.UserLoginInfoTable
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
