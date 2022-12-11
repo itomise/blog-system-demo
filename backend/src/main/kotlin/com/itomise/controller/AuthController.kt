@@ -5,13 +5,13 @@ import com.itomise.com.itomise.controller.requestModel.SignUpRequestModel
 import com.itomise.com.itomise.controller.responseModel.MeResponseModel
 import com.itomise.com.itomise.controller.responseModel.SignUpResponseModel
 import com.itomise.com.itomise.controller.utils.userSessionPrincipal
-import com.itomise.com.itomise.domain.auth.UserPrincipal
+import com.itomise.com.itomise.domain.account.vo.UserPrincipal
+import com.itomise.com.itomise.domain.security.interfaces.ITokenService
+import com.itomise.com.itomise.domain.security.vo.TokenClaim
 import com.itomise.com.itomise.module.jwtTokenConfig
 import com.itomise.com.itomise.usercase.interfaces.auth.ILoginUseCase
 import com.itomise.com.itomise.usercase.interfaces.auth.IMeUseCase
-import com.itomise.com.itomise.usercase.interfaces.user.ICreateUserUseCase
-import com.itomise.com.itomise.util.security.token.ITokenService
-import com.itomise.com.itomise.util.security.token.TokenClaim
+import com.itomise.com.itomise.usercase.interfaces.user.ICreateAccountUseCase
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -25,7 +25,7 @@ import org.koin.ktor.ext.inject
 fun Route.authRouting() {
     val loginUseCase: ILoginUseCase by inject()
     val meUseCase: IMeUseCase by inject()
-    val createUserUseCase: ICreateUserUseCase by inject()
+    val createUserUseCase: ICreateAccountUseCase by inject()
     val tokenService: ITokenService by inject()
 
     route("/auth-session") {
@@ -51,7 +51,7 @@ fun Route.authRouting() {
             val request = call.receive<SignUpRequestModel>()
 
             val result = createUserUseCase.handle(
-                ICreateUserUseCase.Command(
+                ICreateAccountUseCase.Command(
                     name = request.name,
                     email = request.email,
                     password = request.password

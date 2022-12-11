@@ -2,10 +2,10 @@ package com.itomise.com.itomise.module
 
 import com.auth0.jwk.JwkProvider
 import com.auth0.jwk.JwkProviderBuilder
-import com.itomise.com.itomise.domain.auth.UserPrincipal
+import com.itomise.com.itomise.domain.account.vo.UserPrincipal
+import com.itomise.com.itomise.domain.security.vo.TokenConfig
 import com.itomise.com.itomise.infrastructure.RedisFactory
 import com.itomise.com.itomise.infrastructure.SessionStorageRedis
-import com.itomise.com.itomise.util.security.token.TokenConfig
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*

@@ -1,35 +1,35 @@
 package com.itomise.com.itomise.usercase.interactors.auth
 
-import com.itomise.com.itomise.domain.auth.UserLoginInfoService
-import com.itomise.com.itomise.domain.auth.interfaces.IUserLoginInfoRepository
-import com.itomise.com.itomise.domain.user.interfaces.IUserRepository
-import com.itomise.com.itomise.domain.user.vo.Email
+import com.itomise.com.itomise.domain.account.interfaces.IUserRepository
+import com.itomise.com.itomise.domain.account.interfaces.IUserService
+import com.itomise.com.itomise.domain.account.vo.Email
 import com.itomise.com.itomise.usercase.interfaces.auth.ILoginUseCase
 import com.itomise.com.itomise.util.getKoinInstance
 import com.itomise.infrastructure.dbQuery
 
 class LoginInteractor : ILoginUseCase {
     private val userRepository = getKoinInstance<IUserRepository>()
-    private val userLoginInfoRepository = getKoinInstance<IUserLoginInfoRepository>()
+    private val userService = getKoinInstance<IUserService>()
 
     override suspend fun handle(command: ILoginUseCase.Command): ILoginUseCase.OutputDtoUser? {
 
         val user = dbQuery {
-            val loginUserInfo = userLoginInfoRepository.findByEmail(Email(command.email))
+            val targetUser = userRepository.findByEmail(Email(command.email))
                 ?: return@dbQuery null
 
-            val isValidPassword = UserLoginInfoService.checkValidPassword(
+            val isValidPassword = userService.isValidPassword(
                 password = command.password,
-                userLoginInfo = loginUserInfo
+                user = targetUser
             )
+
             if (!isValidPassword) return@dbQuery null
 
-            userRepository.findByUserId(loginUserInfo.userId)
+            targetUser
         } ?: return null
 
         return ILoginUseCase.OutputDtoUser(
-            id = user.id,
-            name = user.name,
+            id = user.id.value,
+            name = user.name.value,
             email = user.email.value,
         )
     }

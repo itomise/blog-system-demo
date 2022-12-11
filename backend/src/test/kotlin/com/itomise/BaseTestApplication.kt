@@ -2,8 +2,8 @@ package com.itomise
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.itomise.com.itomise.domain.auth.UserPrincipal
-import com.itomise.com.itomise.usercase.interfaces.user.ICreateUserUseCase
+import com.itomise.com.itomise.domain.account.vo.UserPrincipal
+import com.itomise.com.itomise.usercase.interfaces.user.ICreateAccountUseCase
 import com.itomise.com.itomise.util.getKoinInstance
 import io.ktor.client.*
 import io.ktor.client.request.*
@@ -39,9 +39,9 @@ class BaseTestApplication() {
                     routing {
                         post("/login-for-testing") {
                             val request = call.receive<CreateTestUserRequest>()
-                            val createUserUseCase = getKoinInstance<ICreateUserUseCase>()
+                            val createUserUseCase = getKoinInstance<ICreateAccountUseCase>()
                             val result = createUserUseCase.handle(
-                                ICreateUserUseCase.Command(
+                                ICreateAccountUseCase.Command(
                                     name = request.name,
                                     email = request.email,
                                     password = request.password

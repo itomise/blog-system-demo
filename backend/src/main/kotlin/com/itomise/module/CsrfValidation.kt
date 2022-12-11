@@ -15,7 +15,7 @@ fun Application.csrfValidation() {
 
 val RequestLoggingPlugin = createApplicationPlugin(name = "RequestLoggingPlugin") {
     onCall { call ->
-        if (call.request.httpMethod != HttpMethod.Get) {
+        if (call.request.httpMethod != HttpMethod.Get && !envConfig.isTest) {
             val value = call.request.headers[CUSTOM_HEADER_KEY]
             if (!value.equals(CUSTOM_HEADER_VALUE)) {
                 throw IllegalHeaderException()

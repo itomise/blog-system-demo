@@ -6,10 +6,10 @@ import com.itomise.com.itomise.controller.responseModel.CreateUserResponseModel
 import com.itomise.com.itomise.controller.responseModel.GetListUserResponseModel
 import com.itomise.com.itomise.controller.responseModel.GetListUserResponseModelUser
 import com.itomise.com.itomise.controller.utils.userSessionPrincipal
-import com.itomise.com.itomise.usercase.interfaces.user.ICreateUserUseCase
-import com.itomise.com.itomise.usercase.interfaces.user.IDeleteUserUseCase
-import com.itomise.com.itomise.usercase.interfaces.user.IGetUserUseCase
-import com.itomise.com.itomise.usercase.interfaces.user.IUpdateUserUseCase
+import com.itomise.com.itomise.usercase.interfaces.user.ICreateAccountUseCase
+import com.itomise.com.itomise.usercase.interfaces.user.IDeleteAccountUseCase
+import com.itomise.com.itomise.usercase.interfaces.user.IGetAccountListUseCase
+import com.itomise.com.itomise.usercase.interfaces.user.IUpdateAccountUseCase
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -21,10 +21,10 @@ import java.util.*
 
 fun Route.userRouting() {
 
-    val getUserUseCase: IGetUserUseCase by inject()
-    val createUserUseCase: ICreateUserUseCase by inject()
-    val updateUserUseCase: IUpdateUserUseCase by inject()
-    val deleteUserUseCase: IDeleteUserUseCase by inject()
+    val getUserUseCase: IGetAccountListUseCase by inject()
+    val createUserUseCase: ICreateAccountUseCase by inject()
+    val updateUserUseCase: IUpdateAccountUseCase by inject()
+    val deleteUserUseCase: IDeleteAccountUseCase by inject()
 
     route("/users") {
         authenticate("auth-session") {
@@ -44,7 +44,7 @@ fun Route.userRouting() {
                 val request = call.receive<CreateUserRequestModel>()
 
                 val userId = createUserUseCase.handle(
-                    ICreateUserUseCase.Command(
+                    ICreateAccountUseCase.Command(
                         name = request.name,
                         email = request.email,
                         password = request.password
@@ -59,7 +59,7 @@ fun Route.userRouting() {
                 val userId = call.parameters["userId"] ?: return@put throw IllegalArgumentException()
 
                 updateUserUseCase.handle(
-                    IUpdateUserUseCase.Command(
+                    IUpdateAccountUseCase.Command(
                         id = UUID.fromString(userId),
                         name = request.name,
                     )
@@ -76,7 +76,7 @@ fun Route.userRouting() {
                     throw IllegalArgumentException()
                 }
 
-                deleteUserUseCase.handle(IDeleteUserUseCase.Command(UUID.fromString(userId)))
+                deleteUserUseCase.handle(IDeleteAccountUseCase.Command(UUID.fromString(userId)))
 
                 call.respond(HttpStatusCode.OK)
             }

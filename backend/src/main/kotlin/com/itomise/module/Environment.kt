@@ -5,6 +5,7 @@ import io.ktor.server.application.*
 lateinit var envConfig: EnvConfig
 
 data class EnvConfig(
+    val isTest: Boolean,
     val allowHost: String,
     val db: EnvConfigDb,
     val redis: EnvConfigRedis,
@@ -38,6 +39,7 @@ fun Application.configureEnvironmentVariables() {
     fun getConfig(path: String): String = environment.config.propertyOrNull(path)!!.getString()
 
     envConfig = EnvConfig(
+        isTest = environment.config.propertyOrNull("app.test") != null,
         allowHost = getConfig("app.allowHost"),
         db = EnvConfig.EnvConfigDb(
             url = getConfig("app.db.url"),
