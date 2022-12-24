@@ -1,4 +1,4 @@
-package com.itomise.com.itomise.usercase.interfaces.user
+package com.itomise.com.itomise.usercase.interfaces.account
 
 import java.util.*
 

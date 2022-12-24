@@ -1,7 +1,7 @@
 package com.itomise.com.itomise.usercase.interactors.account
 
 import com.itomise.com.itomise.domain.account.interfaces.IUserRepository
-import com.itomise.com.itomise.usercase.interfaces.user.IGetAccountListUseCase
+import com.itomise.com.itomise.usercase.interfaces.account.IGetAccountListUseCase
 import com.itomise.com.itomise.util.getKoinInstance
 import com.itomise.infrastructure.dbQuery
 

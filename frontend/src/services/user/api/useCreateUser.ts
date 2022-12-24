@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { userRepository } from '@/repositories/user'
 import { MutationConfig, queryClient } from '@/libs/react-query'
 
-const { createUser, getUserList } = userRepository
+const { createUser } = userRepository
 
 type Options = {
   config?: MutationConfig<typeof createUser>
@@ -11,7 +11,7 @@ type Options = {
 export const useCreateUser = ({ config }: Options = {}) =>
   useMutation({
     onSuccess: () => {
-      queryClient.invalidateQueries(getUserList.queryKey)
+      queryClient.invalidateQueries(['/user'])
     },
     ...config,
     mutationFn: createUser,

@@ -8,18 +8,12 @@ import com.itomise.com.itomise.domain.security.interfaces.ITokenService
 import com.itomise.com.itomise.domain.security.services.HashingService
 import com.itomise.com.itomise.domain.security.services.TokenService
 import com.itomise.com.itomise.infrastructure.repositories.account.UserRepository
-import com.itomise.com.itomise.usercase.interactors.account.CreateAccountInteractor
-import com.itomise.com.itomise.usercase.interactors.account.DeleteAccountInteractor
-import com.itomise.com.itomise.usercase.interactors.account.GetAccountListInteractor
-import com.itomise.com.itomise.usercase.interactors.account.UpdateAccountInteractor
+import com.itomise.com.itomise.usercase.interactors.account.*
 import com.itomise.com.itomise.usercase.interactors.auth.LoginInteractor
 import com.itomise.com.itomise.usercase.interactors.auth.MeInteractor
+import com.itomise.com.itomise.usercase.interfaces.account.*
 import com.itomise.com.itomise.usercase.interfaces.auth.ILoginUseCase
 import com.itomise.com.itomise.usercase.interfaces.auth.IMeUseCase
-import com.itomise.com.itomise.usercase.interfaces.user.ICreateAccountUseCase
-import com.itomise.com.itomise.usercase.interfaces.user.IDeleteAccountUseCase
-import com.itomise.com.itomise.usercase.interfaces.user.IGetAccountListUseCase
-import com.itomise.com.itomise.usercase.interfaces.user.IUpdateAccountUseCase
 import io.ktor.server.application.*
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
@@ -32,6 +26,7 @@ val useCaseModule = module {
     singleOf(::CreateAccountInteractor) { bind<ICreateAccountUseCase>() }
     singleOf(::UpdateAccountInteractor) { bind<IUpdateAccountUseCase>() }
     singleOf(::DeleteAccountInteractor) { bind<IDeleteAccountUseCase>() }
+    singleOf(::GetAccountInteractor) { bind<IGetAccountUseCase>() }
     singleOf(::LoginInteractor) { bind<ILoginUseCase>() }
     singleOf(::MeInteractor) { bind<IMeUseCase>() }
 }

@@ -2,7 +2,10 @@ import { useQuery } from '@tanstack/react-query'
 import { userRepository } from '@/repositories/user'
 
 export const useUserList = () => {
-  const { data } = useQuery(userRepository.getUserList)
+  const { data } = useQuery({
+    queryKey: ['/user'] as const,
+    queryFn: userRepository.getUserList,
+  })
 
-  return { users: data?.users }
+  return data?.users
 }

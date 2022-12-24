@@ -27,9 +27,3 @@ export type MutationConfig<MutationFnType extends (...args: any) => any> = UseMu
   AxiosError,
   Parameters<MutationFnType>[0]
 >
-
-export interface QueryRepositoryType<TQueryFnData = unknown, TQueryKey extends QueryKey = QueryKey>
-  extends Omit<QueryOptions<TQueryFnData, TQueryKey>, 'queryKey' | 'queryFn'> {
-  queryKey: readonly string[]
-  queryFn: QueryFunction<TQueryFnData, TQueryKey>
-}

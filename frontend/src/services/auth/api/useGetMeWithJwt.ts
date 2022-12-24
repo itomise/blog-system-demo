@@ -4,7 +4,8 @@ import { ExtractFnReturnType } from '@/libs/react-query'
 
 export const useGetMeWithJwt = (token: string | undefined) => {
   const { data } = useQuery<ExtractFnReturnType<typeof authRepository.getMeWithJwt>>({
-    queryKey: token ? (['/hello', token] as const) : undefined,
+    queryKey: ['/auth-jwt/me', token],
+    enabled: !!token,
     queryFn: () => authRepository.getMeWithJwt(token!!),
   })
   return data

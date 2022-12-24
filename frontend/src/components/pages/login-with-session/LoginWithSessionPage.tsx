@@ -1,8 +1,10 @@
 import { z } from 'zod'
+import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { Button, Center, Container, Paper, Stack, Title, useMantineTheme } from '@mantine/core'
 import { useLoginWithSession } from '@/services/auth/api/useLoginWithSession'
 import { appAxios } from '@/libs/axios'
+import { InternalLink } from '@/components/shared/link/InternalLink'
 import { InputField } from '@/components/shared/form/InputField'
 import { Form } from '@/components/shared/form/Form'
 
@@ -14,7 +16,14 @@ const schema = z.object({
 type FormType = z.infer<typeof schema>
 
 export const LoginWithSessionPage: React.FC = () => {
-  const loginMutation = useLoginWithSession()
+  const router = useRouter()
+  const { mutate, isLoading } = useLoginWithSession({
+    config: {
+      onSuccess: () => {
+        router.push('/user')
+      },
+    },
+  })
   const theme = useMantineTheme()
 
   return (
@@ -31,7 +40,7 @@ export const LoginWithSessionPage: React.FC = () => {
               </Title>
               <Form<FormType>
                 onSubmit={(data) => {
-                  loginMutation.mutate(data)
+                  mutate(data)
                 }}
                 schema={schema}
               >
@@ -52,8 +61,8 @@ export const LoginWithSessionPage: React.FC = () => {
                       registration={register('password')}
                       required
                     />
-                    <Button type="submit" mt="lg">
-                      送信
+                    <Button type="submit" mt="lg" loading={isLoading}>
+                      ログイン
                     </Button>
                   </Stack>
                 )}
@@ -61,19 +70,14 @@ export const LoginWithSessionPage: React.FC = () => {
               <Stack spacing={2} mt="lg">
                 <Button
                   onClick={async () => {
-                    const res = await appAxios.get('/auth-session/me')
-                    console.log(res.data)
-                  }}
-                >
-                  get me api
-                </Button>
-                <Button
-                  onClick={async () => {
                     appAxios.get('/auth-session/logout')
                   }}
                 >
                   ログアウト
                 </Button>
+                <InternalLink href="/">
+                  <Button fullWidth>Topへ戻る</Button>
+                </InternalLink>
               </Stack>
             </Paper>
           </Center>

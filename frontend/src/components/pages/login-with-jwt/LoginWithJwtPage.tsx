@@ -1,10 +1,10 @@
 import { z } from 'zod'
 import { useState } from 'react'
 import Head from 'next/head'
-import { Button, Center, Container, Paper, Stack, Title, useMantineTheme, Text } from '@mantine/core'
+import { Button, Center, Container, Paper, Stack, Title, useMantineTheme, Text, List, Box } from '@mantine/core'
 import { useLoginWithJwt } from '@/services/auth/api/useLoginWithJwt'
 import { useGetMeWithJwt } from '@/services/auth/api/useGetMeWithJwt'
-import { appAxios } from '@/libs/axios'
+import { InternalLink } from '@/components/shared/link/InternalLink'
 import { InputField } from '@/components/shared/form/InputField'
 import { Form } from '@/components/shared/form/Form'
 
@@ -18,7 +18,7 @@ type FormType = z.infer<typeof schema>
 export const LoginWithJwtPage: React.FC = () => {
   const [jwtToken, setJwtToken] = useState<string | undefined>()
   const getMeRes = useGetMeWithJwt(jwtToken)
-  const { mutate } = useLoginWithJwt({
+  const { mutate, isLoading } = useLoginWithJwt({
     config: {
       onSuccess: (res) => setJwtToken(res.token),
     },
@@ -60,25 +60,32 @@ export const LoginWithJwtPage: React.FC = () => {
                       registration={register('password')}
                       required
                     />
-                    <Button type="submit" mt="lg">
+                    <Button type="submit" mt="lg" loading={isLoading}>
                       送信
                     </Button>
                   </Stack>
                 )}
               </Form>
               <Stack spacing={2} mt="lg">
-                <Button
-                  onClick={async () => {
-                    appAxios.get('/auth-jwt/logout')
-                  }}
-                >
-                  ログアウト
-                </Button>
+                <Button onClick={async () => setJwtToken(undefined)}>ログアウト</Button>
+                <InternalLink href="/">
+                  <Button fullWidth>Topへ戻る</Button>
+                </InternalLink>
               </Stack>
 
-              <Text variant="text" size="sm" mt="lg">
-                ログイン状態 : {getMeRes ?? '未ログイン'}
-              </Text>
+              <Box mt="lg">
+                {getMeRes ? (
+                  <List>
+                    <List.Item>ユーザーID : {getMeRes.id}</List.Item>
+                    <List.Item>メールアドレス : {getMeRes.email}</List.Item>
+                    <List.Item>名前 : {getMeRes.name}</List.Item>
+                  </List>
+                ) : (
+                  <Text variant="text" size="sm">
+                    未ログイン
+                  </Text>
+                )}
+              </Box>
             </Paper>
           </Center>
         </main>

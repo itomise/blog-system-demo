@@ -4,6 +4,7 @@ import { showNotification } from '@mantine/notifications'
 import { Button, Center, Container, Paper, Stack, Title, useMantineTheme } from '@mantine/core'
 import { PasswordRegex } from '@/services/auth/constant'
 import { useSignup } from '@/services/auth/api/useSignup'
+import { InternalLink } from '@/components/shared/link/InternalLink'
 import { InputField } from '@/components/shared/form/InputField'
 import { Form } from '@/components/shared/form/Form'
 
@@ -23,7 +24,7 @@ export const SignUpPage: React.FC = () => {
         message: '仮登録が完了しました。メールアドレスをご確認ください。',
         color: 'green',
       })
-      router.push('/login')
+      router.push('/login-with-session')
     },
     onError: (e) => {
       showNotification({
@@ -64,6 +65,9 @@ export const SignUpPage: React.FC = () => {
                   <Button type="submit" loading={isLoading}>
                     送信
                   </Button>
+                  <InternalLink href="/">
+                    <Button fullWidth>Topへ戻る</Button>
+                  </InternalLink>
                 </Stack>
               )}
             </Form>

@@ -1,18 +1,19 @@
 import { UUID } from '@/types'
 import { User } from '@/services/user/types'
-import { QueryRepositoryType } from '@/libs/react-query'
 import { appAxios } from '@/libs/axios'
 
 export type GetListUserResponse = {
   users: User[]
 }
 
-const getUserList: QueryRepositoryType<GetListUserResponse> = {
-  queryKey: ['users'] as const,
-  queryFn: async () => {
-    const { data } = await appAxios.get('/users')
-    return data
-  },
+const getUserList = async (): Promise<GetListUserResponse> => {
+  const { data } = await appAxios.get('/users')
+  return data
+}
+
+const getUser = async (userId: string): Promise<User> => {
+  const { data } = await appAxios.get(`/users/${userId}`)
+  return data
 }
 
 export type CreateUserRequest = {
@@ -28,7 +29,17 @@ const createUser = async (payload: CreateUserRequest) => {
   return data
 }
 
+export type EditUserRequest = {
+  id: string
+  name: string
+}
+const editUser = async ({ id, ...rest }: EditUserRequest) => {
+  await appAxios.put(`/users/${id}`, rest)
+}
+
 export const userRepository = {
   getUserList,
+  getUser,
   createUser,
+  editUser,
 }

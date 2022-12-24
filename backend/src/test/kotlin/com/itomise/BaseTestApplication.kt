@@ -3,7 +3,7 @@ package com.itomise
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.com.itomise.domain.account.vo.UserPrincipal
-import com.itomise.com.itomise.usercase.interfaces.user.ICreateAccountUseCase
+import com.itomise.com.itomise.usercase.interfaces.account.ICreateAccountUseCase
 import com.itomise.com.itomise.util.getKoinInstance
 import io.ktor.client.*
 import io.ktor.client.request.*

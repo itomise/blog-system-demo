@@ -9,9 +9,9 @@ import com.itomise.com.itomise.domain.account.vo.UserPrincipal
 import com.itomise.com.itomise.domain.security.interfaces.ITokenService
 import com.itomise.com.itomise.domain.security.vo.TokenClaim
 import com.itomise.com.itomise.module.jwtTokenConfig
+import com.itomise.com.itomise.usercase.interfaces.account.ICreateAccountUseCase
 import com.itomise.com.itomise.usercase.interfaces.auth.ILoginUseCase
 import com.itomise.com.itomise.usercase.interfaces.auth.IMeUseCase
-import com.itomise.com.itomise.usercase.interfaces.user.ICreateAccountUseCase
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -110,41 +110,26 @@ fun Route.authRouting() {
 
             call.respond(HttpStatusCode.OK, hashMapOf("token" to token))
         }
-        get("/hello") {
-            val principal = call.principal<JWTPrincipal>()
-            val userId = principal!!.payload.getClaim("userId").asString()
-            val expiresAt = principal.expiresAt?.time?.minus(System.currentTimeMillis())
-            call.respondText("Hello, $userId! Token is expired at $expiresAt ms.")
-        }
-        get("/logout") {
-            call.sessions.clear<UserPrincipal>()
-            call.respond(HttpStatusCode.OK)
-        }
 
-    }
-    authenticate("auth-jwt") {
-        get("/me") {
-            val principal = call.userSessionPrincipal()
+        authenticate("auth-jwt") {
+            get("/me") {
+                val principal = call.principal<JWTPrincipal>()
+                val userId = principal!!.payload.getClaim("userId").asString()
 
-            val result = meUseCase.handle(principal.id)
+                val result = meUseCase.handle(userId)
 
-            if (result != null) {
-                call.respond(
-                    HttpStatusCode.OK, MeResponseModel(
-                        id = result.id,
-                        email = result.email,
-                        name = result.name
+                if (result != null) {
+                    call.respond(
+                        HttpStatusCode.OK, MeResponseModel(
+                            id = result.id,
+                            email = result.email,
+                            name = result.name
+                        )
                     )
-                )
-            } else {
-                call.respond(HttpStatusCode.BadRequest)
+                } else {
+                    call.respond(HttpStatusCode.BadRequest)
+                }
             }
-        }
-        get("/hello") {
-            val principal = call.principal<JWTPrincipal>()
-            val username = principal!!.payload.getClaim("userId").asString()
-            val expiresAt = principal.expiresAt?.time?.minus(System.currentTimeMillis())
-            call.respondText("Hello, $username! Token is expired at $expiresAt ms.")
         }
     }
 }

@@ -5,7 +5,7 @@ import com.itomise.com.itomise.domain.account.interfaces.IUserRepository
 import com.itomise.com.itomise.domain.account.services.UserService
 import com.itomise.com.itomise.domain.account.vo.Email
 import com.itomise.com.itomise.domain.account.vo.Username
-import com.itomise.com.itomise.usercase.interfaces.user.ICreateAccountUseCase
+import com.itomise.com.itomise.usercase.interfaces.account.ICreateAccountUseCase
 import com.itomise.com.itomise.util.getKoinInstance
 import com.itomise.infrastructure.dbQuery
 import java.util.*

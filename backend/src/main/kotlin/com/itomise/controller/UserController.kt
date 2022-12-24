@@ -5,11 +5,9 @@ import com.itomise.com.itomise.controller.requestModel.UpdateUserRequestModel
 import com.itomise.com.itomise.controller.responseModel.CreateUserResponseModel
 import com.itomise.com.itomise.controller.responseModel.GetListUserResponseModel
 import com.itomise.com.itomise.controller.responseModel.GetListUserResponseModelUser
+import com.itomise.com.itomise.controller.responseModel.GetUserResponseModel
 import com.itomise.com.itomise.controller.utils.userSessionPrincipal
-import com.itomise.com.itomise.usercase.interfaces.user.ICreateAccountUseCase
-import com.itomise.com.itomise.usercase.interfaces.user.IDeleteAccountUseCase
-import com.itomise.com.itomise.usercase.interfaces.user.IGetAccountListUseCase
-import com.itomise.com.itomise.usercase.interfaces.user.IUpdateAccountUseCase
+import com.itomise.com.itomise.usercase.interfaces.account.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -21,7 +19,8 @@ import java.util.*
 
 fun Route.userRouting() {
 
-    val getUserUseCase: IGetAccountListUseCase by inject()
+    val getUserListUseCase: IGetAccountListUseCase by inject()
+    val getUserUseCase: IGetAccountUseCase by inject()
     val createUserUseCase: ICreateAccountUseCase by inject()
     val updateUserUseCase: IUpdateAccountUseCase by inject()
     val deleteUserUseCase: IDeleteAccountUseCase by inject()
@@ -29,7 +28,7 @@ fun Route.userRouting() {
     route("/users") {
         authenticate("auth-session") {
             get("") {
-                val result = getUserUseCase.handle()
+                val result = getUserListUseCase.handle()
 
                 val response = GetListUserResponseModel(
                     result.users.map {
@@ -52,6 +51,24 @@ fun Route.userRouting() {
                 )
 
                 call.respond(HttpStatusCode.OK, CreateUserResponseModel(userId))
+            }
+
+            get("/{userId}") {
+                val userId = call.parameters["userId"] ?: return@get throw IllegalArgumentException()
+
+                val user = getUserUseCase.handle(
+                    IGetAccountUseCase.Command(
+                        userId = UUID.fromString(userId)
+                    )
+                )
+
+                if (user != null) call.respond(
+                    HttpStatusCode.OK, GetUserResponseModel(
+                        id = user.id,
+                        name = user.name,
+                        email = user.email
+                    )
+                ) else call.respond(HttpStatusCode.NotFound)
             }
 
             put("/{userId}") {

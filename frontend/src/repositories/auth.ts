@@ -1,5 +1,4 @@
 import { UUID } from '@/types'
-import { QueryRepositoryType } from '@/libs/react-query'
 import { appAxios } from '@/libs/axios'
 
 export type LoginWithSessionRequest = {
@@ -29,12 +28,22 @@ const loginWithJwt = async (payload: LoginWithJwtRequest) => {
   return data
 }
 
+export type GetMeResponse = {
+  id: string
+  email: string
+  name: string
+}
+
 const getMeWithJwt = async (jwtToken: string) => {
-  const { data } = await appAxios.get<string>('/hello', {
+  const { data } = await appAxios.get<GetMeResponse>('/auth-jwt/me', {
     headers: {
       Authorization: `Bearer ${jwtToken}`,
     },
   })
+  return data
+}
+const getMeWithSession = async () => {
+  const { data } = await appAxios.get<GetMeResponse>('/auth-session/me')
   return data
 }
 
@@ -54,5 +63,6 @@ export const authRepository = {
   loginWithSession,
   loginWithJwt,
   getMeWithJwt,
+  getMeWithSession,
   signup,
 }
