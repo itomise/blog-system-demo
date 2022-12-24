@@ -7,6 +7,14 @@ type Props = LinkProps & {
 
 export const InternalLink: React.FC<Props> = ({ children, ...restLinkProps }) => (
   <Link {...restLinkProps} legacyBehavior passHref>
-    <Anchor>{children}</Anchor>
+    <Anchor
+      sx={{
+        ':hover': {
+          textDecoration: 'none',
+        },
+      }}
+    >
+      {children}
+    </Anchor>
   </Link>
 )

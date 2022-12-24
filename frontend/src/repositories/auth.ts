@@ -28,6 +28,10 @@ const loginWithJwt = async (payload: LoginWithJwtRequest) => {
   return data
 }
 
+const logout = async () => {
+  await appAxios.post('/auth-session/logout')
+}
+
 export type GetMeResponse = {
   id: string
   email: string
@@ -65,4 +69,5 @@ export const authRepository = {
   getMeWithJwt,
   getMeWithSession,
   signup,
+  logout,
 }

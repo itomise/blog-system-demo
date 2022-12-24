@@ -3,9 +3,9 @@ import { authRepository } from '@/repositories/auth'
 import { ExtractFnReturnType } from '@/libs/react-query'
 
 export const useGetMeWithSession = () => {
-  const { data } = useQuery<ExtractFnReturnType<typeof authRepository.getMeWithSession>>({
+  const { data, isLoading } = useQuery<ExtractFnReturnType<typeof authRepository.getMeWithSession>>({
     queryKey: ['auth-session/me'],
     queryFn: authRepository.getMeWithSession,
   })
-  return data
+  return { me: data, isLoading }
 }

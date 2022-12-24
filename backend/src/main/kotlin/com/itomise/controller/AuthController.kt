@@ -60,7 +60,7 @@ fun Route.authRouting() {
 
             call.respond(HttpStatusCode.OK, SignUpResponseModel(result))
         }
-        get("/logout") {
+        post("/logout") {
             call.sessions.clear<UserPrincipal>()
             call.respond(HttpStatusCode.OK)
         }

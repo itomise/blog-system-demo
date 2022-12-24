@@ -20,7 +20,7 @@ export const LoginWithSessionPage: React.FC = () => {
   const { mutate, isLoading } = useLoginWithSession({
     config: {
       onSuccess: () => {
-        router.push('/user')
+        router.push('/users')
       },
     },
   })

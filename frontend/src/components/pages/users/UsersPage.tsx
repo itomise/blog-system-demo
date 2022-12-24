@@ -1,23 +1,24 @@
 import { useRef } from 'react'
 import Head from 'next/head'
-import { Card, Container, Title, Text, Group, Badge, Box, Grid } from '@mantine/core'
+import { Card, Title, Text, Group, Badge, Box, Grid } from '@mantine/core'
 import { UsersEditUserButtonPopUp } from './_ui/UsersEditUserButtonPopUp'
 import { UsersCreateUserButtonPopUp } from './_ui/UsersCreateUserButtonPopUp'
 import { useUserList } from '@/services/user/api/useUserList'
 import { useGetMeWithSession } from '@/services/auth/api/useGetMeWithSession'
+import { AdminLayout } from '@/components/shared/layout/AdminLayout'
 
 export const UsersPage: React.FC = () => {
   const allUsers = useUserList()
   const rootRef = useRef<HTMLDivElement>(null)
-  const me = useGetMeWithSession()
+  const { me } = useGetMeWithSession()
 
   return (
     <>
       <Head>
         <title>users</title>
       </Head>
-      <Container p="lg" ref={rootRef}>
-        <main>
+      <AdminLayout>
+        <main ref={rootRef}>
           <Title order={1} size="h3">
             ユーザー一覧
           </Title>
@@ -51,7 +52,7 @@ export const UsersPage: React.FC = () => {
             ))}
           </Grid>
         </main>
-      </Container>
+      </AdminLayout>
     </>
   )
 }
