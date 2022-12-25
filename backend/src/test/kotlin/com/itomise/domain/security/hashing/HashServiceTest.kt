@@ -13,7 +13,7 @@ import kotlin.test.Test
 
 
 class HashServiceTest {
-    lateinit var hashingService: IHashingService
+    private lateinit var hashingService: IHashingService
 
     @BeforeTest
     fun prepare() {

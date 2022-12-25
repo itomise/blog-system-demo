@@ -9,6 +9,7 @@ val postgresql_version: String by project
 val hikaricp_version: String by project
 val kreds_version: String by project
 val commons_codec: String by project
+val nimbus_jose_version: String by project
 
 plugins {
     application
@@ -39,9 +40,11 @@ dependencies {
     implementation("io.ktor:ktor-server-status-pages:$ktor_version")
     // auth
     implementation("io.ktor:ktor-server-sessions:$ktor_version")
-    implementation("io.ktor:ktor-server-auth-jwt:$ktor_version")
     implementation("io.ktor:ktor-server-auth:$ktor_version")
     implementation("commons-codec:commons-codec:$commons_codec")
+    // jwt
+    implementation("io.ktor:ktor-server-auth-jwt:$ktor_version")
+    implementation("com.nimbusds:nimbus-jose-jwt:$nimbus_jose_version")
 
     // redis
     implementation("io.github.crackthecodeabhi:kreds:$kreds_version")
