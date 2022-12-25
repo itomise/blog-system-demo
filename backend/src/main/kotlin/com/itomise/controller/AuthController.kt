@@ -1,5 +1,6 @@
 package com.itomise.com.itomise.controller
 
+import com.itomise.com.itomise.controller.requestModel.JwtLoginResponseModel
 import com.itomise.com.itomise.controller.requestModel.LoginRequestModel
 import com.itomise.com.itomise.controller.requestModel.SignUpRequestModel
 import com.itomise.com.itomise.controller.responseModel.MeResponseModel
@@ -108,7 +109,7 @@ fun Route.authRouting() {
                 )
             )
 
-            call.respond(HttpStatusCode.OK, hashMapOf("token" to token))
+            call.respond(HttpStatusCode.OK, JwtLoginResponseModel(token))
         }
 
         authenticate("auth-jwt") {
