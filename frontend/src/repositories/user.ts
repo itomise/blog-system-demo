@@ -37,9 +37,17 @@ const editUser = async ({ id, ...rest }: EditUserRequest) => {
   await appAxios.put(`/users/${id}`, rest)
 }
 
+export type DeleteUserRequest = {
+  id: string
+}
+const deleteUser = async (request: DeleteUserRequest) => {
+  await appAxios.delete(`/users/${request.id}`)
+}
+
 export const userRepository = {
   getUserList,
   getUser,
   createUser,
   editUser,
+  deleteUser,
 }
