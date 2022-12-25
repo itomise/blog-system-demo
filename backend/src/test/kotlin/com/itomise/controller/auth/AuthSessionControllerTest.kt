@@ -31,7 +31,7 @@ class AuthSessionControllerTest {
         val email = "${UUID.randomUUID()}@example.com"
         val password = UUID.randomUUID()
 
-        val signUpRes = client.post("/api/auth-session/sign-up") {
+        val signUpRes = client.post("/api/auth/sign-up") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -48,7 +48,7 @@ class AuthSessionControllerTest {
         val signUpResBody = objectMapper.readValue<SignUpResponseModel>(signUpRes.bodyAsText())
 
 
-        client.post("/api/auth-session/login") {
+        client.post("/api/auth/login") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -62,7 +62,7 @@ class AuthSessionControllerTest {
             assertEquals(HttpStatusCode.OK, this.status)
         }
 
-        client.get("/api/auth-session/me").apply {
+        client.get("/api/auth/me").apply {
             assertEquals(HttpStatusCode.OK, this.status)
             val body = objectMapper.readValue<MeResponseModel>(this.bodyAsText())
 
@@ -76,7 +76,7 @@ class AuthSessionControllerTest {
     fun `未ログイン状態でMeを叩くとUnauthorizedになること`() = appTestApplication {
         val client = createClient { install(HttpCookies) }
 
-        client.get("/api/auth-session/me").apply {
+        client.get("/api/auth/me").apply {
             assertEquals(HttpStatusCode.Unauthorized, this.status)
         }
     }

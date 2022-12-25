@@ -4,17 +4,19 @@ import { IconChevronRight, IconChevronLeft, IconLogout } from '@tabler/icons'
 import { useDisclosure } from '@mantine/hooks'
 import { Avatar, Box, Group, UnstyledButton, useMantineTheme, Text, Menu } from '@mantine/core'
 import { useLogout } from '@/services/auth/api/useLogout'
-import { useGetMeWithSession } from '@/services/auth/api/useGetMeWithSession'
+import { useCheckMe } from '@/services/auth/api/useCheckMe'
+import { queryClient } from '@/libs/react-query'
 
 export const AdminBottomMenu: FC = () => {
   const theme = useMantineTheme()
-  const { me } = useGetMeWithSession()
+  const { me } = useCheckMe()
   const [opened, { close, open }] = useDisclosure(false)
   const { mutate, isLoading } = useLogout()
   const router = useRouter()
 
   const onLogout = async () => {
     mutate(undefined)
+    queryClient.invalidateQueries()
     router.push('/')
   }
 

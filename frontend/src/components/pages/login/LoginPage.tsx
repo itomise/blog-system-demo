@@ -15,7 +15,7 @@ const schema = z.object({
 
 type FormType = z.infer<typeof schema>
 
-export const LoginWithSessionPage: React.FC = () => {
+export const LoginPage: React.FC = () => {
   const router = useRouter()
   const { mutate, isLoading } = useLoginWithSession({
     config: {
@@ -70,7 +70,7 @@ export const LoginWithSessionPage: React.FC = () => {
               <Stack spacing={2} mt="lg">
                 <Button
                   onClick={async () => {
-                    appAxios.get('/auth-session/logout')
+                    appAxios.get('/auth/logout')
                   }}
                 >
                   ログアウト

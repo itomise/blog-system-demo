@@ -4,7 +4,7 @@ import { IconAlien } from '@tabler/icons'
 import { AppShell, Box, Container, Group, Navbar, Text, useMantineTheme } from '@mantine/core'
 import { AdminMainLinks } from './AdminMainLinks'
 import { AdminBottomMenu } from './AdminBottomMenu'
-import { useGetMeWithSession } from '@/services/auth/api/useGetMeWithSession'
+import { useCheckMe } from '@/services/auth/api/useCheckMe'
 
 type Props = {
   children: React.ReactNode
@@ -12,7 +12,7 @@ type Props = {
 
 export const AdminLayout: React.FC<Props> = ({ children }) => {
   const theme = useMantineTheme()
-  const { me, isLoading } = useGetMeWithSession()
+  const { me, isLoading } = useCheckMe()
   const router = useRouter()
 
   useEffect(() => {

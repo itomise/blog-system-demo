@@ -14,7 +14,7 @@ const schema = z.object({
   password: z.string().min(6).max(100).regex(PasswordRegex),
 })
 
-type SignUpFormType = z.infer<typeof schema>
+type FormType = z.infer<typeof schema>
 
 export const SignUpPage: React.FC = () => {
   const router = useRouter()
@@ -44,7 +44,7 @@ export const SignUpPage: React.FC = () => {
             <Title order={1} align="center">
               新規登録
             </Title>
-            <Form<SignUpFormType> onSubmit={(data) => mutate(data)} schema={schema}>
+            <Form<FormType> onSubmit={(data) => mutate(data)} schema={schema}>
               {({ register, formState: { errors } }) => (
                 <Stack spacing="md" mt="md">
                   <InputField label="名前" error={errors.name} registration={register('name')} required />

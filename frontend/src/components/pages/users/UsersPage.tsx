@@ -4,13 +4,13 @@ import { Card, Title, Text, Group, Badge, Box, Grid } from '@mantine/core'
 import { UsersEditUserButtonPopUp } from './_ui/UsersEditUserButtonPopUp'
 import { UsersCreateUserButtonPopUp } from './_ui/UsersCreateUserButtonPopUp'
 import { useUserList } from '@/services/user/api/useUserList'
-import { useGetMeWithSession } from '@/services/auth/api/useGetMeWithSession'
+import { useCheckMe } from '@/services/auth/api/useCheckMe'
 import { AdminLayout } from '@/components/shared/layout/AdminLayout'
 
 export const UsersPage: React.FC = () => {
   const allUsers = useUserList()
   const rootRef = useRef<HTMLDivElement>(null)
-  const { me } = useGetMeWithSession()
+  const { me } = useCheckMe()
 
   return (
     <>

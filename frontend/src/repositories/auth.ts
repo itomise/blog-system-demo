@@ -11,7 +11,7 @@ export type LoginWithSessionResponse = {
 }
 
 const loginWithSession = async (payload: LoginWithSessionRequest) => {
-  const { data } = await appAxios.post<LoginWithSessionResponse>('/auth-session/login', payload)
+  const { data } = await appAxios.post<LoginWithSessionResponse>('/auth/login', payload)
   return data
 }
 
@@ -29,7 +29,7 @@ const loginWithJwt = async (payload: LoginWithJwtRequest) => {
 }
 
 const logout = async () => {
-  await appAxios.post('/auth-session/logout')
+  await appAxios.post('/auth/logout')
 }
 
 export type GetMeResponse = {
@@ -47,7 +47,7 @@ const getMeWithJwt = async (jwtToken: string) => {
   return data
 }
 const getMeWithSession = async () => {
-  const { data } = await appAxios.get<GetMeResponse>('/auth-session/me')
+  const { data } = await appAxios.get<GetMeResponse>('/auth/me')
   return data
 }
 
@@ -59,7 +59,7 @@ export type SignupRequest = {
 export type SignupResponse = {}
 
 const signup = async (payload: SignupRequest) => {
-  const { data } = await appAxios.post<SignupResponse>('/auth-session/sign-up', payload)
+  const { data } = await appAxios.post<SignupResponse>('/auth/sign-up', payload)
   return data
 }
 

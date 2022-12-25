@@ -28,7 +28,7 @@ fun Route.authRouting() {
     val createUserUseCase: ICreateAccountUseCase by inject()
     val tokenService: ITokenService by inject()
 
-    route("/auth-session") {
+    route("/auth") {
         post("/login") {
             val request = call.receive<LoginRequestModel>()
 
