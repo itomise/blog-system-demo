@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { useRef } from 'react'
 import { IconPencil } from '@tabler/icons'
 import { showNotification } from '@mantine/notifications'
-import { Popover, ActionIcon, Stack, Button } from '@mantine/core'
+import { Popover, ActionIcon, Stack, Button, Group } from '@mantine/core'
 import { User } from '@/services/user/types'
 import { useEditUser } from '@/services/user/api/useEditUser'
 import { queryClient } from '@/libs/react-query'
@@ -69,9 +69,11 @@ export const UsersEditUserButtonPopUp: React.FC<Props> = ({ user }) => {
                 required
                 size="xs"
               />
-              <Button type="submit" mt="md" loading={isLoading}>
-                送信
-              </Button>
+              <Group position="right">
+                <Button type="submit" loading={isLoading}>
+                  送信
+                </Button>
+              </Group>
             </Stack>
           )}
         </Form>

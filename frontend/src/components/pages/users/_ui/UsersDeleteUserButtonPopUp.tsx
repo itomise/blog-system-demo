@@ -38,8 +38,11 @@ export const UsersDeleteUserButtonPopUp: FC<Props> = ({ user }) => {
         </ActionIcon>
       </Popover.Target>
       <Popover.Dropdown>
-        <Group>
-          <Text size="xs">本当に削除しますか？</Text>
+        <Text size="xs">本当に削除しますか？</Text>
+        <Group mt="sm">
+          <Button type="button" size="xs" onClick={() => buttonRef.current?.click()}>
+            キャンセル
+          </Button>
           <Button
             type="button"
             color="red"
