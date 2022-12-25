@@ -1,7 +1,8 @@
 import { useRef } from 'react'
 import Head from 'next/head'
-import { Card, Title, Text, Group, Badge, Box, Grid } from '@mantine/core'
+import { Card, Title, Text, Group, Badge, Box, Grid, List } from '@mantine/core'
 import { UsersEditUserButtonPopUp } from './_ui/UsersEditUserButtonPopUp'
+import { UsersDeleteUserButtonPopUp } from './_ui/UsersDeleteUserButtonPopUp'
 import { UsersCreateUserButtonPopUp } from './_ui/UsersCreateUserButtonPopUp'
 import { useUserList } from '@/services/user/api/useUserList'
 import { useCheckMe } from '@/services/auth/api/useCheckMe'
@@ -25,32 +26,31 @@ export const UsersPage: React.FC = () => {
           <Group mt="lg">
             <UsersCreateUserButtonPopUp />
           </Group>
-          <Grid mt="lg">
+          <List mt="lg" listStyleType="none" spacing="sm" styles={{ itemWrapper: { width: '100%' } }}>
             {allUsers?.map((user) => (
-              <Grid.Col key={user.id} span="content">
-                <Card shadow="sm" p="lg" radius="md" withBorder sx={{ width: 280, overflow: 'initial' }}>
+              <List.Item key={user.id}>
+                <Card shadow="sm" p="md" radius="md" withBorder sx={{ width: '100%', overflow: 'initial' }}>
                   <Group position="apart" align="center" noWrap>
-                    <Group spacing="xs">
-                      <Text weight={500} sx={{ wordBreak: 'break-all' }}>
-                        {user.name}
+                    <Box>
+                      <Group spacing="xs">
+                        <Text weight={500} sx={{ wordBreak: 'break-all' }}>
+                          {user.name}
+                        </Text>
+                        {me?.id === user.id && <Badge color="blue">Me</Badge>}
+                      </Group>
+                      <Text color="gray" size="xs">
+                        {user.email}
                       </Text>
-                      {me?.id === user.id && <Badge color="blue">Me</Badge>}
+                    </Box>
+                    <Group>
+                      <UsersEditUserButtonPopUp user={user} />
+                      <UsersDeleteUserButtonPopUp user={user} />
                     </Group>
-                    <UsersEditUserButtonPopUp user={user} />
                   </Group>
-                  <Text color="gray" size="xs">
-                    {user.email}
-                  </Text>
-
-                  <Box mt="sm">
-                    <Text color="gray" size={10}>
-                      {user.id}
-                    </Text>
-                  </Box>
                 </Card>
-              </Grid.Col>
+              </List.Item>
             ))}
-          </Grid>
+          </List>
         </main>
       </AdminLayout>
     </>
