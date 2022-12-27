@@ -8,4 +8,10 @@ interface IJwtTokenService {
         encryptionKey: ByteArray,
         claims: Map<String, String>
     ): String
+
+    fun verify(
+        token: String,
+        publicKey: RSAKey,
+        encryptionKey: ByteArray
+    ): Boolean
 }

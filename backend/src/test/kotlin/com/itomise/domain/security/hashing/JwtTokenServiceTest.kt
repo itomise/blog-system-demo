@@ -38,7 +38,7 @@ class JwtTokenServiceTest {
         "{\"use\":\"sig\",\"kty\":\"RSA\",\"n\":\"tvN64jUQPceepr4t3f_RmDcifIHLV2qOKgeblnTpBav_wr8tccmRui2njODZQnRNYlQFq72mmsxYchNXoNvNHvbGaoah3pljC1CpDDDW1gjx-0X1UHnTHM5Jt9CZd8mEqr3lMJjIQwW-Td-n7S9zSOrtn5Dftp3bF0iu4pUMlGqxd-1x1n59O5jRN8S58Et54_x63LnYe323JL2qMWxHDmuzuUxsvfR1UqKPoF1xKU2GtEDcznItEYoSn07LshzIo6NMbo2s6WSN1EzXj4aKYZzSa3rlMZLL4eZAIhy-g39xlpNtXAy6wczlK7mdJtWS9KtdbLrEdzDTfgOlh_McSQ\",\"e\":\"AQAB\",\"kid\":\"12345\",\"alg\":\"RS256\"}"
 
     @Test
-    fun `正しくencrypt,decryptできること`() {
+    fun `正しくencryptとdecryptができること`() {
         val privateKey = RSAKey.parse(privateJwkJsonString)
 
         // 32 文字 ( 256bit )
@@ -73,5 +73,59 @@ class JwtTokenServiceTest {
                 assert(value == it.jwtClaimsSet.getClaim(key))
             }
         }
+    }
+
+    @Test
+    fun `tokenを正しく検証できること`() {
+        val privateKey = RSAKey.parse(privateJwkJsonString)
+
+        // 32 文字 ( 256bit )
+        val encryptionKey = "P!YK.qMi2GQpojPA*mPFfxFQZ2tCewTr".toByteArray()
+
+        val claims = mapOf(
+            "userName" to "Penguin"
+        )
+
+        val token = nestedJwtService.generate(privateKey, encryptionKey, claims)
+
+        val publicKey = RSAKey.parse(publicJwkJsonString)
+        assert(nestedJwtService.verify(token, publicKey, encryptionKey))
+    }
+
+    @Test
+    fun `tokenが正しくない場合verifyがfalseになること`() {
+        val privateKey = RSAKey.parse(privateJwkJsonString)
+
+        // 32 文字 ( 256bit )
+        val encryptionKey = "P!YK.qMi2GQpojPA*mPFfxFQZ2tCewTr".toByteArray()
+
+        val claims = mapOf(
+            "userName" to "Penguin"
+        )
+
+        val token = nestedJwtService.generate(privateKey, encryptionKey, claims)
+
+        val invalidToken = token.split(".")[0] + "." + token.split(".")[1]
+        val publicKey = RSAKey.parse(publicJwkJsonString)
+
+        assert(!nestedJwtService.verify(invalidToken, publicKey, encryptionKey))
+    }
+
+    @Test
+    fun `encryptionKeyが正しくない場合verifyがfalseになること`() {
+        val privateKey = RSAKey.parse(privateJwkJsonString)
+
+        // 32 文字 ( 256bit )
+        val encryptionKey = "P!YK.qMi2GQpojPA*mPFfxFQZ2tCewTr".toByteArray()
+        val invalidEncryptionKey = "P!YK.qMF3j5pojPA*mPFfxFQZ2tCewTr".toByteArray()
+
+        val claims = mapOf(
+            "userName" to "Penguin"
+        )
+
+        val token = nestedJwtService.generate(privateKey, encryptionKey, claims)
+
+        val publicKey = RSAKey.parse(publicJwkJsonString)
+        assert(!nestedJwtService.verify(token, publicKey, invalidEncryptionKey))
     }
 }

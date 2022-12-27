@@ -2,8 +2,10 @@ package com.itomise.com.itomise.domain.security.services
 
 import com.itomise.com.itomise.domain.security.interfaces.IJwtTokenService
 import com.nimbusds.jose.*
+import com.nimbusds.jose.crypto.DirectDecrypter
 import com.nimbusds.jose.crypto.DirectEncrypter
 import com.nimbusds.jose.crypto.RSASSASigner
+import com.nimbusds.jose.crypto.RSASSAVerifier
 import com.nimbusds.jose.jwk.RSAKey
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
@@ -49,5 +51,29 @@ class JwtTokenTokenService : IJwtTokenService {
         } catch (ex: JOSEException) {
             throw IllegalStateException("jwt encryption failed")
         }
+    }
+
+    override fun verify(
+        token: String,
+        publicKey: RSAKey,
+        encryptionKey: ByteArray
+    ): Boolean {
+        val jweObject = try {
+            JWEObject.parse(token)
+        } catch (e: Exception) {
+            return false
+        }
+
+        // デコード
+        try {
+            jweObject.decrypt(DirectDecrypter(encryptionKey))
+        } catch (e: Exception) {
+            return false
+        }
+
+        // 署名検証
+        val jwt = jweObject.payload.toSignedJWT()
+
+        return jwt.verify(RSASSAVerifier(publicKey))
     }
 }
