@@ -1,4 +1,4 @@
-package com.itomise.domain.security.hashing
+package com.itomise.domain.security.service
 
 import com.itomise.com.itomise.domain.security.interfaces.IJwtTokenService
 import com.itomise.com.itomise.module.serviceModule
