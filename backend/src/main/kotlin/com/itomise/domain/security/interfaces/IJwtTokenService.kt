@@ -1,17 +1,11 @@
 package com.itomise.com.itomise.domain.security.interfaces
 
-import com.nimbusds.jose.jwk.RSAKey
+import com.itomise.com.itomise.domain.security.vo.TokenClaim
+import com.itomise.com.itomise.domain.security.vo.TokenConfig
 
 interface IJwtTokenService {
     fun generate(
-        signatureKey: RSAKey,
-        encryptionKey: ByteArray,
-        claims: Map<String, String>
+        config: TokenConfig,
+        vararg claims: TokenClaim
     ): String
-
-    fun verify(
-        token: String,
-        publicKey: RSAKey,
-        encryptionKey: ByteArray
-    ): Boolean
 }

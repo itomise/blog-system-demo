@@ -1,6 +1,6 @@
 package com.itomise.com.itomise.domain.security.services
 
-import com.itomise.com.itomise.domain.security.interfaces.IJwtTokenService
+import com.itomise.com.itomise.domain.security.interfaces.INestedJwtTokenService
 import com.nimbusds.jose.*
 import com.nimbusds.jose.crypto.DirectDecrypter
 import com.nimbusds.jose.crypto.DirectEncrypter
@@ -9,12 +9,13 @@ import com.nimbusds.jose.crypto.RSASSAVerifier
 import com.nimbusds.jose.jwk.RSAKey
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
+import java.security.PrivateKey
 import java.util.*
 
-class JwtTokenTokenService : IJwtTokenService {
+class NestedJwtTokenTokenService : INestedJwtTokenService {
 
     override fun generate(
-        signatureKey: RSAKey,
+        signatureKey: PrivateKey,
         encryptionKey: ByteArray,
         claims: Map<String, String>
     ): String {

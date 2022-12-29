@@ -5,10 +5,10 @@ import com.itomise.com.itomise.domain.account.interfaces.IUserService
 import com.itomise.com.itomise.domain.account.services.UserService
 import com.itomise.com.itomise.domain.security.interfaces.IHashingService
 import com.itomise.com.itomise.domain.security.interfaces.IJwtTokenService
-import com.itomise.com.itomise.domain.security.interfaces.ITokenService
+import com.itomise.com.itomise.domain.security.interfaces.INestedJwtTokenService
 import com.itomise.com.itomise.domain.security.services.HashingService
-import com.itomise.com.itomise.domain.security.services.JwtTokenTokenService
-import com.itomise.com.itomise.domain.security.services.TokenService
+import com.itomise.com.itomise.domain.security.services.JwtTokenService
+import com.itomise.com.itomise.domain.security.services.NestedJwtTokenTokenService
 import com.itomise.com.itomise.infrastructure.repositories.account.UserRepository
 import com.itomise.com.itomise.usercase.interactors.account.*
 import com.itomise.com.itomise.usercase.interactors.auth.LoginInteractor
@@ -39,9 +39,9 @@ val repositoryModule = module {
 
 val serviceModule = module {
     singleOf(::UserService) { bind<IUserService>() }
-    singleOf(::TokenService) { bind<ITokenService>() }
+    singleOf(::JwtTokenService) { bind<IJwtTokenService>() }
     singleOf(::HashingService) { bind<IHashingService>() }
-    singleOf(::JwtTokenTokenService) { bind<IJwtTokenService>() }
+    singleOf(::NestedJwtTokenTokenService) { bind<INestedJwtTokenService>() }
 }
 
 fun Application.injection() {

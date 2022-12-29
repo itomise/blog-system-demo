@@ -7,7 +7,7 @@ import com.itomise.com.itomise.controller.responseModel.MeResponseModel
 import com.itomise.com.itomise.controller.responseModel.SignUpResponseModel
 import com.itomise.com.itomise.controller.utils.userSessionPrincipal
 import com.itomise.com.itomise.domain.account.vo.UserPrincipal
-import com.itomise.com.itomise.domain.security.interfaces.ITokenService
+import com.itomise.com.itomise.domain.security.interfaces.IJwtTokenService
 import com.itomise.com.itomise.domain.security.vo.TokenClaim
 import com.itomise.com.itomise.module.jwtTokenConfig
 import com.itomise.com.itomise.usercase.interfaces.account.ICreateAccountUseCase
@@ -27,7 +27,7 @@ fun Route.authRouting() {
     val loginUseCase: ILoginUseCase by inject()
     val meUseCase: IMeUseCase by inject()
     val createUserUseCase: ICreateAccountUseCase by inject()
-    val tokenService: ITokenService by inject()
+    val tokenService: IJwtTokenService by inject()
 
     route("/auth") {
         post("/login") {
