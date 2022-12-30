@@ -9,6 +9,7 @@ import java.security.SecureRandom
 
 class HashingService : IHashingService {
     private val saltLength = 32
+    private val stretchingCount = 1500
 
     private fun hash(value: String, algorithm: HashAlgorithm): String {
         return when (algorithm) {
@@ -24,7 +25,11 @@ class HashingService : IHashingService {
 
         val algorithm = HashAlgorithm.getRandom()
 
-        val hash = hash("$saltAsHex$value", algorithm)
+        var hash = hash("$saltAsHex$value", algorithm)
+
+        (1..stretchingCount).forEach { _ ->
+            hash = hash(hash, algorithm)
+        }
 
         return SaltedHash(
             salt = saltAsHex,
@@ -34,6 +39,12 @@ class HashingService : IHashingService {
     }
 
     override fun verifySaltedHash(value: String, saltedHash: SaltedHash): Boolean {
-        return hash(saltedHash.salt + value, saltedHash.algorithm) == saltedHash.hash
+        var hash = hash(saltedHash.salt + value, saltedHash.algorithm)
+
+        (1..stretchingCount).forEach { _ ->
+            hash = hash(hash, saltedHash.algorithm)
+        }
+
+        return hash == saltedHash.hash
     }
 }
