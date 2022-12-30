@@ -1,38 +1,41 @@
-package com.itomise.com.itomise.usercase.interactors.account
+package com.itomise.com.itomise.usecase.interactors.account
 
 import com.itomise.com.itomise.domain.account.entities.User
 import com.itomise.com.itomise.domain.account.interfaces.IUserRepository
-import com.itomise.com.itomise.domain.account.services.UserService
+import com.itomise.com.itomise.domain.account.interfaces.IUserService
 import com.itomise.com.itomise.domain.account.vo.Email
 import com.itomise.com.itomise.domain.account.vo.Username
-import com.itomise.com.itomise.usercase.interfaces.account.ICreateAccountUseCase
+import com.itomise.com.itomise.usecase.interfaces.account.ICreateAccountUseCase
+import com.itomise.com.itomise.usecase.interfaces.mail.ISendSignUpMailUseCase
 import com.itomise.com.itomise.util.getKoinInstance
 import com.itomise.infrastructure.dbQuery
 import java.util.*
 
 class CreateAccountInteractor : ICreateAccountUseCase {
     private val userRepository = getKoinInstance<IUserRepository>()
+    private val sendSignUpMailUseCase = getKoinInstance<ISendSignUpMailUseCase>()
+    private val userService = getKoinInstance<IUserService>()
 
     override suspend fun handle(command: ICreateAccountUseCase.Command): UUID {
-        val userId = dbQuery {
+        val user = dbQuery {
             val newUser = User.new(
                 name = Username(command.name),
                 email = Email(command.email),
-                password = command.password
             )
 
-            if (UserService().isDuplicateUserId(newUser.id)) {
-                throw IllegalArgumentException("指定されたUsernameは既に使用されています。")
-            }
-            if (UserService().isDuplicateUserEmail(newUser.email)) {
+            val allUser = userRepository.getList()
+
+            if (userService.isDuplicateUser(allUser, newUser)) {
                 throw IllegalArgumentException("指定されたEmailは既に使用されています。")
             }
 
             userRepository.save(newUser)
 
-            return@dbQuery newUser.id
+            return@dbQuery newUser
         }
 
-        return userId.value
+        sendSignUpMailUseCase.handle(user)
+
+        return user.id.value
     }
 }

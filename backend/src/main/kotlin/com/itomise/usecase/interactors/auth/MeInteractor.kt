@@ -1,8 +1,8 @@
-package com.itomise.com.itomise.usercase.interactors.auth
+package com.itomise.com.itomise.usecase.interactors.auth
 
 import com.itomise.com.itomise.domain.account.interfaces.IUserRepository
 import com.itomise.com.itomise.domain.account.vo.UserId
-import com.itomise.com.itomise.usercase.interfaces.auth.IMeUseCase
+import com.itomise.com.itomise.usecase.interfaces.auth.IMeUseCase
 import com.itomise.com.itomise.util.getKoinInstance
 import com.itomise.infrastructure.dbQuery
 import java.util.*

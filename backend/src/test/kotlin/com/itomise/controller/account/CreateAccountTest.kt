@@ -5,14 +5,13 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.BaseTestApplication.Companion.appTestApplication
 import com.itomise.BaseTestApplication.Companion.authSessionUserForTest
 import com.itomise.BaseTestApplication.Companion.cleanup
-import com.itomise.com.itomise.controller.requestModel.CreateUserRequestModel
+import com.itomise.com.itomise.controller.requestModels.CreateUserRequestModel
 import com.itomise.com.itomise.controller.responseModel.CreateUserResponseModel
 import com.itomise.com.itomise.controller.responseModel.GetListUserResponseModel
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import java.util.*
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -35,8 +34,7 @@ class CreateAccountTest {
                 objectMapper.writeValueAsString(
                     CreateUserRequestModel(
                         "test太郎",
-                        "test@example.com",
-                        "${UUID.randomUUID()}"
+                        "test@test.test",
                     ),
                 )
             )
@@ -54,7 +52,7 @@ class CreateAccountTest {
             res.users.find { it.id == resBody.id }?.run {
                 assertEquals(resBody.id, this.id)
                 assertEquals("test太郎", this.name)
-                assertEquals("test@example.com", this.email)
+                assertEquals("test@test.test", this.email)
             }
         }
     }
@@ -69,7 +67,6 @@ class CreateAccountTest {
                     CreateUserRequestModel(
                         "04テスト太郎",
                         "04@example.com",
-                        "${UUID.randomUUID()}"
                     ),
                 )
             )

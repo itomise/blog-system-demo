@@ -2,8 +2,15 @@ package com.itomise
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.itomise.com.itomise.domain.account.entities.User
+import com.itomise.com.itomise.domain.account.interfaces.IUserService
+import com.itomise.com.itomise.domain.account.vo.Email
+import com.itomise.com.itomise.domain.account.vo.UserId
 import com.itomise.com.itomise.domain.account.vo.UserPrincipal
-import com.itomise.com.itomise.usercase.interfaces.account.ICreateAccountUseCase
+import com.itomise.com.itomise.domain.account.vo.Username
+import com.itomise.com.itomise.lib.sendgrid.SendGridClient
+import com.itomise.com.itomise.usecase.interfaces.account.ICreateAccountUseCase
+import com.itomise.com.itomise.usecase.interfaces.auth.IActivateUserUseCase
 import com.itomise.com.itomise.util.getKoinInstance
 import io.ktor.client.*
 import io.ktor.client.request.*
@@ -16,6 +23,9 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import io.ktor.server.testing.*
+import io.mockk.every
+import io.mockk.mockkObject
+import io.mockk.unmockkAll
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.koin.core.context.GlobalContext
@@ -36,17 +46,42 @@ class BaseTestApplication() {
                 application {
                     // application が起動してからでないと DB などが立ち上がっていないため
                     setUpTables()
+
+                    // メールは全てモックをさす
+                    mockkObject(SendGridClient)
+                    every { SendGridClient.send(any()) } answers {}
+
                     routing {
                         post("/login-for-testing") {
                             val request = call.receive<CreateTestUserRequest>()
                             val createUserUseCase = getKoinInstance<ICreateAccountUseCase>()
+                            val userService = getKoinInstance<IUserService>()
+                            val activateUserUseCase = getKoinInstance<IActivateUserUseCase>()
+
                             val result = createUserUseCase.handle(
                                 ICreateAccountUseCase.Command(
                                     name = request.name,
                                     email = request.email,
+                                )
+                            )
+
+                            activateUserUseCase.handle(
+                                IActivateUserUseCase.Command(
+                                    token = userService.generateActivationToken(
+                                        User.from(
+                                            id = UserId(result),
+                                            name = Username(request.name),
+                                            email = Email(request.email),
+                                            passwordSalt = null,
+                                            passwordHash = null,
+                                            userHashAlgorithmId = null
+                                        )
+                                    ),
                                     password = request.password
                                 )
                             )
+
+
                             call.sessions.set(UserPrincipal(result.toString()))
                             call.respond(
                                 HttpStatusCode.OK, TestUser(
@@ -56,6 +91,28 @@ class BaseTestApplication() {
                                     password = request.password,
                                 )
                             )
+                        }
+                        post("/activate-for-testing") {
+                            val request = call.receive<ActivateTestUserRequest>()
+                            val userService = getKoinInstance<IUserService>()
+                            val activateUserUseCase = getKoinInstance<IActivateUserUseCase>()
+
+                            activateUserUseCase.handle(
+                                IActivateUserUseCase.Command(
+                                    token = userService.generateActivationToken(
+                                        User.from(
+                                            id = UserId(request.id),
+                                            name = Username(request.name),
+                                            email = Email(request.email),
+                                            passwordSalt = null,
+                                            passwordHash = null,
+                                            userHashAlgorithmId = null
+                                        )
+                                    ),
+                                    password = request.password
+                                )
+                            )
+                            call.respond(HttpStatusCode.OK)
                         }
                     }
                 }
@@ -92,6 +149,13 @@ class BaseTestApplication() {
             val password: String
         )
 
+        data class ActivateTestUserRequest(
+            val id: UUID,
+            val name: String,
+            val email: String,
+            val password: String
+        )
+
         data class TestUser(
             val id: UUID,
             val name: String,
@@ -117,6 +181,8 @@ class BaseTestApplication() {
             if (GlobalContext.getOrNull() != null) {
                 stopKoin()
             }
+
+            unmockkAll()
 
             transaction {
                 val sqlForDropAllSchema = """

@@ -58,23 +58,25 @@ class NestedJwtTokenTokenService : INestedJwtTokenService {
         token: String,
         publicKey: RSAKey,
         encryptionKey: ByteArray
-    ): Boolean {
+    ): JWTClaimsSet? {
         val jweObject = try {
             JWEObject.parse(token)
         } catch (e: Exception) {
-            return false
+            return null
         }
 
         // デコード
         try {
             jweObject.decrypt(DirectDecrypter(encryptionKey))
         } catch (e: Exception) {
-            return false
+            return null
         }
 
         // 署名検証
         val jwt = jweObject.payload.toSignedJWT()
 
-        return jwt.verify(RSASSAVerifier(publicKey))
+        if (!jwt.verify(RSASSAVerifier(publicKey))) return null
+
+        return jwt.jwtClaimsSet
     }
 }

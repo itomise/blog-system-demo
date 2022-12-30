@@ -2,7 +2,10 @@ package com.itomise.com.itomise.infrastructure.repositories.account
 
 import com.itomise.com.itomise.domain.account.entities.User
 import com.itomise.com.itomise.domain.account.interfaces.IUserRepository
-import com.itomise.com.itomise.domain.account.vo.*
+import com.itomise.com.itomise.domain.account.vo.Email
+import com.itomise.com.itomise.domain.account.vo.UserHashAlgorithmId
+import com.itomise.com.itomise.domain.account.vo.UserId
+import com.itomise.com.itomise.domain.account.vo.Username
 import com.itomise.com.itomise.infrastructure.dao.UserLoginInfoTable
 import com.itomise.com.itomise.infrastructure.dao.UserTable
 import org.jetbrains.exposed.sql.*
@@ -10,25 +13,26 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import java.time.LocalDateTime
 
 class UserRepository : IUserRepository {
-    private fun resultRowToUserEntity(row: ResultRow) = User.from(
-        id = UserId(row[UserTable.id].value),
-        name = Username(row[UserTable.name]),
-        email = Email(row[UserTable.email]),
-        passwordHash = row[UserLoginInfoTable.passwordHash],
-        passwordSalt = row[UserLoginInfoTable.passwordSalt],
-        userHashAlgorithmId = UserHashAlgorithmId.get(row[UserLoginInfoTable.hashAlgorithmId]),
-        emailValidationStatus = EmailValidationStatus.get(row[UserLoginInfoTable.emailValidationStatus]),
-        confirmationToken = row[UserLoginInfoTable.confirmationToken],
-        confirmationTokenExpires = row[UserLoginInfoTable.confirmationTokenExpires],
-        passwordRecoveryToken = row[UserLoginInfoTable.passwordRecoveryToken],
-        passwordRecoveryTokenExpires = row[UserLoginInfoTable.passwordRecoveryTokenExpires]
-    )
+    private fun resultRowToUserEntity(row: ResultRow): User {
+        val t = row.getOrNull(UserLoginInfoTable.passwordHash)
+        val user = User.from(
+            id = UserId(row[UserTable.id].value),
+            name = Username(row[UserTable.name]),
+            email = Email(row[UserTable.email]),
+            passwordHash = row.getOrNull(UserLoginInfoTable.passwordHash),
+            passwordSalt = row.getOrNull(UserLoginInfoTable.passwordSalt),
+            userHashAlgorithmId = if (row.getOrNull(UserLoginInfoTable.passwordSalt) != null) UserHashAlgorithmId.get(
+                row[UserLoginInfoTable.hashAlgorithmId]
+            ) else null,
+        )
+        return user
+    }
 
     override suspend fun getList(): List<User> {
         return UserTable
             .join(
                 otherTable = UserLoginInfoTable,
-                joinType = JoinType.INNER,
+                joinType = JoinType.LEFT,
                 additionalConstraint = { UserTable.id eq UserLoginInfoTable.id }
             )
             .selectAll()
@@ -40,7 +44,7 @@ class UserRepository : IUserRepository {
         return UserTable
             .join(
                 otherTable = UserLoginInfoTable,
-                joinType = JoinType.INNER,
+                joinType = JoinType.LEFT,
                 additionalConstraint = { UserTable.id eq UserLoginInfoTable.id }
             )
             .select(UserTable.id eq id.value)
@@ -48,11 +52,18 @@ class UserRepository : IUserRepository {
             .firstOrNull()
     }
 
+    private suspend fun findLoginInfoByUserId(id: UserId): Boolean {
+        val exists = UserLoginInfoTable
+            .select(UserLoginInfoTable.id eq id.value)
+            .firstOrNull()
+        return exists != null
+    }
+
     override suspend fun findByEmail(email: Email): User? {
         return UserTable
             .join(
                 otherTable = UserLoginInfoTable,
-                joinType = JoinType.INNER,
+                joinType = JoinType.LEFT,
                 additionalConstraint = { UserTable.id eq UserLoginInfoTable.id }
             )
             .select(UserTable.email eq email.value)
@@ -70,26 +81,23 @@ class UserRepository : IUserRepository {
                 it[email] = user.email.value
                 it[updatedAt] = LocalDateTime.now()
             }
-            UserLoginInfoTable.update({
-                UserLoginInfoTable.id eq user.id.value
-            }) {
-                it[email] = user.email.value
-                it[passwordHash] = user.loginInfo.passwordHash
-                it[passwordSalt] = user.loginInfo.passwordSalt
-                it[hashAlgorithmId] = user.loginInfo.userHashAlgorithmId.value
-                it[emailValidationStatus] = user.loginInfo.emailValidationStatus.value
-                it[updatedAt] = LocalDateTime.now()
-                user.loginInfo.confirmationToken?.let { confirmationToken ->
-                    it[UserLoginInfoTable.confirmationToken] = confirmationToken
-                }
-                user.loginInfo.confirmationTokenExpires?.let { confirmationTokenExpires ->
-                    it[UserLoginInfoTable.confirmationTokenExpires] = confirmationTokenExpires
-                }
-                user.loginInfo.passwordRecoveryToken?.let { passwordRecoveryToken ->
-                    it[UserLoginInfoTable.passwordRecoveryToken] = passwordRecoveryToken
-                }
-                user.loginInfo.passwordRecoveryTokenExpires?.let { passwordRecoveryTokenExpires ->
-                    it[UserLoginInfoTable.passwordRecoveryTokenExpires] = passwordRecoveryTokenExpires
+            user.loginInfo?.let {
+                if (findLoginInfoByUserId(user.id)) {
+                    UserLoginInfoTable.update({
+                        UserLoginInfoTable.id eq user.id.value
+                    }) {
+                        it[passwordHash] = user.loginInfo.passwordHash
+                        it[passwordSalt] = user.loginInfo.passwordSalt
+                        it[hashAlgorithmId] = user.loginInfo.userHashAlgorithmId.value
+                        it[updatedAt] = LocalDateTime.now()
+                    }
+                } else {
+                    UserLoginInfoTable.insert {
+                        it[id] = user.id.value
+                        it[passwordHash] = user.loginInfo.passwordHash
+                        it[passwordSalt] = user.loginInfo.passwordSalt
+                        it[hashAlgorithmId] = user.loginInfo.userHashAlgorithmId.value
+                    }
                 }
             }
         } else {
@@ -98,24 +106,12 @@ class UserRepository : IUserRepository {
                 it[email] = user.email.value
                 it[name] = user.name.value
             }
-            UserLoginInfoTable.insert {
-                it[id] = user.id.value
-                it[email] = user.email.value
-                it[passwordHash] = user.loginInfo.passwordHash
-                it[passwordSalt] = user.loginInfo.passwordSalt
-                it[hashAlgorithmId] = user.loginInfo.userHashAlgorithmId.value
-                it[emailValidationStatus] = user.loginInfo.emailValidationStatus.value
-                user.loginInfo.confirmationToken?.let { confirmationToken ->
-                    it[UserLoginInfoTable.confirmationToken] = confirmationToken
-                }
-                user.loginInfo.confirmationTokenExpires?.let { confirmationTokenExpires ->
-                    it[UserLoginInfoTable.confirmationTokenExpires] = confirmationTokenExpires
-                }
-                user.loginInfo.passwordRecoveryToken?.let { passwordRecoveryToken ->
-                    it[UserLoginInfoTable.passwordRecoveryToken] = passwordRecoveryToken
-                }
-                user.loginInfo.passwordRecoveryTokenExpires?.let { passwordRecoveryTokenExpires ->
-                    it[UserLoginInfoTable.passwordRecoveryTokenExpires] = passwordRecoveryTokenExpires
+            user.loginInfo?.let {
+                UserLoginInfoTable.insert {
+                    it[id] = user.id.value
+                    it[passwordHash] = user.loginInfo.passwordHash
+                    it[passwordSalt] = user.loginInfo.passwordSalt
+                    it[hashAlgorithmId] = user.loginInfo.userHashAlgorithmId.value
                 }
             }
         }

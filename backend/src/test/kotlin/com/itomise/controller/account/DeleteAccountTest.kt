@@ -5,7 +5,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.BaseTestApplication.Companion.appTestApplication
 import com.itomise.BaseTestApplication.Companion.authSessionUserForTest
 import com.itomise.BaseTestApplication.Companion.cleanup
-import com.itomise.com.itomise.controller.requestModel.CreateUserRequestModel
+import com.itomise.com.itomise.controller.requestModels.CreateUserRequestModel
 import com.itomise.com.itomise.controller.responseModel.CreateUserResponseModel
 import com.itomise.com.itomise.controller.responseModel.GetListUserResponseModel
 import io.ktor.client.plugins.cookies.*
@@ -37,7 +37,6 @@ class DeleteAccountTest {
                     CreateUserRequestModel(
                         "test太郎",
                         "test@example.com",
-                        "${UUID.randomUUID()}"
                     ),
                 )
             )

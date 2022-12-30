@@ -1,13 +1,13 @@
 package com.itomise.controller
 
-import com.itomise.com.itomise.controller.requestModel.CreateUserRequestModel
-import com.itomise.com.itomise.controller.requestModel.UpdateUserRequestModel
+import com.itomise.com.itomise.controller.requestModels.CreateUserRequestModel
+import com.itomise.com.itomise.controller.requestModels.UpdateUserRequestModel
 import com.itomise.com.itomise.controller.responseModel.CreateUserResponseModel
 import com.itomise.com.itomise.controller.responseModel.GetListUserResponseModel
 import com.itomise.com.itomise.controller.responseModel.GetListUserResponseModelUser
 import com.itomise.com.itomise.controller.responseModel.GetUserResponseModel
 import com.itomise.com.itomise.controller.utils.userSessionPrincipal
-import com.itomise.com.itomise.usercase.interfaces.account.*
+import com.itomise.com.itomise.usecase.interfaces.account.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -46,7 +46,6 @@ fun Route.userRouting() {
                     ICreateAccountUseCase.Command(
                         name = request.name,
                         email = request.email,
-                        password = request.password
                     )
                 )
 

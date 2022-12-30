@@ -4,10 +4,10 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.BaseTestApplication
 import com.itomise.BaseTestApplication.Companion.appTestApplication
-import com.itomise.com.itomise.controller.requestModel.LoginRequestModel
-import com.itomise.com.itomise.controller.requestModel.SignUpRequestModel
-import com.itomise.com.itomise.controller.responseModel.MeResponseModel
-import com.itomise.com.itomise.controller.responseModel.SignUpResponseModel
+import com.itomise.com.itomise.controller.requestModels.LoginRequestModel
+import com.itomise.com.itomise.controller.requestModels.SignUpRequestModel
+import com.itomise.com.itomise.controller.responseModels.MeResponseModel
+import com.itomise.com.itomise.controller.responseModels.SignUpResponseModel
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -38,7 +38,6 @@ class AuthSessionControllerTest {
                     SignUpRequestModel(
                         name = name,
                         email = email,
-                        password = password.toString()
                     )
                 )
             )
@@ -47,6 +46,21 @@ class AuthSessionControllerTest {
         }
         val signUpResBody = objectMapper.readValue<SignUpResponseModel>(signUpRes.bodyAsText())
 
+        client.post("/activate-for-testing") {
+            contentType(ContentType.Application.Json)
+            setBody(
+                objectMapper.writeValueAsString(
+                    BaseTestApplication.Companion.ActivateTestUserRequest(
+                        id = signUpResBody.userId,
+                        name = name,
+                        email = email,
+                        password = password.toString()
+                    )
+                )
+            )
+        }.apply {
+            assertEquals(HttpStatusCode.OK, this.status)
+        }
 
         client.post("/api/auth/login") {
             contentType(ContentType.Application.Json)

@@ -1,8 +1,8 @@
-package com.itomise.com.itomise.usercase.interactors.account
+package com.itomise.com.itomise.usecase.interactors.account
 
 import com.itomise.com.itomise.domain.account.interfaces.IUserRepository
 import com.itomise.com.itomise.domain.account.vo.UserId
-import com.itomise.com.itomise.usercase.interfaces.account.IDeleteAccountUseCase
+import com.itomise.com.itomise.usecase.interfaces.account.IDeleteAccountUseCase
 import com.itomise.com.itomise.util.getKoinInstance
 import com.itomise.infrastructure.dbQuery
 

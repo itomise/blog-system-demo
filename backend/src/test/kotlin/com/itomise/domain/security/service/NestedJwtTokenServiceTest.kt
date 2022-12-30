@@ -111,7 +111,7 @@ class NestedJwtTokenServiceTest {
         val token = nestedJwtTokenService.generate(privateKey, encryptionKey, claims)
 
         val publicKey = getPublicKey()
-        assert(nestedJwtTokenService.verify(token, publicKey, encryptionKey))
+        assert(nestedJwtTokenService.verify(token, publicKey, encryptionKey) != null)
     }
 
     @Test
@@ -127,7 +127,7 @@ class NestedJwtTokenServiceTest {
         val invalidToken = token.split(".")[0] + "." + token.split(".")[1]
         val publicKey = getPublicKey()
 
-        assert(!nestedJwtTokenService.verify(invalidToken, publicKey, encryptionKey))
+        assert(nestedJwtTokenService.verify(invalidToken, publicKey, encryptionKey) == null)
     }
 
     @Test
@@ -143,6 +143,6 @@ class NestedJwtTokenServiceTest {
         val token = nestedJwtTokenService.generate(privateKey, encryptionKey, claims)
 
         val publicKey = getPublicKey()
-        assert(!nestedJwtTokenService.verify(token, publicKey, invalidEncryptionKey))
+        assert(nestedJwtTokenService.verify(token, publicKey, invalidEncryptionKey) == null)
     }
 }

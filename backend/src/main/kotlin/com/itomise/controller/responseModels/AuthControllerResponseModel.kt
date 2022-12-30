@@ -1,4 +1,4 @@
-package com.itomise.com.itomise.controller.responseModel
+package com.itomise.com.itomise.controller.responseModels
 
 import java.util.*
 

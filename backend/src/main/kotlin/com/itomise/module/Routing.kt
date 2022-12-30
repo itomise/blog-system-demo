@@ -1,5 +1,6 @@
 package com.itomise.com.itomise.module
 
+import com.itomise.com.itomise.controller.authJwtRouting
 import com.itomise.com.itomise.controller.authRouting
 import com.itomise.controller.userRouting
 import io.ktor.server.application.*
@@ -16,6 +17,7 @@ fun Application.routing() {
         route("/api") {
             userRouting()
             authRouting()
+            authJwtRouting()
         }
     }
 }

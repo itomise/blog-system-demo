@@ -1,6 +1,7 @@
 package com.itomise.com.itomise.domain.security.interfaces
 
 import com.nimbusds.jose.jwk.RSAKey
+import com.nimbusds.jwt.JWTClaimsSet
 import java.security.PrivateKey
 
 interface INestedJwtTokenService {
@@ -14,5 +15,5 @@ interface INestedJwtTokenService {
         token: String,
         publicKey: RSAKey,
         encryptionKey: ByteArray
-    ): Boolean
+    ): JWTClaimsSet?
 }

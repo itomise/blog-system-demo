@@ -5,7 +5,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.BaseTestApplication.Companion.appTestApplication
 import com.itomise.BaseTestApplication.Companion.authSessionUserForTest
 import com.itomise.BaseTestApplication.Companion.cleanup
-import com.itomise.com.itomise.controller.requestModel.CreateUserRequestModel
+import com.itomise.com.itomise.controller.requestModels.CreateUserRequestModel
 import com.itomise.com.itomise.controller.responseModel.CreateUserResponseModel
 import com.itomise.com.itomise.controller.responseModel.GetListUserResponseModel
 import io.ktor.client.plugins.cookies.*
@@ -28,10 +28,10 @@ class GetAccountListTest {
         val client = createClient { install(HttpCookies) }
 
         val prepareCreateUserRequests = listOf(
-            CreateUserRequestModel("01テスト太郎", "01@example.com", "${UUID.randomUUID()}"),
-            CreateUserRequestModel("03テスト太郎", "03@example.com", "${UUID.randomUUID()}"),
-            CreateUserRequestModel("02テスト太郎", "02@example.com", "${UUID.randomUUID()}"),
-            CreateUserRequestModel("04テスト太郎", "04@example.com", "${UUID.randomUUID()}"),
+            CreateUserRequestModel("01テスト太郎", "01@example.com"),
+            CreateUserRequestModel("03テスト太郎", "03@example.com"),
+            CreateUserRequestModel("02テスト太郎", "02@example.com"),
+            CreateUserRequestModel("04テスト太郎", "04@example.com"),
         )
         val requestUserIdList = mutableListOf<UUID>()
 

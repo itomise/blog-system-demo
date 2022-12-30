@@ -3,14 +3,17 @@ package com.itomise.com.itomise.domain.account.entities
 import com.itomise.com.itomise.domain.account.vo.*
 import com.itomise.com.itomise.domain.security.interfaces.IHashingService
 import com.itomise.com.itomise.util.getKoinInstance
-import java.time.LocalDateTime
 
 data class User private constructor(
     val id: UserId,
     val email: Email,
     val name: Username,
-    val loginInfo: UserLoginInfo
+    val loginInfo: UserLoginInfo?
 ) {
+    private val hashService = getKoinInstance<IHashingService>()
+
+    val isActive = loginInfo != null
+
     override fun equals(other: Any?): Boolean {
         if (other is User) {
             return this.id == other.id
@@ -20,62 +23,50 @@ data class User private constructor(
 
     fun changeName(name: Username) = this.copy(name = name)
 
-    companion object {
-        private val hashService = getKoinInstance<IHashingService>()
+    fun activate(password: String): User {
+        val saltedHash = hashService.generateSaltedHash(password)
 
-        fun new(name: Username, email: Email, password: String): User {
-            val userId = UserId.new()
-
-            val saltedHash = hashService.generateSaltedHash(password)
-
-            val userLoginInfo = UserLoginInfo(
-                userId = userId,
-                email = email,
+        return this.copy(
+            loginInfo = UserLoginInfo(
+                userId = this.id,
                 passwordHash = saltedHash.hash,
                 passwordSalt = saltedHash.salt,
                 userHashAlgorithmId = UserHashAlgorithmId.get(saltedHash.algorithm.value),
-                emailValidationStatus = EmailValidationStatus.NOT_CONFIRMED,
-                confirmationToken = null,
-                confirmationTokenExpires = null,
-                passwordRecoveryToken = null,
-                passwordRecoveryTokenExpires = null,
             )
-            return User(
-                id = userId,
-                name = name,
-                email = email,
-                loginInfo = userLoginInfo
-            )
-        }
+        )
+    }
+
+    companion object {
+        fun new(name: Username, email: Email) = User(
+            id = UserId.new(),
+            name = name,
+            email = email,
+            loginInfo = null
+        )
 
         fun from(
             id: UserId,
             email: Email,
             name: Username,
-            passwordHash: String,
-            passwordSalt: String,
-            userHashAlgorithmId: UserHashAlgorithmId,
-            emailValidationStatus: EmailValidationStatus,
-            confirmationToken: String?,
-            confirmationTokenExpires: LocalDateTime?,
-            passwordRecoveryToken: String?,
-            passwordRecoveryTokenExpires: LocalDateTime?,
-        ) = User(
-            id = id,
-            email = email,
-            name = name,
-            loginInfo = UserLoginInfo(
-                userId = id,
+            passwordHash: String?,
+            passwordSalt: String?,
+            userHashAlgorithmId: UserHashAlgorithmId?,
+        ): User {
+            val loginInfo = if (passwordHash != null && passwordSalt != null && userHashAlgorithmId != null) {
+                UserLoginInfo(
+                    userId = id,
+                    passwordHash = passwordHash,
+                    passwordSalt = passwordSalt,
+                    userHashAlgorithmId = userHashAlgorithmId,
+                )
+            } else null
+
+            return User(
+                id = id,
                 email = email,
-                passwordHash = passwordHash,
-                passwordSalt = passwordSalt,
-                userHashAlgorithmId = userHashAlgorithmId,
-                emailValidationStatus = emailValidationStatus,
-                confirmationToken = confirmationToken,
-                confirmationTokenExpires = confirmationTokenExpires,
-                passwordRecoveryToken = passwordRecoveryToken,
-                passwordRecoveryTokenExpires = passwordRecoveryTokenExpires,
+                name = name,
+                loginInfo = loginInfo
             )
-        )
+        }
     }
 }

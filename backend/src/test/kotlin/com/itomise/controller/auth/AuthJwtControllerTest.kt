@@ -5,9 +5,9 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.BaseTestApplication.Companion.appTestApplication
 import com.itomise.BaseTestApplication.Companion.authSessionUserForTest
 import com.itomise.BaseTestApplication.Companion.cleanup
-import com.itomise.com.itomise.controller.requestModel.JwtLoginResponseModel
-import com.itomise.com.itomise.controller.requestModel.LoginRequestModel
-import com.itomise.com.itomise.controller.responseModel.MeResponseModel
+import com.itomise.com.itomise.controller.requestModels.JwtLoginResponseModel
+import com.itomise.com.itomise.controller.requestModels.LoginRequestModel
+import com.itomise.com.itomise.controller.responseModels.MeResponseModel
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -25,7 +25,7 @@ class AuthJwtControllerTest {
     @Test
     fun `ログインできること`() = appTestApplication {
         val name = "テスト太郎"
-        val email = "test@test.com"
+        val email = "${UUID.randomUUID()}@test.test"
         val password = UUID.randomUUID().toString()
 
         // ユーザー作成

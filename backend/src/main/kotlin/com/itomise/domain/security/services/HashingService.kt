@@ -8,6 +8,8 @@ import org.apache.commons.codec.digest.DigestUtils
 import java.security.SecureRandom
 
 class HashingService : IHashingService {
+    private val saltLength = 32
+
     private fun hash(value: String, algorithm: HashAlgorithm): String {
         return when (algorithm) {
             HashAlgorithm.SHA256 -> DigestUtils.sha3_256Hex(value)
@@ -16,7 +18,7 @@ class HashingService : IHashingService {
         }
     }
 
-    override fun generateSaltedHash(value: String, saltLength: Int): SaltedHash {
+    override fun generateSaltedHash(value: String): SaltedHash {
         val salt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLength)
         val saltAsHex = hex(salt)
 
@@ -31,7 +33,7 @@ class HashingService : IHashingService {
         )
     }
 
-    override fun verify(value: String, saltedHash: SaltedHash): Boolean {
+    override fun verifySaltedHash(value: String, saltedHash: SaltedHash): Boolean {
         return hash(saltedHash.salt + value, saltedHash.algorithm) == saltedHash.hash
     }
 }

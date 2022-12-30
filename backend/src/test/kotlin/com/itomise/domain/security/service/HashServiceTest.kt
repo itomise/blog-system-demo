@@ -34,7 +34,7 @@ class HashServiceTest {
 
         val saltedHash = hashingService.generateSaltedHash(password)
 
-        assert(hashingService.verify(password, saltedHash))
+        assert(hashingService.verifySaltedHash(password, saltedHash))
     }
 
     @Test
@@ -43,7 +43,7 @@ class HashServiceTest {
 
         val saltedHash = hashingService.generateSaltedHash(password)
 
-        assert(!hashingService.verify("_WG_xzVMaERveTcZ7yU", saltedHash))
+        assert(!hashingService.verifySaltedHash("_WG_xzVMaERveTcZ7yU", saltedHash))
     }
 
     @Test
@@ -64,6 +64,6 @@ class HashServiceTest {
             algorithm = differentAlgorithm
         )
 
-        assert(!hashingService.verify(password, differentSaltedHash))
+        assert(!hashingService.verifySaltedHash(password, differentSaltedHash))
     }
 }

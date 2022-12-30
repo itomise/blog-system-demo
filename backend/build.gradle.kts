@@ -10,6 +10,8 @@ val hikaricp_version: String by project
 val kreds_version: String by project
 val commons_codec: String by project
 val nimbus_jose_version: String by project
+val sendgrid_version: String by project
+val mockk_version: String by project
 
 plugins {
     application
@@ -45,7 +47,8 @@ dependencies {
     // jwt
     implementation("io.ktor:ktor-server-auth-jwt:$ktor_version")
     implementation("com.nimbusds:nimbus-jose-jwt:$nimbus_jose_version")
-
+    // mail
+    implementation("com.sendgrid:sendgrid-java:$sendgrid_version")
     // redis
     implementation("io.github.crackthecodeabhi:kreds:$kreds_version")
     // cp
@@ -70,4 +73,5 @@ dependencies {
     // test
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+    testImplementation("io.mockk:mockk:$mockk_version")
 }

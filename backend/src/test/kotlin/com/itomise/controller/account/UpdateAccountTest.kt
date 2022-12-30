@@ -5,8 +5,8 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.BaseTestApplication.Companion.appTestApplication
 import com.itomise.BaseTestApplication.Companion.authSessionUserForTest
 import com.itomise.BaseTestApplication.Companion.cleanup
-import com.itomise.com.itomise.controller.requestModel.CreateUserRequestModel
-import com.itomise.com.itomise.controller.requestModel.UpdateUserRequestModel
+import com.itomise.com.itomise.controller.requestModels.CreateUserRequestModel
+import com.itomise.com.itomise.controller.requestModels.UpdateUserRequestModel
 import com.itomise.com.itomise.controller.responseModel.CreateUserResponseModel
 import com.itomise.com.itomise.controller.responseModel.GetListUserResponseModel
 import io.ktor.client.plugins.cookies.*
@@ -40,7 +40,6 @@ class UpdateAccountTest {
                     CreateUserRequestModel(
                         "test太郎",
                         email,
-                        password
                     ),
                 )
             )
@@ -94,7 +93,6 @@ class UpdateAccountTest {
                     CreateUserRequestModel(
                         "04テスト太郎",
                         "04@example.com",
-                        "${UUID.randomUUID()}"
                     ),
                 )
             )
