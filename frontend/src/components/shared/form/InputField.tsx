@@ -1,11 +1,12 @@
 import { UseFormRegisterReturn } from 'react-hook-form'
-import { Input } from './Input'
+import { Input, InputProps } from './Input'
 import { FieldWrapper, FieldWrapperPassThroughProps } from './FieldWrapper'
 
 type InputFieldProps = FieldWrapperPassThroughProps & {
   type?: 'text' | 'email' | 'password'
   className?: string
   registration: Partial<UseFormRegisterReturn>
+  inputProps?: InputProps
 }
 
 export const InputField: React.FC<InputFieldProps> = ({
@@ -15,9 +16,17 @@ export const InputField: React.FC<InputFieldProps> = ({
   error,
   registration,
   placeholder,
+  inputProps,
   ...rest
 }) => (
   <FieldWrapper label={label} error={error} {...rest}>
-    <Input type={type} className={className} {...registration} placeholder={placeholder} invalid={!!error} />
+    <Input
+      type={type}
+      className={className}
+      {...registration}
+      {...inputProps}
+      placeholder={placeholder}
+      invalid={!!error}
+    />
   </FieldWrapper>
 )

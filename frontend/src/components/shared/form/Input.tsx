@@ -1,10 +1,10 @@
 import { forwardRef } from 'react'
 import { PolymorphicComponentProps } from '@mantine/utils'
-import { InputProps, Input as MtInput } from '@mantine/core'
+import { InputProps as MtInputProps, Input as MtInput } from '@mantine/core'
 
-type Props = PolymorphicComponentProps<'input', InputProps>
+export type InputProps = PolymorphicComponentProps<'input', MtInputProps>
 
-const Component: React.ForwardRefRenderFunction<HTMLInputElement, Props> = (props: Props, ref) => (
+const Component: React.ForwardRefRenderFunction<HTMLInputElement, InputProps> = (props: InputProps, ref) => (
   <MtInput ref={ref} {...props} />
 )
 

@@ -1,9 +1,9 @@
 import { z } from 'zod'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import { showNotification } from '@mantine/notifications'
 import { Button, Center, Container, Paper, Stack, Title, useMantineTheme } from '@mantine/core'
 import { useLoginWithSession } from '@/services/auth/api/useLoginWithSession'
-import { appAxios } from '@/libs/axios'
 import { InternalLink } from '@/components/shared/link/InternalLink'
 import { InputField } from '@/components/shared/form/InputField'
 import { Form } from '@/components/shared/form/Form'
@@ -21,6 +21,12 @@ export const LoginPage: React.FC = () => {
     config: {
       onSuccess: () => {
         router.push('/users')
+      },
+      onError: () => {
+        showNotification({
+          color: 'red',
+          message: 'ユーザー名かパスワードが間違っています。',
+        })
       },
     },
   })
@@ -68,13 +74,6 @@ export const LoginPage: React.FC = () => {
                 )}
               </Form>
               <Stack spacing={2} mt="lg">
-                <Button
-                  onClick={async () => {
-                    appAxios.get('/auth/logout')
-                  }}
-                >
-                  ログアウト
-                </Button>
                 <InternalLink href="/">
                   <Button fullWidth>Topへ戻る</Button>
                 </InternalLink>

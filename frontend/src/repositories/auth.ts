@@ -54,13 +54,21 @@ const getMeWithSession = async () => {
 export type SignupRequest = {
   name: string
   email: string
-  password: string
 }
 export type SignupResponse = {}
 
 const signup = async (payload: SignupRequest) => {
   const { data } = await appAxios.post<SignupResponse>('/auth/sign-up', payload)
   return data
+}
+
+export type ActivateUserRequest = {
+  token: string
+  password: string
+}
+
+const activateUser = async (payload: ActivateUserRequest) => {
+  await appAxios.post('/auth/sign-up/activate', payload)
 }
 
 export const authRepository = {
@@ -70,4 +78,5 @@ export const authRepository = {
   getMeWithSession,
   signup,
   logout,
+  activateUser,
 }

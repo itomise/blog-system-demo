@@ -1,0 +1,1 @@
+export { SignUpSentPage } from './SignUpSentPage'

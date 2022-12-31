@@ -1,33 +1,35 @@
 import { z } from 'zod'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { showNotification } from '@mantine/notifications'
 import { Button, Center, Container, Paper, Stack, Title, useMantineTheme } from '@mantine/core'
-import { useSignup } from '@/services/auth/api/useSignup'
+import { PasswordRegex } from '@/services/auth/constant'
+import { useActivateUser } from '@/services/auth/api/useActivateUser'
 import { InternalLink } from '@/components/shared/link/InternalLink'
 import { InputField } from '@/components/shared/form/InputField'
 import { Form } from '@/components/shared/form/Form'
 
 const schema = z.object({
-  name: z.string().min(5).max(255),
-  email: z.string().email(),
+  password: z.string().min(6).max(100).regex(PasswordRegex),
 })
 
 type FormType = z.infer<typeof schema>
 
-export const SignUpPage: React.FC = () => {
+export const SignUpActivatePage: React.FC = () => {
   const router = useRouter()
-  const { mutate, isLoading } = useSignup({
+  const token = router.query.token as string
+  const { mutate, isLoading } = useActivateUser({
     onSuccess: () => {
       showNotification({
-        message: '仮登録が完了しました。メールアドレスをご確認ください。',
+        message: 'ユーザー登録が完了しました。',
         color: 'green',
       })
-      router.push('/sign-up/sent')
+      router.push('/login')
     },
     onError: (e) => {
       showNotification({
         color: 'red',
-        title: '登録に失敗しました。',
+        title: 'ユーザー登録に失敗しました。',
         message: e.message,
       })
     },
@@ -40,18 +42,32 @@ export const SignUpPage: React.FC = () => {
         <Center sx={{ width: '100%', height: '100vh' }}>
           <Paper p={80} radius="md" sx={{ maxWidth: 500, width: '100%' }}>
             <Title order={1} align="center">
-              新規登録
+              パスワード設定
             </Title>
-            <Form<FormType> onSubmit={(data) => mutate(data)} schema={schema}>
+            <Form<FormType>
+              onSubmit={(data) =>
+                mutate({
+                  password: data.password,
+                  token,
+                })
+              }
+              schema={schema}
+            >
               {({ register, formState: { errors } }) => (
                 <Stack spacing="md" mt="md">
-                  <InputField label="名前" error={errors.name} registration={register('name')} required />
                   <InputField
-                    label="メールアドレス"
-                    type="email"
-                    error={errors.email}
-                    registration={register('email')}
+                    label="パスワード"
+                    type="password"
+                    error={errors.password}
+                    registration={register('password')}
+                    labelProps={{
+                      autoComplete: 'new-password',
+                      name: 'password',
+                    }}
                     required
+                    inputProps={{
+                      autoComplete: 'new-password',
+                    }}
                   />
                   <Button type="submit" loading={isLoading}>
                     送信

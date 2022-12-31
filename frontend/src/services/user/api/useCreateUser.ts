@@ -4,15 +4,12 @@ import { MutationConfig, queryClient } from '@/libs/react-query'
 
 const { createUser } = userRepository
 
-type Options = {
-  config?: MutationConfig<typeof createUser>
-}
-
-export const useCreateUser = ({ config }: Options = {}) =>
+type Options = MutationConfig<typeof createUser>
+export const useCreateUser = (props: Options = {}) =>
   useMutation({
     onSuccess: () => {
       queryClient.invalidateQueries(['/user'])
     },
-    ...config,
+    ...props,
     mutationFn: createUser,
   })

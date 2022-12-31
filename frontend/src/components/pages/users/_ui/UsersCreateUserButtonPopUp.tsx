@@ -2,8 +2,7 @@ import { z } from 'zod'
 import { useRef } from 'react'
 import { showNotification } from '@mantine/notifications'
 import { Popover, Button, Stack } from '@mantine/core'
-import { PasswordRegex } from '@/services/auth/constant'
-import { useSignup } from '@/services/auth/api/useSignup'
+import { useCreateUser } from '@/services/user/api/useCreateUser'
 import { queryClient } from '@/libs/react-query'
 import { InputField } from '@/components/shared/form/InputField'
 import { Form } from '@/components/shared/form/Form'
@@ -11,13 +10,12 @@ import { Form } from '@/components/shared/form/Form'
 const schema = z.object({
   name: z.string().min(5).max(255),
   email: z.string().email(),
-  password: z.string().min(6).max(100).regex(PasswordRegex),
 })
 type FormType = z.infer<typeof schema>
 
 export const UsersCreateUserButtonPopUp: React.FC = () => {
   const buttonRef = useRef<HTMLButtonElement>(null)
-  const { mutate, isLoading } = useSignup({
+  const { mutate, isLoading } = useCreateUser({
     onSuccess: () => {
       showNotification({
         message: '仮ユーザー作成が完了しました。メール認証でアカウントがアクティベートされます。',
@@ -65,14 +63,6 @@ export const UsersCreateUserButtonPopUp: React.FC = () => {
                 registration={register('email')}
                 required
                 size="xs"
-              />
-              <InputField
-                label="パスワード"
-                type="password"
-                error={errors.password}
-                registration={register('password')}
-                size="xs"
-                required
               />
               <Button type="submit" mt="lg" loading={isLoading}>
                 送信
