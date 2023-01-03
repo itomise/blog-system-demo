@@ -14,6 +14,7 @@ import com.nimbusds.jose.jwk.JWKSet
 import java.net.URL
 import java.security.KeyFactory
 import java.security.spec.PKCS8EncodedKeySpec
+import java.time.LocalDateTime
 import java.util.*
 
 class UserService : IUserService {
@@ -60,12 +61,13 @@ class UserService : IUserService {
             encryptionKey = envConfig.jwt.encryptionKey.toByteArray(),
             claims = mapOf(
                 "userId" to user.id.value.toString(),
-                "operationType" to AccountOperationType.ACTIVATE.value
+                "operationType" to AccountOperationType.ACTIVATE.value,
+                "expires" to LocalDateTime.now().plusMinutes(2).toString()
             )
         )
     }
 
-    override fun getUserIdFromActivationToken(token: String): UserId? {
+    override fun getUserIdFromActivationTokenOrNull(token: String): UserId {
         val publicKeys = JWKSet.load(URL("${envConfig.jwt.issuer}/.well-known/jwks.json"))
         val publicKey = publicKeys.getKeyByKeyId(envConfig.jwt.publicKeyId).toPublicJWK().toRSAKey()
 
@@ -73,12 +75,24 @@ class UserService : IUserService {
             token = token,
             publicKey = publicKey,
             encryptionKey = envConfig.jwt.encryptionKey.toByteArray()
-        ) ?: return null
+        ) ?: throw IllegalArgumentException("tokenが不正です。")
 
         val operationType = AccountOperationType.get(jwtClaims.getClaim("operationType").toString())
 
-        if (operationType != AccountOperationType.ACTIVATE) return null
+        if (operationType != AccountOperationType.ACTIVATE) {
+            throw IllegalArgumentException("tokenが不正です。")
+        }
 
+        val expires = try {
+            LocalDateTime.parse(jwtClaims.getClaim("expires").toString())
+        } catch (e: Exception) {
+            throw IllegalArgumentException("tokenが不正です。")
+        }
+
+        if (expires < LocalDateTime.now()) {
+            throw IllegalArgumentException("tokenの有効期限が切れています。")
+        }
+        
         return UserId(UUID.fromString(jwtClaims.getClaim("userId").toString()))
     }
 }

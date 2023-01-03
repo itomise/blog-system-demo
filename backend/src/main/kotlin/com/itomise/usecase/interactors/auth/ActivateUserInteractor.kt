@@ -12,7 +12,7 @@ class ActivateUserInteractor : IActivateUserUseCase {
 
     override suspend fun handle(command: IActivateUserUseCase.Command) {
         val userId =
-            userService.getUserIdFromActivationToken(command.token) ?: throw IllegalArgumentException("不正なtokenです。")
+            userService.getUserIdFromActivationTokenOrNull(command.token)
 
         dbQuery {
             val user = userRepository.findByUserId(userId)

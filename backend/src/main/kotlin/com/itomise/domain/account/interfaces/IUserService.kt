@@ -10,5 +10,5 @@ interface IUserService {
 
     fun generateActivationToken(user: User): String
 
-    fun getUserIdFromActivationToken(token: String): UserId?
+    fun getUserIdFromActivationTokenOrNull(token: String): UserId
 }
