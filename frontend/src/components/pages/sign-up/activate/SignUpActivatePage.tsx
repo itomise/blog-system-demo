@@ -1,8 +1,8 @@
 import { z } from 'zod'
-import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { showNotification } from '@mantine/notifications'
 import { Button, Center, Container, Paper, Stack, Title, useMantineTheme } from '@mantine/core'
+import { onMutateError } from '@/services/common/api/onMutateError'
 import { PasswordRegex } from '@/services/auth/constant'
 import { useActivateUser } from '@/services/auth/api/useActivateUser'
 import { InternalLink } from '@/components/shared/link/InternalLink'
@@ -26,13 +26,7 @@ export const SignUpActivatePage: React.FC = () => {
       })
       router.push('/login')
     },
-    onError: (e) => {
-      showNotification({
-        color: 'red',
-        title: 'ユーザー登録に失敗しました。',
-        message: e.message,
-      })
-    },
+    onError: onMutateError('ユーザー登録に失敗しました。'),
   })
   const theme = useMantineTheme()
 
