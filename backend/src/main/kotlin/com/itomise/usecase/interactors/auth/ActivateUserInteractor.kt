@@ -2,6 +2,7 @@ package com.itomise.com.itomise.usecase.interactors.auth
 
 import com.itomise.com.itomise.domain.account.interfaces.IUserRepository
 import com.itomise.com.itomise.domain.account.interfaces.IUserService
+import com.itomise.com.itomise.domain.common.exception.CustomIllegalArgumentException
 import com.itomise.com.itomise.usecase.interfaces.auth.IActivateUserUseCase
 import com.itomise.com.itomise.util.getKoinInstance
 import com.itomise.infrastructure.dbQuery
@@ -11,8 +12,11 @@ class ActivateUserInteractor : IActivateUserUseCase {
     private val userService = getKoinInstance<IUserService>()
 
     override suspend fun handle(command: IActivateUserUseCase.Command) {
-        val userId =
-            userService.getUserIdFromActivationTokenOrNull(command.token)
+        val userId = try {
+            userService.getUserIdFromActivationToken(command.token)
+        } catch (e: IllegalArgumentException) {
+            throw CustomIllegalArgumentException(e.message.toString())
+        }
 
         dbQuery {
             val user = userRepository.findByUserId(userId)

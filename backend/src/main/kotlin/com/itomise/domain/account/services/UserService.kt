@@ -67,7 +67,7 @@ class UserService : IUserService {
         )
     }
 
-    override fun getUserIdFromActivationTokenOrNull(token: String): UserId {
+    override fun getUserIdFromActivationToken(token: String): UserId {
         val publicKeys = JWKSet.load(URL("${envConfig.jwt.issuer}/.well-known/jwks.json"))
         val publicKey = publicKeys.getKeyByKeyId(envConfig.jwt.publicKeyId).toPublicJWK().toRSAKey()
 
@@ -92,7 +92,7 @@ class UserService : IUserService {
         if (expires < LocalDateTime.now()) {
             throw IllegalArgumentException("tokenの有効期限が切れています。")
         }
-        
+
         return UserId(UUID.fromString(jwtClaims.getClaim("userId").toString()))
     }
 }
