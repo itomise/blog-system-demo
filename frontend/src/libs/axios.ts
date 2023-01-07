@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const appAxios = axios.create({
-  baseURL: 'http://localhost:8080/api',
+  baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:8080/api' : '/api',
   headers: {
     'X-Requested-With': 'HttpRequest',
     Accept: 'application/json',
