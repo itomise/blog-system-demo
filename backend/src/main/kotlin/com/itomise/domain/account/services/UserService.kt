@@ -11,7 +11,7 @@ import com.itomise.com.itomise.domain.security.vo.SaltedHash
 import com.itomise.com.itomise.module.envConfig
 import com.itomise.com.itomise.util.getKoinInstance
 import com.nimbusds.jose.jwk.JWKSet
-import java.net.URL
+import java.io.File
 import java.security.KeyFactory
 import java.security.spec.PKCS8EncodedKeySpec
 import java.time.LocalDateTime
@@ -62,14 +62,14 @@ class UserService : IUserService {
             claims = mapOf(
                 "userId" to user.id.value.toString(),
                 "operationType" to AccountOperationType.ACTIVATE.value,
-                "expires" to LocalDateTime.now().plusMinutes(2).toString()
+                "expires" to LocalDateTime.now().plusHours(24).toString()
             )
         )
     }
 
     override fun getUserIdFromActivationToken(token: String): UserId {
-        val publicKeys = JWKSet.load(URL("${envConfig.jwt.issuer}/.well-known/jwks.json"))
-        val publicKey = publicKeys.getKeyByKeyId(envConfig.jwt.publicKeyId).toPublicJWK().toRSAKey()
+        val jwks = File("certs/jwks.json").readText()
+        val publicKey = JWKSet.parse(jwks).getKeyByKeyId(envConfig.jwt.publicKeyId).toPublicJWK().toRSAKey()
 
         val jwtClaims = nestedJwtTokenService.verify(
             token = token,

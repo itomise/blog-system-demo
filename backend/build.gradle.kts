@@ -40,6 +40,7 @@ dependencies {
     implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-cors:$ktor_version")
     implementation("io.ktor:ktor-server-status-pages:$ktor_version")
+    implementation("io.ktor:ktor-server-forwarded-header:$ktor_version")
     // auth
     implementation("io.ktor:ktor-server-sessions:$ktor_version")
     implementation("io.ktor:ktor-server-auth:$ktor_version")
@@ -60,6 +61,7 @@ dependencies {
     // logging
     implementation("io.ktor:ktor-server-call-logging:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
+    implementation("net.logstash.logback:logstash-logback-encoder:7.2")
     // orm
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
@@ -70,6 +72,7 @@ dependencies {
     implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
     // database
     implementation("org.postgresql:postgresql:$postgresql_version")
+    implementation("com.google.cloud.sql:postgres-socket-factory:1.7.2")
     // test
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")

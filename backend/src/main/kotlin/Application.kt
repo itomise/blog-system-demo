@@ -10,6 +10,7 @@ import io.ktor.server.application.*
 import io.ktor.server.plugins.callloging.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
+import io.ktor.server.plugins.forwardedheaders.*
 import io.ktor.server.request.*
 import org.slf4j.event.Level
 
@@ -24,6 +25,12 @@ fun Application.module() {
         jackson {
             registerModule(JavaTimeModule())  // support java.time.* types
         }
+    }
+
+    // forwarded header ( https なしで secure な cookie を設定するために、リバースプロキシからくるヘッダを認識するために必要 )
+    install(ForwardedHeaders)
+    install(XForwardedHeaders) {
+        useFirstProxy()
     }
 
     // logging
@@ -63,9 +70,5 @@ fun Application.module() {
 
     RedisFactory.init(envConfig.redis.endpoint)
 
-    DataBaseFactory.init(
-        url = envConfig.db.url,
-        user = envConfig.db.user,
-        password = envConfig.db.password
-    )
+    DataBaseFactory.init()
 }

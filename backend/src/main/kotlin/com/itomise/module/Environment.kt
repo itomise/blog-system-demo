@@ -17,7 +17,9 @@ data class EnvConfig(
     data class EnvConfigDb(
         val url: String,
         val user: String,
-        val password: String
+        val password: String,
+        val instanceUnixSocket: String?,
+        val instanceConnectionName: String?,
     )
 
     data class EnvConfigRedis(
@@ -48,6 +50,9 @@ fun Application.configureEnvironmentVariables() {
         environment.config.propertyOrNull(path)?.getString()
             ?: throw IllegalStateException("ktorの環境変数が見つかりません。 path: $path")
 
+    fun fromConfigOrNull(path: String): String? =
+        environment.config.propertyOrNull(path)?.getString()
+
     envConfig = EnvConfig(
         isTest = environment.config.propertyOrNull("app.test") != null,
         allowHost = fromConfig("app.allowHost"),
@@ -55,6 +60,8 @@ fun Application.configureEnvironmentVariables() {
             url = fromConfig("app.db.url"),
             user = fromConfig("app.db.user"),
             password = fromConfig("app.db.password"),
+            instanceUnixSocket = fromConfigOrNull("app.db.instanceUnixSocket"),
+            instanceConnectionName = fromConfigOrNull("app.db.instanceConnectionName"),
         ),
         redis = EnvConfig.EnvConfigRedis(
             endpoint = fromConfig("app.redis.endpoint"),

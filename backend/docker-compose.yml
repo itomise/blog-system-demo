@@ -41,7 +41,5 @@ services:
     image: flyway/flyway:latest
     volumes:
       - ./db/migration:/flyway/sql
-      - ./db/conf/local:/flyway/conf
     depends_on:
       - db
-    command: info

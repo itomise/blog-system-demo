@@ -1,5 +1,6 @@
 package com.itomise.com.itomise.infrastructure
 
+import com.itomise.com.itomise.module.envConfig
 import io.github.crackthecodeabhi.kreds.connection.Endpoint
 import io.github.crackthecodeabhi.kreds.connection.KredsClient
 import io.github.crackthecodeabhi.kreds.connection.newClient
@@ -8,9 +9,9 @@ import io.ktor.server.sessions.*
 lateinit var redisClient: KredsClient
 
 object RedisFactory {
-    val SESSION_EXPIRES_DURATION: Long = 60 * 60 * 24 * 30
-    fun init(endpoint: String) {
-        newClient(Endpoint.from(endpoint)).use { client ->
+    const val SESSION_EXPIRES_DURATION: Long = 60 * 60 * 24 * 30
+    fun init() {
+        newClient(Endpoint.from(envConfig.redis.endpoint)).use { client ->
             redisClient = client
         }
     }

@@ -1,5 +1,6 @@
 package com.itomise.infrastructure
 
+import com.itomise.com.itomise.module.envConfig
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import kotlinx.coroutines.Dispatchers
@@ -10,27 +11,26 @@ import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 object DataBaseFactory {
-    fun init(url: String, user: String, password: String) {
-        Database.connect(
-            hikari(
-                url = url,
-                user = user,
-                password = password
-            )
-        )
+    fun init() {
+        Database.connect(hikari())
     }
 
-    private fun hikari(url: String, user: String, password: String): HikariDataSource {
+    private fun hikari(): HikariDataSource {
         val config = HikariConfig().apply {
-            jdbcUrl = url
+            jdbcUrl = envConfig.db.url
             driverClassName = "org.postgresql.Driver"
             maximumPoolSize = 3
             isAutoCommit = false
             transactionIsolation = "TRANSACTION_REPEATABLE_READ"
             validate()
         }
-        config.username = user
-        config.password = password
+        config.username = envConfig.db.user
+        config.password = envConfig.db.password
+        if (envConfig.db.instanceConnectionName != null && envConfig.db.instanceUnixSocket != null) {
+            config.addDataSourceProperty("socketFactory", "com.google.cloud.sql.postgres.SocketFactory")
+            config.addDataSourceProperty("cloudSqlInstance", envConfig.db.instanceConnectionName)
+            config.addDataSourceProperty("unixSocketPath", envConfig.db.instanceUnixSocket)
+        }
 
         return HikariDataSource(config)
     }

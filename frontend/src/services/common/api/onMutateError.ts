@@ -1,4 +1,4 @@
-import { AxiosError, HttpStatusCode } from 'axios'
+import { AxiosError } from 'axios'
 import { NotificationProps, showNotification } from '@mantine/notifications'
 
 export const onMutateError = (toastTitle: string) => (e: AxiosError<unknown, any>) => {
@@ -8,12 +8,15 @@ export const onMutateError = (toastTitle: string) => (e: AxiosError<unknown, any
     message: '',
   }
 
-  if (e.status === HttpStatusCode.BadRequest) {
-    if (e.response?.data) {
-      if (typeof e.response.data === 'string') {
-        base.message = e.response.data
+  if (e.response) {
+    if (e.response.status === 400) {
+      if (e.response?.data) {
+        if (typeof e.response.data === 'string') {
+          base.message = e.response.data
+        }
       }
     }
   }
+
   showNotification(base)
 }
