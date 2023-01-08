@@ -68,7 +68,7 @@ fun Application.module() {
 
     statusPage()
 
-    RedisFactory.init(envConfig.redis.endpoint)
+    RedisFactory.init()
 
     DataBaseFactory.init()
 }
