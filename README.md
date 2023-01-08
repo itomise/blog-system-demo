@@ -13,6 +13,7 @@
   - Redis
   - Jackson
   - mockk
+  - nimbus-jose-jwt
 - frontend
   - Next.js
   - TypeScript
