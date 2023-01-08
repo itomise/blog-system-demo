@@ -1,19 +1,23 @@
 # blog system
 
-学習用
+色々使ってみるためのサンプルプロジェクト
 
 ## 技術構成
 
 - backend
   - Kotlin / Ktor
-  - SendGrid
   - PostgreSQL
   - HikariCP
   - Exposed
-  - Redis
   - Jackson
-  - mockk
-  - nimbus-jose-jwt
+  - SendGrid
+  - Auth
+    - session (ktor)
+      - Redis
+    - jwt (nimbus-jose-jwt / ktor-server-auth-jwt)
+  - Test
+    - Ktor
+    - mockk
 - frontend
   - Next.js
   - TypeScript
