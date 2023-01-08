@@ -1,6 +1,32 @@
-# blog
+# blog system
 
 学習用
 
-# ドキュメント
-https://www.notion.so/3fda4e53a8664b47840b3609a4297cd4
+## 技術構成
+
+- backend
+  - Kotlin / Ktor
+  - SendGrid
+  - PostgreSQL
+  - HikariCP
+  - Exposed
+  - Redis
+  - Jackson
+  - mockk
+- frontend
+  - Next.js
+  - TypeScript
+  - Mantine.dev
+  - TanStack Query
+  - Emotion
+  - React Hook Form
+  - zod
+- cloud
+  - GCP
+  - Cloud Run
+  - Cloud Storage
+  - Secret Manager
+  - Cloud CDN
+  - Load Balancer
+  - Cloud SQL
+  - MemoryStore (Redis)
