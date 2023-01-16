@@ -6,7 +6,6 @@ interface ISignUpUseCase {
     suspend fun handle(command: Command): UUID
 
     data class Command(
-        val name: String,
         val email: String,
     )
 }

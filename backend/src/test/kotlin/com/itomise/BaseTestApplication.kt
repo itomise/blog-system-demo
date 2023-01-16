@@ -7,7 +7,6 @@ import com.itomise.com.itomise.domain.account.interfaces.IUserService
 import com.itomise.com.itomise.domain.account.vo.Email
 import com.itomise.com.itomise.domain.account.vo.UserId
 import com.itomise.com.itomise.domain.account.vo.UserPrincipal
-import com.itomise.com.itomise.domain.account.vo.Username
 import com.itomise.com.itomise.lib.sendgrid.SendGridClient
 import com.itomise.com.itomise.usecase.interfaces.account.ICreateAccountUseCase
 import com.itomise.com.itomise.usecase.interfaces.auth.IActivateUserUseCase
@@ -58,25 +57,19 @@ class BaseTestApplication() {
                             val userService = getKoinInstance<IUserService>()
                             val activateUserUseCase = getKoinInstance<IActivateUserUseCase>()
 
-                            val result = createUserUseCase.handle(
-                                ICreateAccountUseCase.Command(
-                                    name = request.name,
-                                    email = request.email,
-                                )
-                            )
+                            val result = createUserUseCase.handle(ICreateAccountUseCase.Command(request.email))
 
                             activateUserUseCase.handle(
                                 IActivateUserUseCase.Command(
                                     token = userService.generateActivationToken(
                                         User.from(
                                             id = UserId(result),
-                                            name = Username(request.name),
                                             email = Email(request.email),
-                                            passwordSalt = null,
-                                            passwordHash = null,
-                                            userHashAlgorithmId = null
+                                            profile = null,
+                                            loginInfo = null
                                         )
                                     ),
+                                    name = request.name,
                                     password = request.password
                                 )
                             )
@@ -102,13 +95,12 @@ class BaseTestApplication() {
                                     token = userService.generateActivationToken(
                                         User.from(
                                             id = UserId(request.id),
-                                            name = Username(request.name),
                                             email = Email(request.email),
-                                            passwordSalt = null,
-                                            passwordHash = null,
-                                            userHashAlgorithmId = null
+                                            profile = null,
+                                            loginInfo = null
                                         )
                                     ),
+                                    name = request.name,
                                     password = request.password
                                 )
                             )
@@ -165,6 +157,11 @@ class BaseTestApplication() {
 
         private fun setUpTables() {
             transaction {
+                val sqlForDropAllSchema = """
+                    drop schema if exists main cascade;
+                """.trimIndent()
+                TransactionManager.current().exec(sqlForDropAllSchema)
+                
                 val migrationSql = getAllMigrationSql()
                 val sql = """
                     create schema if not exists main;
@@ -186,7 +183,7 @@ class BaseTestApplication() {
 
             transaction {
                 val sqlForDropAllSchema = """
-                    drop schema main cascade;
+                    drop schema if exists main cascade;
                 """.trimIndent()
                 TransactionManager.current().exec(sqlForDropAllSchema)
             }

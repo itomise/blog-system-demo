@@ -7,12 +7,12 @@ import com.itomise.com.itomise.util.getKoinInstance
 data class User internal constructor(
     val id: UserId,
     val email: Email,
-    val name: Username,
-    val loginInfo: UserInternalLoginInfo?
+    val profile: UserProfile?,
+    val loginInfo: UserLoginInfo?
 ) {
     private val hashService = getKoinInstance<IHashingService>()
 
-    val isActive = loginInfo != null
+    val isActive = profile != null
 
     override fun equals(other: Any?): Boolean {
         if (other is User) {
@@ -24,54 +24,53 @@ data class User internal constructor(
     override fun hashCode(): Int {
         var result = id.hashCode()
         result = 31 * result + email.hashCode()
-        result = 31 * result + name.hashCode()
+        result = 31 * result + profile.hashCode()
         return result
     }
 
-    fun changeName(name: Username) = this.copy(name = name)
+    fun changeProfile(name: Username) = this.copy(profile = profile?.copy(name = name))
 
-    fun activate(password: String): User {
+    fun activateAsInternal(name: Username, password: String): User {
         val saltedHash = hashService.generateSaltedHash(password)
 
         return this.copy(
+            profile = UserProfile(
+                name = name
+            ),
             loginInfo = UserInternalLoginInfo(
-                userId = this.id,
                 passwordHash = saltedHash.hash,
                 passwordSalt = saltedHash.salt,
-                userHashAlgorithmId = UserHashAlgorithmId.get(saltedHash.algorithm.value),
+                hashAlgorithmId = UserHashAlgorithmId.get(saltedHash.algorithm.value),
+            )
+        )
+    }
+
+    fun setExternalLoginInfo(externalServiceType: UserExternalLoginInfo.ExternalServiceType): User {
+        return this.copy(
+            loginInfo = UserExternalLoginInfo(
+                externalServiceType = externalServiceType
             )
         )
     }
 
     companion object {
-        fun new(name: Username, email: Email) = User(
+        fun new(email: Email) = User(
             id = UserId.new(),
-            name = name,
             email = email,
+            profile = null,
             loginInfo = null
         )
 
         fun from(
             id: UserId,
             email: Email,
-            name: Username,
-            passwordHash: String?,
-            passwordSalt: String?,
-            userHashAlgorithmId: UserHashAlgorithmId?,
+            profile: UserProfile?,
+            loginInfo: UserLoginInfo?
         ): User {
-            val loginInfo = if (passwordHash != null && passwordSalt != null && userHashAlgorithmId != null) {
-                UserInternalLoginInfo(
-                    userId = id,
-                    passwordHash = passwordHash,
-                    passwordSalt = passwordSalt,
-                    userHashAlgorithmId = userHashAlgorithmId,
-                )
-            } else null
-
             return User(
                 id = id,
                 email = email,
-                name = name,
+                profile = profile,
                 loginInfo = loginInfo
             )
         }

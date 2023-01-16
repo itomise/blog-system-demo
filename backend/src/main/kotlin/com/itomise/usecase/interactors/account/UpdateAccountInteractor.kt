@@ -16,7 +16,7 @@ class UpdateAccountInteractor : IUpdateAccountUseCase {
                 ?: throw IllegalArgumentException("指定されたユーザーは存在しません")
 
 
-            val changedUser = targetUser.changeName(Username(command.name))
+            val changedUser = targetUser.changeProfile(Username(command.name))
             userRepository.save(changedUser)
         }
     }

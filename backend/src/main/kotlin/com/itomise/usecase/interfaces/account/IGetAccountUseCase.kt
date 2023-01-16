@@ -7,7 +7,7 @@ interface IGetAccountUseCase {
 
     data class Command(val userId: UUID)
 
-    data class OutputDto(val id: UUID, val name: String, val email: String)
+    data class OutputDto(val id: UUID, val name: String?, val email: String)
 }
 
 

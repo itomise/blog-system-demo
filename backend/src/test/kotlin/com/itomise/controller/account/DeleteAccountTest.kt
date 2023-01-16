@@ -35,7 +35,6 @@ class DeleteAccountTest {
             setBody(
                 objectMapper.writeValueAsString(
                     CreateUserRequestModel(
-                        "test太郎",
                         "test@example.com",
                     ),
                 )
@@ -53,7 +52,7 @@ class DeleteAccountTest {
             assertEquals(2, res.users.size)
             res.users.find { it.id == createResBody.id }?.run {
                 assertEquals(createResBody.id, this.id)
-                assertEquals("test太郎", this.name)
+                assertEquals(null, this.name)
                 assertEquals("test@example.com", this.email)
             }
         }

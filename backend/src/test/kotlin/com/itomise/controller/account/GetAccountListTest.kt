@@ -28,10 +28,10 @@ class GetAccountListTest {
         val client = createClient { install(HttpCookies) }
 
         val prepareCreateUserRequests = listOf(
-            CreateUserRequestModel("01テスト太郎", "01@example.com"),
-            CreateUserRequestModel("03テスト太郎", "03@example.com"),
-            CreateUserRequestModel("02テスト太郎", "02@example.com"),
-            CreateUserRequestModel("04テスト太郎", "04@example.com"),
+            CreateUserRequestModel("01@example.com"),
+            CreateUserRequestModel("03@example.com"),
+            CreateUserRequestModel("02@example.com"),
+            CreateUserRequestModel("04@example.com"),
         )
         val requestUserIdList = mutableListOf<UUID>()
 
@@ -55,22 +55,22 @@ class GetAccountListTest {
             assertEquals(5, res.users.size)
             res.users[0].run {
                 assertEquals(requestUserIdList[0], this.id)
-                assertEquals("01テスト太郎", this.name)
+                assertEquals(null, this.name)
                 assertEquals("01@example.com", this.email)
             }
             res.users[1].run {
                 assertEquals(requestUserIdList[2], this.id)
-                assertEquals("02テスト太郎", this.name)
+                assertEquals(null, this.name)
                 assertEquals("02@example.com", this.email)
             }
             res.users[2].run {
                 assertEquals(requestUserIdList[1], this.id)
-                assertEquals("03テスト太郎", this.name)
+                assertEquals(null, this.name)
                 assertEquals("03@example.com", this.email)
             }
             res.users[3].run {
                 assertEquals(requestUserIdList[3], this.id)
-                assertEquals("04テスト太郎", this.name)
+                assertEquals(null, this.name)
                 assertEquals("04@example.com", this.email)
             }
             res.users[4].run {

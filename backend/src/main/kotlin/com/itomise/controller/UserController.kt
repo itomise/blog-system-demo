@@ -44,7 +44,6 @@ fun Route.userRouting() {
 
                 val userId = createUserUseCase.handle(
                     ICreateAccountUseCase.Command(
-                        name = request.name,
                         email = request.email,
                     )
                 )

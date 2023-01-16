@@ -10,5 +10,5 @@ interface ILoginUseCase {
         val password: String
     )
 
-    data class OutputDtoUser(val id: UUID, val name: String, val email: String)
+    data class OutputDtoUser(val id: UUID, val name: String?, val email: String)
 }

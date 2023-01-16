@@ -2,6 +2,7 @@ package com.itomise.controller.account
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.itomise.BaseTestApplication
 import com.itomise.BaseTestApplication.Companion.appTestApplication
 import com.itomise.BaseTestApplication.Companion.authSessionUserForTest
 import com.itomise.BaseTestApplication.Companion.cleanup
@@ -35,19 +36,27 @@ class UpdateAccountTest {
 
         val createRes = client.post("/api/users") {
             contentType(ContentType.Application.Json)
-            setBody(
-                objectMapper.writeValueAsString(
-                    CreateUserRequestModel(
-                        "test太郎",
-                        email,
-                    ),
-                )
-            )
+            setBody(objectMapper.writeValueAsString(CreateUserRequestModel(email)))
         }.apply {
             assertEquals(HttpStatusCode.OK, this.status)
         }
         val createResBody = objectMapper.readValue<CreateUserResponseModel>(createRes.bodyAsText())
 
+        client.post("/activate-for-testing") {
+            contentType(ContentType.Application.Json)
+            setBody(
+                objectMapper.writeValueAsString(
+                    BaseTestApplication.Companion.ActivateTestUserRequest(
+                        id = createResBody.id,
+                        name = "test太郎",
+                        email = email,
+                        password = password
+                    )
+                )
+            )
+        }.apply {
+            assertEquals(HttpStatusCode.OK, this.status)
+        }
 
         client.get("/api/users").apply {
             assertEquals(HttpStatusCode.OK, this.status)
@@ -91,7 +100,6 @@ class UpdateAccountTest {
             setBody(
                 objectMapper.writeValueAsString(
                     CreateUserRequestModel(
-                        "04テスト太郎",
                         "04@example.com",
                     ),
                 )

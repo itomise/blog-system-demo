@@ -3,7 +3,6 @@ package com.itomise.com.itomise.usecase.interactors.auth
 import com.itomise.com.itomise.domain.account.entities.User
 import com.itomise.com.itomise.domain.account.interfaces.IUserRepository
 import com.itomise.com.itomise.domain.account.vo.Email
-import com.itomise.com.itomise.domain.account.vo.Username
 import com.itomise.com.itomise.usecase.interfaces.auth.ISignUpUseCase
 import com.itomise.com.itomise.usecase.interfaces.mail.ISendSignUpMailUseCase
 import com.itomise.com.itomise.util.getKoinInstance
@@ -17,8 +16,6 @@ class SignUpInteractor : ISignUpUseCase {
     override suspend fun handle(command: ISignUpUseCase.Command): UUID {
         val user = dbQuery {
             val newUser = User.new(
-                // TODO: 名前は activate 時に登録するようにする
-                name = Username(command.name),
                 email = Email(command.email)
             )
 

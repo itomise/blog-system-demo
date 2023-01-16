@@ -53,7 +53,6 @@ fun Route.authRouting() {
 
             val userId = signUpUseCase.handle(
                 ISignUpUseCase.Command(
-                    name = request.name,
                     email = request.email,
                 )
             )
@@ -67,7 +66,8 @@ fun Route.authRouting() {
             activateUserUseCase.handle(
                 IActivateUserUseCase.Command(
                     token = request.token,
-                    password = request.password
+                    password = request.password,
+                    name = request.name
                 )
             )
 

@@ -4,6 +4,7 @@ import com.itomise.com.itomise.domain.account.entities.User
 import com.itomise.com.itomise.domain.account.interfaces.IUserService
 import com.itomise.com.itomise.domain.account.vo.AccountOperationType
 import com.itomise.com.itomise.domain.account.vo.UserId
+import com.itomise.com.itomise.domain.account.vo.UserInternalLoginInfo
 import com.itomise.com.itomise.domain.security.interfaces.IHashingService
 import com.itomise.com.itomise.domain.security.interfaces.INestedJwtTokenService
 import com.itomise.com.itomise.domain.security.vo.HashAlgorithm
@@ -40,14 +41,14 @@ class UserService : IUserService {
     }
 
     override fun isValidPassword(password: String, user: User): Boolean {
-        if (user.loginInfo == null) return false
+        if (user.loginInfo == null || user.loginInfo !is UserInternalLoginInfo) return false
 
         return hashingService.verifySaltedHash(
             value = password,
             saltedHash = SaltedHash(
                 hash = user.loginInfo.passwordHash,
                 salt = user.loginInfo.passwordSalt,
-                algorithm = HashAlgorithm.get(user.loginInfo.userHashAlgorithmId.value)
+                algorithm = HashAlgorithm.get(user.loginInfo.hashAlgorithmId.value)
             )
         )
     }

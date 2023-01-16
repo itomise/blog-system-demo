@@ -2,6 +2,7 @@ package com.itomise.com.itomise.usecase.interactors.auth
 
 import com.itomise.com.itomise.domain.account.interfaces.IUserRepository
 import com.itomise.com.itomise.domain.account.interfaces.IUserService
+import com.itomise.com.itomise.domain.account.vo.Username
 import com.itomise.com.itomise.domain.common.exception.CustomIllegalArgumentException
 import com.itomise.com.itomise.usecase.interfaces.auth.IActivateUserUseCase
 import com.itomise.com.itomise.util.getKoinInstance
@@ -22,7 +23,10 @@ class ActivateUserInteractor : IActivateUserUseCase {
             val user = userRepository.findByUserId(userId)
                 ?: throw IllegalArgumentException("存在しないユーザーIDです。")
 
-            val activatedUser = user.activate(command.password)
+            val activatedUser = user.activateAsInternal(
+                name = Username(command.name),
+                password = command.password
+            )
 
             userRepository.save(activatedUser)
         }

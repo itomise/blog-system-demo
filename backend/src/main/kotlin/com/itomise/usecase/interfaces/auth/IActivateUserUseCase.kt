@@ -5,6 +5,7 @@ interface IActivateUserUseCase {
 
     data class Command(
         val token: String,
+        val name: String,
         val password: String
     )
 }

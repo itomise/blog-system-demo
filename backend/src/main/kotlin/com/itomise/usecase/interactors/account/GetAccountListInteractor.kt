@@ -14,7 +14,13 @@ class GetAccountListInteractor : IGetAccountListUseCase {
         }
 
         return IGetAccountListUseCase.OutputDto(
-            users = users.map { IGetAccountListUseCase.OutputDtoUser(it.id.value, it.name.value, it.email.value) }
+            users = users.map {
+                IGetAccountListUseCase.OutputDtoUser(
+                    it.id.value,
+                    it.profile?.name?.value,
+                    it.email.value
+                )
+            }
         )
     }
 }

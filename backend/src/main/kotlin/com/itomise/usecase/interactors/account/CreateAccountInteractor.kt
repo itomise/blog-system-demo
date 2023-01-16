@@ -4,7 +4,6 @@ import com.itomise.com.itomise.domain.account.entities.User
 import com.itomise.com.itomise.domain.account.interfaces.IUserRepository
 import com.itomise.com.itomise.domain.account.interfaces.IUserService
 import com.itomise.com.itomise.domain.account.vo.Email
-import com.itomise.com.itomise.domain.account.vo.Username
 import com.itomise.com.itomise.usecase.interfaces.account.ICreateAccountUseCase
 import com.itomise.com.itomise.usecase.interfaces.mail.ISendSignUpMailUseCase
 import com.itomise.com.itomise.util.getKoinInstance
@@ -19,7 +18,6 @@ class CreateAccountInteractor : ICreateAccountUseCase {
     override suspend fun handle(command: ICreateAccountUseCase.Command): UUID {
         val user = dbQuery {
             val newUser = User.new(
-                name = Username(command.name),
                 email = Email(command.email),
             )
 

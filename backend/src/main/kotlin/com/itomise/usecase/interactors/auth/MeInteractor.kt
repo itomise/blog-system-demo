@@ -17,7 +17,7 @@ class MeInteractor : IMeUseCase {
 
         return IMeUseCase.OutputDtoUser(
             id = user.id.value,
-            name = user.name.value,
+            name = user.profile?.name?.value,
             email = user.email.value,
         )
     }

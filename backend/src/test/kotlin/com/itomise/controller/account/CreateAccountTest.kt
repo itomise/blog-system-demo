@@ -30,20 +30,12 @@ class CreateAccountTest {
 
         val res = client.post("/api/users") {
             contentType(ContentType.Application.Json)
-            setBody(
-                objectMapper.writeValueAsString(
-                    CreateUserRequestModel(
-                        "test太郎",
-                        "test@test.test",
-                    ),
-                )
-            )
+            setBody(objectMapper.writeValueAsString(CreateUserRequestModel("test@test.test")))
         }.apply {
             assertEquals(HttpStatusCode.OK, this.status)
         }
         val resBody = objectMapper.readValue<CreateUserResponseModel>(res.bodyAsText())
-
-
+        
         client.get("/api/users").apply {
             assertEquals(HttpStatusCode.OK, this.status)
 
@@ -51,7 +43,7 @@ class CreateAccountTest {
             assertEquals(2, res.users.size)
             res.users.find { it.id == resBody.id }?.run {
                 assertEquals(resBody.id, this.id)
-                assertEquals("test太郎", this.name)
+                assertEquals(null, this.name)
                 assertEquals("test@test.test", this.email)
             }
         }
@@ -62,14 +54,7 @@ class CreateAccountTest {
         val client = createClient { install(HttpCookies) }
         client.post("/api/users") {
             contentType(ContentType.Application.Json)
-            setBody(
-                objectMapper.writeValueAsString(
-                    CreateUserRequestModel(
-                        "04テスト太郎",
-                        "04@example.com",
-                    ),
-                )
-            )
+            setBody(objectMapper.writeValueAsString(CreateUserRequestModel("04@example.com")))
         }.apply {
             assertEquals(HttpStatusCode.Unauthorized, this.status)
         }

@@ -3,7 +3,7 @@ package com.itomise.com.itomise.usecase.interactors.auth
 import com.itomise.com.itomise.domain.account.entities.User
 import com.itomise.com.itomise.domain.account.interfaces.IUserRepository
 import com.itomise.com.itomise.domain.account.vo.Email
-import com.itomise.com.itomise.domain.account.vo.Username
+import com.itomise.com.itomise.domain.account.vo.UserExternalLoginInfo
 import com.itomise.com.itomise.lib.google.GoogleAuthentication
 import com.itomise.com.itomise.usecase.interfaces.auth.ICallbackGoogleOAuth2UseCase
 import com.itomise.com.itomise.util.getKoinInstance
@@ -17,8 +17,9 @@ class CallbackGoogleOAuth2Interactor : ICallbackGoogleOAuth2UseCase {
 
         val user = dbQuery {
             val newUser = User.new(
-                name = Username("google-user"),
                 email = Email(googleUserInfo.email)
+            ).setExternalLoginInfo(
+                UserExternalLoginInfo.ExternalServiceType.GOOGLE
             )
 
             val savedUser = userRepository.findByEmail(newUser.email)

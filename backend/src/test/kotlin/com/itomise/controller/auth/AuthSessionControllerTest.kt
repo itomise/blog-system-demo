@@ -36,7 +36,6 @@ class AuthSessionControllerTest {
             setBody(
                 objectMapper.writeValueAsString(
                     SignUpRequestModel(
-                        name = name,
                         email = email,
                     )
                 )

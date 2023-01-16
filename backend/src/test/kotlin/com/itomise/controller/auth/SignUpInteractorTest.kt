@@ -24,7 +24,6 @@ class SignUpInteractorTest {
             setBody(
                 objectMapper.writeValueAsString(
                     SignUpRequestModel(
-                        name = "名前",
                         email = "${UUID.randomUUID()}@test.test"
                     )
                 )
@@ -35,14 +34,13 @@ class SignUpInteractorTest {
     }
 
     @Test
-    fun `名前が空文字だとBadRequestになること`() = appTestApplication {
+    fun `Emailが空文字だとBadRequestになること`() = appTestApplication {
         client.post("/api/auth/sign-up") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
                     SignUpRequestModel(
-                        name = "",
-                        email = "${UUID.randomUUID()}@test.test"
+                        email = ""
                     )
                 )
             )

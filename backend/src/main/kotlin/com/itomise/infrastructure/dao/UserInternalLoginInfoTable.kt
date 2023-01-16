@@ -5,9 +5,10 @@ import org.jetbrains.exposed.sql.javatime.CurrentDateTime
 import org.jetbrains.exposed.sql.javatime.datetime
 
 
-object UserTable : UUIDTable(name = "users", columnName = "id") {
+object UserInternalLoginInfoTable : UUIDTable(name = "users_internal_login_info", columnName = "user_id") {
     val createdAt = datetime(name = "created_at").defaultExpression(CurrentDateTime())
     val updatedAt = datetime(name = "updated_at").defaultExpression(CurrentDateTime())
-    val name = varchar(name = "name", length = 50).nullable()
-    val email = varchar(name = "email", length = 100)
+    val passwordHash = varchar(name = "password_hash", length = 255)
+    val passwordSalt = varchar(name = "password_salt", length = 100)
+    val hashAlgorithmId = integer(name = "hash_algorithm_id")
 }
