@@ -1,4 +1,5 @@
 import { UUID } from '@/types'
+import { BACKEND_ENDPOINT } from '@/services/common/api/constants'
 import { appAxios } from '@/libs/axios'
 
 export type LoginWithSessionRequest = {
@@ -71,6 +72,10 @@ const activateUser = async (payload: ActivateUserRequest) => {
   await appAxios.post('/auth/sign-up/activate', payload)
 }
 
+const googleOAuth2 = () => {
+  window.location.href = `${BACKEND_ENDPOINT}/auth/google_oauth2`
+}
+
 export const authRepository = {
   loginWithSession,
   loginWithJwt,
@@ -79,4 +84,5 @@ export const authRepository = {
   signup,
   logout,
   activateUser,
+  googleOAuth2,
 }

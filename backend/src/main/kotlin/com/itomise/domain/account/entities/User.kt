@@ -4,11 +4,11 @@ import com.itomise.com.itomise.domain.account.vo.*
 import com.itomise.com.itomise.domain.security.interfaces.IHashingService
 import com.itomise.com.itomise.util.getKoinInstance
 
-data class User private constructor(
+data class User internal constructor(
     val id: UserId,
     val email: Email,
     val name: Username,
-    val loginInfo: UserLoginInfo?
+    val loginInfo: UserInternalLoginInfo?
 ) {
     private val hashService = getKoinInstance<IHashingService>()
 
@@ -21,13 +21,20 @@ data class User private constructor(
         return false
     }
 
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + email.hashCode()
+        result = 31 * result + name.hashCode()
+        return result
+    }
+
     fun changeName(name: Username) = this.copy(name = name)
 
     fun activate(password: String): User {
         val saltedHash = hashService.generateSaltedHash(password)
 
         return this.copy(
-            loginInfo = UserLoginInfo(
+            loginInfo = UserInternalLoginInfo(
                 userId = this.id,
                 passwordHash = saltedHash.hash,
                 passwordSalt = saltedHash.salt,
@@ -53,7 +60,7 @@ data class User private constructor(
             userHashAlgorithmId: UserHashAlgorithmId?,
         ): User {
             val loginInfo = if (passwordHash != null && passwordSalt != null && userHashAlgorithmId != null) {
-                UserLoginInfo(
+                UserInternalLoginInfo(
                     userId = id,
                     passwordHash = passwordHash,
                     passwordSalt = passwordSalt,

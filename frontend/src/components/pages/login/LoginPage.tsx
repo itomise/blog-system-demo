@@ -4,6 +4,7 @@ import Head from 'next/head'
 import { showNotification } from '@mantine/notifications'
 import { Button, Center, Container, Paper, Stack, Title, useMantineTheme } from '@mantine/core'
 import { useLoginWithSession } from '@/services/auth/api/useLoginWithSession'
+import { authRepository } from '@/repositories/auth'
 import { InternalLink } from '@/components/shared/link/InternalLink'
 import { InputField } from '@/components/shared/form/InputField'
 import { Form } from '@/components/shared/form/Form'
@@ -31,6 +32,10 @@ export const LoginPage: React.FC = () => {
     },
   })
   const theme = useMantineTheme()
+
+  const onClickGoogleLogin = () => {
+    authRepository.googleOAuth2()
+  }
 
   return (
     <>
@@ -69,6 +74,10 @@ export const LoginPage: React.FC = () => {
                     />
                     <Button type="submit" mt="lg" loading={isLoading}>
                       ログイン
+                    </Button>
+
+                    <Button mt="lg" onClick={onClickGoogleLogin}>
+                      Google でログイン
                     </Button>
                   </Stack>
                 )}

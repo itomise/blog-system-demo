@@ -53,7 +53,7 @@ fun Route.userRouting() {
             }
 
             get("/{userId}") {
-                val userId = call.parameters["userId"] ?: return@get throw IllegalArgumentException()
+                val userId = call.parameters["userId"] ?: throw IllegalArgumentException()
 
                 val user = getUserUseCase.handle(
                     IGetAccountUseCase.Command(

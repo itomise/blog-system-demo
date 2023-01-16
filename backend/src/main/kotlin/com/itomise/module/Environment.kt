@@ -11,8 +11,9 @@ data class EnvConfig(
     val redis: EnvConfigRedis,
     val session: EnvConfigSession,
     val jwt: EnvConfigJwt,
-    val sendGridApiKey: String,
-    val urls: Urls
+    val urls: Urls,
+    val sendGrid: SendGridConfig,
+    val google: GoogleConfig
 ) {
     data class EnvConfigDb(
         val url: String,
@@ -41,7 +42,18 @@ data class EnvConfig(
 
     data class Urls(
         val accountSignUpUrl: String,
-        val accountConfirmUrl: String
+        val accountActivateUrl: String,
+        val adminRootUrl: String,
+        val googleOAuth2CallbackUrl: String,
+    )
+
+    data class SendGridConfig(
+        val apiKey: String
+    )
+
+    data class GoogleConfig(
+        val oauth2ClientId: String,
+        val oauth2ClientSecret: String,
     )
 }
 
@@ -77,10 +89,18 @@ fun Application.configureEnvironmentVariables() {
             realm = fromConfig("app.jwt.realm"),
             encryptionKey = fromConfig("app.jwt.encryptionKey")
         ),
-        sendGridApiKey = fromConfig("app.sendGridApiKey"),
         urls = EnvConfig.Urls(
             accountSignUpUrl = fromConfig("app.urls.accountSignInUrl"),
-            accountConfirmUrl = fromConfig("app.urls.accountConfirmUrl")
+            accountActivateUrl = fromConfig("app.urls.accountActivateUrl"),
+            adminRootUrl = fromConfig("app.urls.adminRootUrl"),
+            googleOAuth2CallbackUrl = fromConfig("app.urls.googleOAuth2CallbackUrl")
+        ),
+        sendGrid = EnvConfig.SendGridConfig(
+            apiKey = fromConfig("sendGrid.apiKey"),
+        ),
+        google = EnvConfig.GoogleConfig(
+            oauth2ClientId = fromConfig("google.oauth2ClientId"),
+            oauth2ClientSecret = fromConfig("google.oauth2ClientSecret"),
         )
     )
 }

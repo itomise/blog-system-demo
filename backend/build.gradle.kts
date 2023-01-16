@@ -12,6 +12,7 @@ val commons_codec: String by project
 val nimbus_jose_version: String by project
 val sendgrid_version: String by project
 val mockk_version: String by project
+val fuel_version: String by project
 
 plugins {
     application
@@ -58,6 +59,9 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktor_version")
     implementation("io.ktor:ktor-serialization-jackson:$ktor_version")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jackson_version")
+    // http client
+    implementation("com.github.kittinunf.fuel:fuel:$fuel_version")
+    implementation("com.github.kittinunf.fuel:fuel-jackson:$fuel_version")
     // logging
     implementation("io.ktor:ktor-server-call-logging:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")

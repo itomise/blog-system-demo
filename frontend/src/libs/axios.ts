@@ -1,7 +1,8 @@
 import axios from 'axios'
+import { BACKEND_ENDPOINT } from '@/services/common/api/constants'
 
 export const appAxios = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:8080/api' : '/api',
+  baseURL: BACKEND_ENDPOINT,
   headers: {
     'X-Requested-With': 'HttpRequest',
     Accept: 'application/json',

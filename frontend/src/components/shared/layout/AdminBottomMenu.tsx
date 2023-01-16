@@ -3,21 +3,21 @@ import { useRouter } from 'next/router'
 import { IconChevronRight, IconChevronLeft, IconLogout } from '@tabler/icons'
 import { useDisclosure } from '@mantine/hooks'
 import { Avatar, Box, Group, UnstyledButton, useMantineTheme, Text, Menu } from '@mantine/core'
+import { useMe } from '@/services/auth/api/useMe'
 import { useLogout } from '@/services/auth/api/useLogout'
-import { useCheckMe } from '@/services/auth/api/useCheckMe'
 import { queryClient } from '@/libs/react-query'
 
 export const AdminBottomMenu: FC = () => {
   const theme = useMantineTheme()
-  const { me } = useCheckMe()
+  const me = useMe()
   const [opened, { close, open }] = useDisclosure(false)
   const { mutate, isLoading } = useLogout()
   const router = useRouter()
 
   const onLogout = async () => {
     mutate(undefined)
-    queryClient.invalidateQueries()
-    router.push('/')
+    await router.push('/')
+    queryClient.clear()
   }
 
   return (

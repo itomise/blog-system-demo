@@ -17,7 +17,7 @@ object SendGridClient {
         val to = Email(command.to.value)
         val content = Content("text/plain", command.content)
         val mail = Mail(from, subject, to, content)
-        val sg = SendGrid(envConfig.sendGridApiKey)
+        val sg = SendGrid(envConfig.sendGrid.apiKey)
         val request = Request()
         try {
             request.method = Method.POST

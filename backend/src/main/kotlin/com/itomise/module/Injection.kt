@@ -11,16 +11,10 @@ import com.itomise.com.itomise.domain.security.services.JwtTokenService
 import com.itomise.com.itomise.domain.security.services.NestedJwtTokenTokenService
 import com.itomise.com.itomise.infrastructure.repositories.account.UserRepository
 import com.itomise.com.itomise.usecase.interactors.account.*
-import com.itomise.com.itomise.usecase.interactors.auth.ActivateUserInteractor
-import com.itomise.com.itomise.usecase.interactors.auth.LoginInteractor
-import com.itomise.com.itomise.usecase.interactors.auth.MeInteractor
-import com.itomise.com.itomise.usecase.interactors.auth.SignUpInteractor
+import com.itomise.com.itomise.usecase.interactors.auth.*
 import com.itomise.com.itomise.usecase.interactors.mail.SendSignUpMailInteractor
 import com.itomise.com.itomise.usecase.interfaces.account.*
-import com.itomise.com.itomise.usecase.interfaces.auth.IActivateUserUseCase
-import com.itomise.com.itomise.usecase.interfaces.auth.ILoginUseCase
-import com.itomise.com.itomise.usecase.interfaces.auth.IMeUseCase
-import com.itomise.com.itomise.usecase.interfaces.auth.ISignUpUseCase
+import com.itomise.com.itomise.usecase.interfaces.auth.*
 import com.itomise.com.itomise.usecase.interfaces.mail.ISendSignUpMailUseCase
 import io.ktor.server.application.*
 import org.koin.dsl.module
@@ -38,6 +32,8 @@ val useCaseModule = module {
     single<ISendSignUpMailUseCase> { SendSignUpMailInteractor() }
     single<ISignUpUseCase> { SignUpInteractor() }
     single<IActivateUserUseCase> { ActivateUserInteractor() }
+    single<IRequestGoogleOAuth2UseCase> { RequestGoogleOAuth2Interactor() }
+    single<ICallbackGoogleOAuth2UseCase> { CallbackGoogleOAuth2Interactor() }
 }
 
 val repositoryModule = module {

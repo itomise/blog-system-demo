@@ -17,6 +17,7 @@ class SignUpInteractor : ISignUpUseCase {
     override suspend fun handle(command: ISignUpUseCase.Command): UUID {
         val user = dbQuery {
             val newUser = User.new(
+                // TODO: 名前は activate 時に登録するようにする
                 name = Username(command.name),
                 email = Email(command.email)
             )
