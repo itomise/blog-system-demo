@@ -61,7 +61,8 @@ fun Route.authJwtRouting() {
                         HttpStatusCode.OK, MeResponseModel(
                             id = result.id,
                             email = result.email,
-                            name = result.name
+                            name = result.name,
+                            isActive = result.isActive
                         )
                     )
                 } else {

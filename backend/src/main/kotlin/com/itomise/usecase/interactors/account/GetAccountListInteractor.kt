@@ -18,7 +18,8 @@ class GetAccountListInteractor : IGetAccountListUseCase {
                 IGetAccountListUseCase.OutputDtoUser(
                     it.id.value,
                     it.profile?.name?.value,
-                    it.email.value
+                    it.email.value,
+                    it.isActive
                 )
             }
         )

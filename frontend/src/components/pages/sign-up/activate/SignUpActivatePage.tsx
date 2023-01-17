@@ -10,6 +10,7 @@ import { InputField } from '@/components/shared/form/InputField'
 import { Form } from '@/components/shared/form/Form'
 
 const schema = z.object({
+  name: z.string().min(1).max(50),
   password: z.string().min(6).max(100).regex(PasswordRegex),
 })
 
@@ -36,12 +37,12 @@ export const SignUpActivatePage: React.FC = () => {
         <Center sx={{ width: '100%', height: '100vh' }}>
           <Paper p={80} radius="md" sx={{ maxWidth: 500, width: '100%' }}>
             <Title order={1} align="center">
-              パスワード設定
+              アカウント初期設定
             </Title>
             <Form<FormType>
               onSubmit={(data) =>
                 mutate({
-                  password: data.password,
+                  ...data,
                   token,
                 })
               }
@@ -49,6 +50,7 @@ export const SignUpActivatePage: React.FC = () => {
             >
               {({ register, formState: { errors } }) => (
                 <Stack spacing="md" mt="md">
+                  <InputField label="名前" error={errors.name} registration={register('name')} required />
                   <InputField
                     label="パスワード"
                     type="password"
@@ -63,7 +65,7 @@ export const SignUpActivatePage: React.FC = () => {
                       autoComplete: 'new-password',
                     }}
                   />
-                  <Button type="submit" loading={isLoading}>
+                  <Button type="submit" mt="md" loading={isLoading}>
                     送信
                   </Button>
                   <InternalLink href="/">

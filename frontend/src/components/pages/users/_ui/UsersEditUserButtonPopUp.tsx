@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { useRef } from 'react'
 import { IconPencil } from '@tabler/icons'
 import { showNotification } from '@mantine/notifications'
-import { Popover, ActionIcon, Stack, Button, Group } from '@mantine/core'
+import { Popover, ActionIcon, Stack, Button, Group, Box, Tooltip } from '@mantine/core'
 import { User } from '@/services/user/types'
 import { useEditUser } from '@/services/user/api/useEditUser'
 import { queryClient } from '@/libs/react-query'
@@ -42,9 +42,13 @@ export const UsersEditUserButtonPopUp: React.FC<Props> = ({ user }) => {
   return (
     <Popover width={400} trapFocus position="right-start" withArrow shadow="md">
       <Popover.Target>
-        <ActionIcon ref={buttonRef}>
-          <IconPencil size={14} />
-        </ActionIcon>
+        <Tooltip label="未設定のアカウントです。" disabled={user.isActive}>
+          <Box>
+            <ActionIcon ref={buttonRef} disabled={!user.isActive}>
+              <IconPencil size={14} />
+            </ActionIcon>
+          </Box>
+        </Tooltip>
       </Popover.Target>
       <Popover.Dropdown>
         <Form<FormType>
@@ -56,7 +60,7 @@ export const UsersEditUserButtonPopUp: React.FC<Props> = ({ user }) => {
           }}
           schema={schema}
           defaultValues={{
-            name: user.name,
+            name: user.name ?? '',
           }}
         >
           {({ register, formState: { errors } }) => (

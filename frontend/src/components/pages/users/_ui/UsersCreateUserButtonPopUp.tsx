@@ -1,14 +1,13 @@
 import { z } from 'zod'
 import { useRef } from 'react'
 import { showNotification } from '@mantine/notifications'
-import { Popover, Button, Stack } from '@mantine/core'
+import { Popover, Button, Stack, Box, Group } from '@mantine/core'
 import { useCreateUser } from '@/services/user/api/useCreateUser'
 import { queryClient } from '@/libs/react-query'
 import { InputField } from '@/components/shared/form/InputField'
 import { Form } from '@/components/shared/form/Form'
 
 const schema = z.object({
-  name: z.string().min(5).max(255),
   email: z.string().email(),
 })
 type FormType = z.infer<typeof schema>
@@ -48,14 +47,6 @@ export const UsersCreateUserButtonPopUp: React.FC = () => {
           {({ register, formState: { errors } }) => (
             <Stack spacing="sm">
               <InputField
-                label="名前"
-                error={errors.name}
-                placeholder="テスト太郎"
-                registration={register('name')}
-                required
-                size="xs"
-              />
-              <InputField
                 label="メールアドレス"
                 type="email"
                 placeholder="example@example.com"
@@ -64,9 +55,11 @@ export const UsersCreateUserButtonPopUp: React.FC = () => {
                 required
                 size="xs"
               />
-              <Button type="submit" mt="lg" loading={isLoading}>
-                送信
-              </Button>
+              <Group position="right">
+                <Button type="submit" loading={isLoading}>
+                  送信
+                </Button>
+              </Group>
             </Stack>
           )}
         </Form>

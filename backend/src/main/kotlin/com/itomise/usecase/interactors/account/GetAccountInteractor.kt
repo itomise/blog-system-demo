@@ -18,7 +18,8 @@ class GetAccountInteractor : IGetAccountUseCase {
         return if (user != null) IGetAccountUseCase.OutputDto(
             id = user.id.value,
             name = user.profile?.name?.value,
-            email = user.email.value
+            email = user.email.value,
+            isActive = user.isActive
         ) else null
     }
 }

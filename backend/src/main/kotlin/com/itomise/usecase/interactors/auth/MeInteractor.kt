@@ -19,6 +19,7 @@ class MeInteractor : IMeUseCase {
             id = user.id.value,
             name = user.profile?.name?.value,
             email = user.email.value,
+            isActive = user.isActive
         )
     }
 }

@@ -36,7 +36,7 @@ const logout = async () => {
 export type GetMeResponse = {
   id: string
   email: string
-  name: string
+  name: string | null
 }
 
 const getMeWithJwt = async (jwtToken: string) => {
@@ -53,7 +53,6 @@ const getMeWithSession = async () => {
 }
 
 export type SignupRequest = {
-  name: string
   email: string
 }
 export type SignupResponse = {}
@@ -64,6 +63,7 @@ const signup = async (payload: SignupRequest) => {
 }
 
 export type ActivateUserRequest = {
+  name: string
   token: string
   password: string
 }

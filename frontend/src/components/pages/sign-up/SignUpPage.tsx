@@ -8,7 +8,6 @@ import { InputField } from '@/components/shared/form/InputField'
 import { Form } from '@/components/shared/form/Form'
 
 const schema = z.object({
-  name: z.string().min(5).max(255),
   email: z.string().email(),
 })
 
@@ -45,7 +44,6 @@ export const SignUpPage: React.FC = () => {
             <Form<FormType> onSubmit={(data) => mutate(data)} schema={schema}>
               {({ register, formState: { errors } }) => (
                 <Stack spacing="md" mt="md">
-                  <InputField label="名前" error={errors.name} registration={register('name')} required />
                   <InputField
                     label="メールアドレス"
                     type="email"

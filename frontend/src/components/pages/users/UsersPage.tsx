@@ -34,7 +34,7 @@ export const UsersPage: React.FC = () => {
                     <Box>
                       <Group spacing="xs">
                         <Text weight={500} sx={{ wordBreak: 'break-all' }}>
-                          {user.name}
+                          {user.name ?? '( 未設定 )'}
                         </Text>
                         {me?.id === user.id && <Badge color="blue">Me</Badge>}
                       </Group>

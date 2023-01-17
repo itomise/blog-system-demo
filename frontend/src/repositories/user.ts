@@ -17,7 +17,6 @@ const getUser = async (userId: string): Promise<User> => {
 }
 
 export type CreateUserRequest = {
-  name: string
   email: string
 }
 export type CreateUserResponse = {

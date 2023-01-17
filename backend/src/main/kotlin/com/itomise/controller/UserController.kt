@@ -32,7 +32,7 @@ fun Route.userRouting() {
 
                 val response = GetListUserResponseModel(
                     result.users.map {
-                        GetListUserResponseModelUser(it.id, it.name, it.email)
+                        GetListUserResponseModelUser(it.id, it.name, it.email, it.isActive)
                     }
                 )
 
@@ -64,7 +64,8 @@ fun Route.userRouting() {
                     HttpStatusCode.OK, GetUserResponseModel(
                         id = user.id,
                         name = user.name,
-                        email = user.email
+                        email = user.email,
+                        isActive = user.isActive
                     )
                 ) else call.respond(HttpStatusCode.NotFound)
             }

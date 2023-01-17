@@ -12,7 +12,7 @@ data class User internal constructor(
 ) {
     private val hashService = getKoinInstance<IHashingService>()
 
-    val isActive = profile != null
+    val isActive = profile != null && loginInfo != null
 
     override fun equals(other: Any?): Boolean {
         if (other is User) {
