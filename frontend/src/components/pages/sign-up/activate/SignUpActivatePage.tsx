@@ -35,7 +35,6 @@ export const SignUpActivatePage: React.FC = () => {
   const loginType = useMemo((): UserLoginType => {
     if (router.isReady) {
       const decodedJwt = jwtDecode<DecodedActivateTokenType>(token)
-      console.log(decodedJwt)
       if (decodedJwt.loginType === UserLoginType.EXTERNAL_GOOGLE.toString()) return UserLoginType.EXTERNAL_GOOGLE
     }
     return UserLoginType.INTERNAL
