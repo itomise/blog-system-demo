@@ -39,7 +39,7 @@ const MainLink: FC<MainLinkProps & { current: boolean }> = ({ icon, color, label
 )
 
 const data: MainLinkProps[] = [
-  { icon: <IconUsers size={16} />, color: 'blue', label: 'User List', href: '/admin/users' },
+  { icon: <IconUsers size={16} />, color: 'blue', label: 'ユーザー一覧', href: '/admin/users' },
 ]
 
 export const AdminMainLinks: FC = () => {

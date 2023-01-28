@@ -9,7 +9,7 @@ export const SystemTemplate: React.FC<Props> = ({ children }) => {
 
   return (
     <Center sx={{ width: '100%', height: '100vh', background: theme.colors.gray[2] }}>
-      <Paper p={50} radius="md" sx={{ maxWidth: 400, width: '100%' }} shadow="lg">
+      <Paper p={50} radius="md" sx={{ maxWidth: 420, width: '100%' }} shadow="lg">
         {children}
       </Paper>
     </Center>

@@ -16,12 +16,12 @@ export const UsersPage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>users</title>
+        <title>ユーザー一覧 | itomise blog admin</title>
       </Head>
       <AdminTemplate>
         <main ref={rootRef}>
           <Title order={1} size="h3">
-            User List
+            ユーザー一覧
           </Title>
           <Group mt="lg">
             <UsersCreateUserButtonPopUp />
@@ -34,7 +34,7 @@ export const UsersPage: React.FC = () => {
                     <Box>
                       <Group spacing="xs">
                         <Text weight={500} sx={{ wordBreak: 'break-all' }}>
-                          {user.name ?? '( unset )'}
+                          {user.name ?? '( 未設定 )'}
                         </Text>
                         {me?.id === user.id && <Badge color="blue">Me</Badge>}
                       </Group>

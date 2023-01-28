@@ -62,7 +62,7 @@ export const AdminBottomMenu: FC = () => {
         </Menu.Target>
 
         <Menu.Dropdown>
-          <Menu.Label>Application</Menu.Label>
+          <Menu.Label>アプリケーション</Menu.Label>
 
           <Menu.Item
             icon={<IconLogout size={14} />}
@@ -70,7 +70,7 @@ export const AdminBottomMenu: FC = () => {
             color="red"
             sx={{ backgroundColor: isLoading ? theme.colors.gray[5] : undefined }}
           >
-            Logout
+            ログアウト
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>

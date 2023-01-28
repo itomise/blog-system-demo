@@ -38,17 +38,24 @@ export const SignUpPage: React.FC = () => {
     <main>
       <SystemTemplate>
         <Title order={1} align="center">
-          Sign Up
+          アカウント作成
         </Title>
         <Form<FormType> onSubmit={(data) => mutate(data)} schema={schema}>
           {({ register, formState: { errors } }) => (
             <Stack spacing="md" mt="md">
-              <InputField label="email" type="email" error={errors.email} registration={register('email')} required />
-              <Button type="submit" loading={isLoading}>
-                Sign Up
+              <InputField
+                label="メールアドレス"
+                placeholder="example@example.com"
+                type="email"
+                error={errors.email}
+                registration={register('email')}
+                required
+              />
+              <Button type="submit" loading={isLoading} color="blue">
+                アカウント作成
               </Button>
               <Center>
-                <InternalLink href="/admin/login">Back to Login</InternalLink>
+                <InternalLink href="/admin/login">ログインへ戻る</InternalLink>
               </Center>
             </Stack>
           )}

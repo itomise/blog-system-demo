@@ -35,7 +35,7 @@ export const AdminTemplate: React.FC<Props> = ({ children }) => {
             >
               <Group>
                 <IconAlien />
-                <Text weight="bold">Blog</Text>
+                <Text weight="bold">itomise admin</Text>
               </Group>
             </Box>
           </Navbar.Section>

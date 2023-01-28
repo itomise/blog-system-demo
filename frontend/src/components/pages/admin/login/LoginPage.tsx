@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { showNotification } from '@mantine/notifications'
-import { Anchor, Button, Center, Paper, Stack, Title, useMantineTheme } from '@mantine/core'
+import { Anchor, Button, Center, Divider, Paper, Stack, Title, useMantineTheme } from '@mantine/core'
 import { useLoginWithSession } from '@/services/auth/api/useLoginWithSession'
 import { authRepository } from '@/repositories/auth'
 import { InputField } from '@/components/shared/form/InputField'
@@ -53,6 +53,18 @@ export const LoginPage: React.FC = () => {
           <Title order={1} align="center">
             Login
           </Title>
+          <Button
+            onClick={onClickGoogleLogin}
+            leftIcon={<IconBrandGoogle />}
+            color="blue"
+            mt="lg"
+            loading={isGoogleLoginStart}
+            variant="outline"
+            fullWidth
+          >
+            Google でログイン
+          </Button>
+          <Divider mt="md" />
           <Form<FormType>
             onSubmit={(data) => {
               mutate(data)
@@ -62,7 +74,7 @@ export const LoginPage: React.FC = () => {
             {({ register, formState: { errors } }) => (
               <Stack spacing="md" mt="md">
                 <InputField
-                  label="Email"
+                  label="メールアドレス"
                   type="email"
                   placeholder="example@example.com"
                   error={errors.email}
@@ -70,34 +82,24 @@ export const LoginPage: React.FC = () => {
                   required
                 />
                 <InputField
-                  label="Password"
+                  label="パスワード"
                   type="password"
                   error={errors.password}
                   registration={register('password')}
                   required
                 />
-                <Button type="submit" loading={isLoading} mt="sm">
-                  Login
+                <Button type="submit" loading={isLoading} mt="sm" color="blue">
+                  ログイン
                 </Button>
 
                 <Center>
-                  <InternalLink href="/admin/sign-up">Sign Up</InternalLink>
+                  <InternalLink href="/admin/sign-up">アカウント作成はこちら</InternalLink>
                 </Center>
                 {/* <Center>
                     <InternalLink href="">
                       I've forgotten my password
                     </InternalLink>
                   </Center> */}
-
-                <Button
-                  onClick={onClickGoogleLogin}
-                  leftIcon={<IconBrandGoogle />}
-                  color="blue"
-                  mt="lg"
-                  loading={isGoogleLoginStart}
-                >
-                  Login with Google
-                </Button>
               </Stack>
             )}
           </Form>

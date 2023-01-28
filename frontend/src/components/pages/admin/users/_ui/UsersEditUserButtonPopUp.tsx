@@ -47,7 +47,7 @@ export const UsersEditUserButtonPopUp: React.FC<Props> = ({ user }) => {
   return (
     <Popover width={400} trapFocus position="right-start" withArrow shadow="md">
       <Popover.Target>
-        <Tooltip label="Unsettled accounts." disabled={user.isActive}>
+        <Tooltip label="未設定のユーザーは編集できません。" disabled={user.isActive}>
           <Box>
             <ActionIcon ref={buttonRef} disabled={!user.isActive}>
               <IconPencil size={14} />
@@ -70,17 +70,10 @@ export const UsersEditUserButtonPopUp: React.FC<Props> = ({ user }) => {
         >
           {({ register, formState: { errors } }) => (
             <Stack spacing="sm">
-              <InputField
-                label="Name"
-                error={errors.name}
-                placeholder="John Smith"
-                registration={register('name')}
-                required
-                size="xs"
-              />
+              <InputField label="名前" error={errors.name} registration={register('name')} required size="xs" />
               <Group position="right">
                 <Button type="submit" size="xs" loading={isLoading}>
-                  Submit
+                  送信
                 </Button>
               </Group>
             </Stack>

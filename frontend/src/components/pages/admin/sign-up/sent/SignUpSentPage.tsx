@@ -7,10 +7,12 @@ export const SignUpSentPage: React.FC = () => {
     <main>
       <SystemTemplate>
         <Text>
-          An email for this registration has been sent. <br /> Please check your email to complete your registration.
+          本登録のメールを送信しました。
+          <br />
+          メールを確認し、登録を完了してください。
         </Text>
         <Center mt="lg">
-          <InternalLink href="/">Back To Top</InternalLink>
+          <InternalLink href="/admin/login">ログインへ戻る</InternalLink>
         </Center>
       </SystemTemplate>
     </main>

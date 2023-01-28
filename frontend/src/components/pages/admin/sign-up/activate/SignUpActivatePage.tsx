@@ -25,12 +25,12 @@ export const SignUpActivatePage: React.FC = () => {
   const { mutate, isLoading } = useActivateUser({
     onSuccess: () => {
       showNotification({
-        message: 'User registration has been completed.',
+        message: 'ユーザー登録が完了しました。',
         color: 'green',
       })
       router.push('/admin/users')
     },
-    onError: onMutateError('User registration failed.'),
+    onError: onMutateError('ユーザー登録が失敗しました。'),
   })
   const loginType = useMemo((): UserLoginType => {
     if (router.isReady) {
@@ -44,7 +44,7 @@ export const SignUpActivatePage: React.FC = () => {
     <main>
       <SystemTemplate>
         <Title order={1} align="center">
-          Initial setting
+          ユーザー初期設定
         </Title>
         <Form<FormType>
           onSubmit={(data) =>
@@ -60,10 +60,10 @@ export const SignUpActivatePage: React.FC = () => {
         >
           {({ register, formState: { errors } }) => (
             <Stack spacing="md" mt="md">
-              <InputField label="name" error={errors.name} registration={register('name')} required />
+              <InputField label="名前" error={errors.name} registration={register('name')} required />
               {loginType === UserLoginType.INTERNAL && (
                 <InputField
-                  label="password"
+                  label="パスワード"
                   type="password"
                   error={errors.password}
                   registration={register('password')}
@@ -77,8 +77,8 @@ export const SignUpActivatePage: React.FC = () => {
                   }}
                 />
               )}
-              <Button type="submit" mt="md" loading={isLoading}>
-                Submit
+              <Button type="submit" mt="md" loading={isLoading} color="blue">
+                送信
               </Button>
             </Stack>
           )}

@@ -34,7 +34,7 @@ export const UsersDeleteUserButtonPopUp: FC<Props> = ({ user, isMe }) => {
   return (
     <Popover shadow="md" withArrow trapFocus position="bottom-end" disabled={isMe}>
       <Popover.Target>
-        <Tooltip label="You cannot delete yourself." disabled={!isMe}>
+        <Tooltip label="自分自身を削除することはできません。" disabled={!isMe}>
           <Box>
             <ActionIcon ref={buttonRef} color="red" disabled={isMe}>
               <IconTrash size={14} />
@@ -43,10 +43,10 @@ export const UsersDeleteUserButtonPopUp: FC<Props> = ({ user, isMe }) => {
         </Tooltip>
       </Popover.Target>
       <Popover.Dropdown>
-        <Text size="xs">Do you really want to delete it?</Text>
+        <Text size="xs">本当に削除しますか？</Text>
         <Group mt="sm" position="right">
           <Button type="button" size="xs" onClick={() => buttonRef.current?.click()}>
-            Cancel
+            キャンセル
           </Button>
           <Button
             type="button"
@@ -55,7 +55,7 @@ export const UsersDeleteUserButtonPopUp: FC<Props> = ({ user, isMe }) => {
             onClick={() => deleteUserMutate({ id: user.id })}
             loading={deleteUserLoading}
           >
-            Delete
+            削除
           </Button>
         </Group>
       </Popover.Dropdown>
