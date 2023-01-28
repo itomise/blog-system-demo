@@ -37,6 +37,7 @@ export type GetMeResponse = {
   id: string
   email: string
   name: string | null
+  isActive: boolean
 }
 
 const getMeWithJwt = async (jwtToken: string) => {

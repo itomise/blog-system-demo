@@ -10,26 +10,25 @@ export const IndexPage: React.FC = () => {
       <Head>
         <title>TOP | TodoList</title>
       </Head>
-      <Container sx={{ background: theme.colors.gray[2] }}>
-        <main>
-          <Center style={{ width: '100%', height: '100vh' }}>
-            <Paper radius="md" p={80}>
-              <Title order={1}>Todo List</Title>
-              <Stack spacing="md" align="center" mt="lg">
-                <InternalLink href="/login">
-                  <Button>ログインはこちら (Session)</Button>
-                </InternalLink>
-                <InternalLink href="/login-with-jwt">
-                  <Button>ログインはこちら (Jwt)</Button>
-                </InternalLink>
-                <InternalLink href="/sign-up">
-                  <Button>登録はこちら</Button>
-                </InternalLink>
-              </Stack>
-            </Paper>
-          </Center>
-        </main>
-      </Container>
+
+      <main>
+        <Center sx={{ background: theme.colors.gray[2], width: '100%', height: '100vh' }}>
+          <Paper radius="md" p={80}>
+            <Title order={1}>Admin</Title>
+            <Stack spacing="md" align="center" mt="lg">
+              <InternalLink href="/admin/login">
+                <Button>ログインはこちら (Session)</Button>
+              </InternalLink>
+              <InternalLink href="/admin/login-with-jwt">
+                <Button>ログインはこちら (Jwt)</Button>
+              </InternalLink>
+              <InternalLink href="/admin/sign-up">
+                <Button>登録はこちら</Button>
+              </InternalLink>
+            </Stack>
+          </Paper>
+        </Center>
+      </main>
     </>
   )
 }

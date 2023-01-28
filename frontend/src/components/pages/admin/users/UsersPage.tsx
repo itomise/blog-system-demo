@@ -6,7 +6,7 @@ import { UsersDeleteUserButtonPopUp } from './_ui/UsersDeleteUserButtonPopUp'
 import { UsersCreateUserButtonPopUp } from './_ui/UsersCreateUserButtonPopUp'
 import { useUserList } from '@/services/user/api/useUserList'
 import { useCheckMe } from '@/services/auth/api/useCheckMe'
-import { AdminLayout } from '@/components/shared/layout/AdminLayout'
+import { AdminTemplate } from '@/components/shared/layout/AdminTemplate'
 
 export const UsersPage: React.FC = () => {
   const allUsers = useUserList()
@@ -18,10 +18,10 @@ export const UsersPage: React.FC = () => {
       <Head>
         <title>users</title>
       </Head>
-      <AdminLayout>
+      <AdminTemplate>
         <main ref={rootRef}>
           <Title order={1} size="h3">
-            ユーザー一覧
+            User List
           </Title>
           <Group mt="lg">
             <UsersCreateUserButtonPopUp />
@@ -34,7 +34,7 @@ export const UsersPage: React.FC = () => {
                     <Box>
                       <Group spacing="xs">
                         <Text weight={500} sx={{ wordBreak: 'break-all' }}>
-                          {user.name ?? '( 未設定 )'}
+                          {user.name ?? '( unset )'}
                         </Text>
                         {me?.id === user.id && <Badge color="blue">Me</Badge>}
                       </Group>
@@ -52,7 +52,7 @@ export const UsersPage: React.FC = () => {
             ))}
           </List>
         </main>
-      </AdminLayout>
+      </AdminTemplate>
     </>
   )
 }

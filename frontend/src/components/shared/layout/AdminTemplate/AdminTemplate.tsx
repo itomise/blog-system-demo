@@ -10,7 +10,7 @@ type Props = {
   children: React.ReactNode
 }
 
-export const AdminLayout: React.FC<Props> = ({ children }) => {
+export const AdminTemplate: React.FC<Props> = ({ children }) => {
   const theme = useMantineTheme()
   const { me, isLoading } = useCheckMe()
   const router = useRouter()

@@ -17,7 +17,7 @@ export const UsersCreateUserButtonPopUp: React.FC = () => {
   const { mutate, isLoading } = useCreateUser({
     onSuccess: () => {
       showNotification({
-        message: '仮ユーザー作成が完了しました。メール認証でアカウントがアクティベートされます。',
+        message: 'Temporary user creation is complete. Your account will be activated with email verification.',
         color: 'green',
       })
       buttonRef.current?.click()
@@ -26,7 +26,7 @@ export const UsersCreateUserButtonPopUp: React.FC = () => {
     onError: (e) => {
       showNotification({
         color: 'red',
-        title: 'ユーザー作成に失敗しました。',
+        title: 'User creation failed.',
         message: e.message,
       })
     },
@@ -35,7 +35,7 @@ export const UsersCreateUserButtonPopUp: React.FC = () => {
   return (
     <Popover width={400} trapFocus position="bottom-start" withArrow shadow="md">
       <Popover.Target>
-        <Button ref={buttonRef}>ユーザー作成</Button>
+        <Button ref={buttonRef}>Create User</Button>
       </Popover.Target>
       <Popover.Dropdown>
         <Form<FormType>
@@ -47,7 +47,7 @@ export const UsersCreateUserButtonPopUp: React.FC = () => {
           {({ register, formState: { errors } }) => (
             <Stack spacing="sm">
               <InputField
-                label="メールアドレス"
+                label="Email"
                 type="email"
                 placeholder="example@example.com"
                 error={errors.email}
@@ -56,8 +56,8 @@ export const UsersCreateUserButtonPopUp: React.FC = () => {
                 size="xs"
               />
               <Group position="right">
-                <Button type="submit" loading={isLoading}>
-                  送信
+                <Button type="submit" size="xs" loading={isLoading}>
+                  Submit
                 </Button>
               </Group>
             </Stack>

@@ -19,6 +19,7 @@ export const AdminBottomMenu: FC = () => {
     await router.push('/')
     queryClient.clear()
   }
+  if (!me) return null
 
   return (
     <Box
@@ -48,10 +49,10 @@ export const AdminBottomMenu: FC = () => {
               />
               <Box sx={{ flex: 1 }}>
                 <Text size="sm" weight={500}>
-                  {me?.name}
+                  {me.name}
                 </Text>
-                <Text color="dimmed" size="xs">
-                  {me?.email}
+                <Text color="dimmed" size="xs" sx={{ width: 110, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {me.email}
                 </Text>
               </Box>
 
@@ -61,7 +62,7 @@ export const AdminBottomMenu: FC = () => {
         </Menu.Target>
 
         <Menu.Dropdown>
-          <Menu.Label>アプリケーション</Menu.Label>
+          <Menu.Label>Application</Menu.Label>
 
           <Menu.Item
             icon={<IconLogout size={14} />}
@@ -69,7 +70,7 @@ export const AdminBottomMenu: FC = () => {
             color="red"
             sx={{ backgroundColor: isLoading ? theme.colors.gray[5] : undefined }}
           >
-            ログアウト
+            Logout
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
