@@ -5,6 +5,7 @@ import com.itomise.com.itomise.controller.requestModels.LoginRequestModel
 import com.itomise.com.itomise.controller.responseModels.MeResponseModel
 import com.itomise.com.itomise.domain.security.interfaces.IJwtTokenService
 import com.itomise.com.itomise.domain.security.vo.TokenClaim
+import com.itomise.com.itomise.module.envConfig
 import com.itomise.com.itomise.module.jwtTokenConfig
 import com.itomise.com.itomise.usecase.interfaces.auth.ILoginUseCase
 import com.itomise.com.itomise.usecase.interfaces.auth.IMeUseCase
@@ -16,6 +17,9 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
+import java.security.KeyFactory
+import java.security.spec.PKCS8EncodedKeySpec
+import java.util.*
 
 fun Route.authJwtRouting() {
     val loginUseCase: ILoginUseCase by inject()
@@ -38,8 +42,12 @@ fun Route.authJwtRouting() {
                 return@post
             }
 
+            val keySpecPKCS8 = PKCS8EncodedKeySpec(Base64.getDecoder().decode(envConfig.jwt.privateKey))
+            val privateKey = KeyFactory.getInstance("RSA").generatePrivate(keySpecPKCS8)
+
             val token = tokenService.generate(
                 config = jwtTokenConfig,
+                privateKey = privateKey,
                 TokenClaim(
                     name = "userId",
                     value = result.id.toString()

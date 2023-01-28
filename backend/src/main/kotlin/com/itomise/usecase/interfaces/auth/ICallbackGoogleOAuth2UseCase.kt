@@ -7,6 +7,7 @@ interface ICallbackGoogleOAuth2UseCase {
 
     data class OutputDto(
         val userId: UUID,
-        val isActiveUser: Boolean
+        val isActiveUser: Boolean,
+        val activateToken: String?
     )
 }

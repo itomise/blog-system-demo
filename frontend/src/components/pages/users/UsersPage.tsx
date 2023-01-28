@@ -44,7 +44,7 @@ export const UsersPage: React.FC = () => {
                     </Box>
                     <Group>
                       <UsersEditUserButtonPopUp user={user} />
-                      <UsersDeleteUserButtonPopUp user={user} />
+                      <UsersDeleteUserButtonPopUp user={user} isMe={me?.id === user.id} />
                     </Group>
                   </Group>
                 </Card>
