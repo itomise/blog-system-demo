@@ -1,16 +1,17 @@
 import { FC, useRef } from 'react'
 import { IconTrash } from '@tabler/icons'
 import { showNotification } from '@mantine/notifications'
-import { Popover, Button, Group, Text, ActionIcon } from '@mantine/core'
+import { Popover, Button, Group, Text, ActionIcon, Tooltip, Box } from '@mantine/core'
 import { User } from '@/services/user/types'
 import { useDeleteUser } from '@/services/user/api/useDeleteUser'
 import { queryClient } from '@/libs/react-query'
 
 type Props = {
   user: User
+  isMe: boolean
 }
 
-export const UsersDeleteUserButtonPopUp: FC<Props> = ({ user }) => {
+export const UsersDeleteUserButtonPopUp: FC<Props> = ({ user, isMe }) => {
   const buttonRef = useRef<HTMLButtonElement>(null)
   const { mutate: deleteUserMutate, isLoading: deleteUserLoading } = useDeleteUser({
     onSuccess: () => {
@@ -31,11 +32,15 @@ export const UsersDeleteUserButtonPopUp: FC<Props> = ({ user }) => {
   })
 
   return (
-    <Popover shadow="md" withArrow trapFocus position="bottom-end">
+    <Popover shadow="md" withArrow trapFocus position="bottom-end" disabled={isMe}>
       <Popover.Target>
-        <ActionIcon ref={buttonRef} color="red">
-          <IconTrash size={14} />
-        </ActionIcon>
+        <Tooltip label="自分自身は削除できません。" disabled={!isMe}>
+          <Box>
+            <ActionIcon ref={buttonRef} color="red" disabled={isMe}>
+              <IconTrash size={14} />
+            </ActionIcon>
+          </Box>
+        </Tooltip>
       </Popover.Target>
       <Popover.Dropdown>
         <Text size="xs">本当に削除しますか？</Text>

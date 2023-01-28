@@ -65,7 +65,7 @@ const signup = async (payload: SignupRequest) => {
 export type ActivateUserRequest = {
   name: string
   token: string
-  password: string
+  password?: string
 }
 
 const activateUser = async (payload: ActivateUserRequest) => {

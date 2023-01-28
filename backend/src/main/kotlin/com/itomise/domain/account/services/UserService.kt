@@ -6,13 +6,14 @@ import com.itomise.com.itomise.domain.account.vo.AccountOperationType
 import com.itomise.com.itomise.domain.account.vo.UserId
 import com.itomise.com.itomise.domain.account.vo.UserInternalLoginInfo
 import com.itomise.com.itomise.domain.security.interfaces.IHashingService
+import com.itomise.com.itomise.domain.security.interfaces.IJwtTokenService
 import com.itomise.com.itomise.domain.security.interfaces.INestedJwtTokenService
 import com.itomise.com.itomise.domain.security.vo.HashAlgorithm
 import com.itomise.com.itomise.domain.security.vo.SaltedHash
+import com.itomise.com.itomise.domain.security.vo.TokenClaim
 import com.itomise.com.itomise.module.envConfig
+import com.itomise.com.itomise.module.jwtTokenConfig
 import com.itomise.com.itomise.util.getKoinInstance
-import com.nimbusds.jose.jwk.JWKSet
-import java.io.File
 import java.security.KeyFactory
 import java.security.spec.PKCS8EncodedKeySpec
 import java.time.LocalDateTime
@@ -20,6 +21,7 @@ import java.util.*
 
 class UserService : IUserService {
     private val hashingService = getKoinInstance<IHashingService>()
+    private val jwtTokenService = getKoinInstance<IJwtTokenService>()
     private val nestedJwtTokenService = getKoinInstance<INestedJwtTokenService>()
 
     override suspend fun isDuplicateUser(allUsers: List<User>, user: User): Boolean {
@@ -57,35 +59,32 @@ class UserService : IUserService {
         val keySpecPKCS8 = PKCS8EncodedKeySpec(Base64.getDecoder().decode(envConfig.jwt.privateKey))
         val privateKey = KeyFactory.getInstance("RSA").generatePrivate(keySpecPKCS8)
 
-        return nestedJwtTokenService.generate(
-            signatureKey = privateKey,
-            encryptionKey = envConfig.jwt.encryptionKey.toByteArray(),
-            claims = mapOf(
-                "userId" to user.id.value.toString(),
-                "operationType" to AccountOperationType.ACTIVATE.value,
-                "expires" to LocalDateTime.now().plusHours(24).toString()
+        return jwtTokenService.generate(
+            config = jwtTokenConfig,
+            privateKey = privateKey,
+            claims = arrayOf(
+                TokenClaim("userId", user.id.value.toString()),
+                TokenClaim("operationType", AccountOperationType.ACTIVATE.value),
+                TokenClaim("expires", LocalDateTime.now().plusHours(24).toString()),
+                TokenClaim("loginType", user.loginType.value.toString()) // internal の場合は null になっているため
             )
         )
     }
 
     override fun getUserIdFromActivationToken(token: String): UserId {
-        val jwks = File("certs/jwks.json").readText()
-        val publicKey = JWKSet.parse(jwks).getKeyByKeyId(envConfig.jwt.publicKeyId).toPublicJWK().toRSAKey()
-
-        val jwtClaims = nestedJwtTokenService.verify(
-            token = token,
-            publicKey = publicKey,
-            encryptionKey = envConfig.jwt.encryptionKey.toByteArray()
+        val decodedJwt = jwtTokenService.verify(
+            config = jwtTokenConfig,
+            token = token
         ) ?: throw IllegalArgumentException("tokenが不正です。")
 
-        val operationType = AccountOperationType.get(jwtClaims.getClaim("operationType").toString())
+        val operationType = AccountOperationType.get(decodedJwt.getClaim("operationType").asString())
 
         if (operationType != AccountOperationType.ACTIVATE) {
             throw IllegalArgumentException("tokenが不正です。")
         }
 
         val expires = try {
-            LocalDateTime.parse(jwtClaims.getClaim("expires").toString())
+            LocalDateTime.parse(decodedJwt.getClaim("expires").asString())
         } catch (e: Exception) {
             throw IllegalArgumentException("tokenが不正です。")
         }
@@ -94,6 +93,6 @@ class UserService : IUserService {
             throw IllegalArgumentException("tokenの有効期限が切れています。")
         }
 
-        return UserId(UUID.fromString(jwtClaims.getClaim("userId").toString()))
+        return UserId(UUID.fromString(decodedJwt.getClaim("userId").asString()))
     }
 }

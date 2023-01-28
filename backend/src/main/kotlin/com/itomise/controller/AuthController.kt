@@ -12,13 +12,13 @@ import com.itomise.com.itomise.usecase.interfaces.auth.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
+import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
-import io.ktor.util.date.*
+import org.apache.http.client.utils.URIBuilder
 import org.koin.ktor.ext.inject
-import java.time.OffsetDateTime
 
 fun Route.authRouting() {
     val loginUseCase: ILoginUseCase by inject()
@@ -48,30 +48,34 @@ fun Route.authRouting() {
             }
         }
 
-        post("/sign-up") {
-            val request = call.receive<SignUpRequestModel>()
+        route("/sign-up") {
+            post {
+                val request = call.receive<SignUpRequestModel>()
 
-            val userId = signUpUseCase.handle(
-                ISignUpUseCase.Command(
-                    email = request.email,
+                val userId = signUpUseCase.handle(
+                    ISignUpUseCase.Command(
+                        email = request.email,
+                    )
                 )
-            )
 
-            call.respond(HttpStatusCode.OK, SignUpResponseModel(userId = userId))
-        }
+                call.respond(HttpStatusCode.OK, SignUpResponseModel(userId = userId))
+            }
 
-        post("/sign-up/activate") {
-            val request = call.receive<ActivateRequestModel>()
+            post("/activate") {
+                val request = call.receive<ActivateRequestModel>()
 
-            activateUserUseCase.handle(
-                IActivateUserUseCase.Command(
-                    token = request.token,
-                    password = request.password,
-                    name = request.name
+                val result = activateUserUseCase.handle(
+                    IActivateUserUseCase.Command(
+                        token = request.token,
+                        password = request.password,
+                        name = request.name
+                    )
                 )
-            )
 
-            call.respond(HttpStatusCode.OK)
+                call.sessions.set(UserPrincipal(id = result.value.toString()))
+
+                call.respond(HttpStatusCode.OK)
+            }
         }
 
         route("/google_oauth2") {
@@ -83,7 +87,7 @@ fun Route.authRouting() {
                         name = "state",
                         value = result.state,
                         path = "/",
-                        expires = GMTDate(OffsetDateTime.now().plusMinutes(10).toEpochSecond()),
+                        maxAge = 60 * 60
                     )
                 )
 
@@ -96,25 +100,31 @@ fun Route.authRouting() {
                 val paramState = call.parameters["state"] ?: throw IllegalArgumentException("state パラメータが存在しません。")
                 val code = call.parameters["code"] ?: throw IllegalArgumentException("code パラメータが存在しません。")
 
-//                val cookieState =
-//                    call.request.cookies["states"] ?: throw IllegalArgumentException("cookie に state がありません。")
-//                if (paramState != cookieState) {
-//                    call.respond(HttpStatusCode.Unauthorized)
-//                    return@get
-//                }
+                val cookieState =
+                    call.request.cookies["state"] ?: throw IllegalArgumentException("cookie に state がありません。")
+                if (paramState != cookieState) {
+                    call.respond(HttpStatusCode.Unauthorized)
+                    return@get
+                }
 
-                val result = callbackGoogleOAuth2UseCase.handle(code)
+                val result = try {
+                    callbackGoogleOAuth2UseCase.handle(code)
+                } catch (e: BadRequestException) {
+                    call.respond(HttpStatusCode.BadRequest, e.message.toString())
+                    return@get
+                }
                 val redirectUrl = if (result.isActiveUser) {
                     // ログイン状態にしてリダイレクトさせる
                     call.sessions.set(UserPrincipal(id = result.userId.toString()))
-                    envConfig.urls.adminRootUrl
+                    URIBuilder(envConfig.urls.adminRootUrl).build().toURL()
                 } else {
-                    // UserId を JWT に入れてパラメータで渡す
-                    envConfig.urls.accountActivateUrl
+                    URIBuilder(envConfig.urls.accountActivateUrl)
+                        .addParameter("token", result.activateToken)
+                        .build().toURL()
                 }
 
                 call.response.headers.append("Content-Type", "text/html")
-                call.response.headers.append("Location", redirectUrl)
+                call.response.headers.append("Location", redirectUrl.toString())
                 call.respond(HttpStatusCode.Found)
             }
         }
