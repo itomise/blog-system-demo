@@ -1,4 +1,3 @@
-import { theme } from '@/styles/theme'
 import { Center, Paper, useMantineTheme } from '@mantine/core'
 
 type Props = {
