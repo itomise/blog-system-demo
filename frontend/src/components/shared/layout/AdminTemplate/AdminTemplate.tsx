@@ -10,7 +10,7 @@ type Props = {
   children: React.ReactNode
 }
 
-export const AdminLayout: React.FC<Props> = ({ children }) => {
+export const AdminTemplate: React.FC<Props> = ({ children }) => {
   const theme = useMantineTheme()
   const { me, isLoading } = useCheckMe()
   const router = useRouter()
@@ -35,7 +35,7 @@ export const AdminLayout: React.FC<Props> = ({ children }) => {
             >
               <Group>
                 <IconAlien />
-                <Text weight="bold">Blog</Text>
+                <Text weight="bold">itomise admin</Text>
               </Group>
             </Box>
           </Navbar.Section>

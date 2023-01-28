@@ -8,6 +8,7 @@ import { useEditUser } from '@/services/user/api/useEditUser'
 import { queryClient } from '@/libs/react-query'
 import { InputField } from '@/components/shared/form/InputField'
 import { Form } from '@/components/shared/form/Form'
+import { useMe } from '@/services/auth/api/useMe'
 
 const schema = z.object({
   name: z.string().min(5).max(255),
@@ -21,19 +22,23 @@ type Props = {
 
 export const UsersEditUserButtonPopUp: React.FC<Props> = ({ user }) => {
   const buttonRef = useRef<HTMLButtonElement>(null)
+  const me = useMe()
   const { mutate, isLoading } = useEditUser({
     onSuccess: () => {
       showNotification({
-        message: 'ユーザー情報を更新しました。',
+        message: 'Updated user information.',
         color: 'green',
       })
       buttonRef.current?.click()
       queryClient.invalidateQueries(['/user'])
+      if (me.id === user.id) {
+        queryClient.invalidateQueries(['auth/me'])
+      }
     },
     onError: (e) => {
       showNotification({
         color: 'red',
-        title: 'ユーザー更新に失敗しました。',
+        title: 'User update failed.',
         message: e.message,
       })
     },
@@ -42,7 +47,7 @@ export const UsersEditUserButtonPopUp: React.FC<Props> = ({ user }) => {
   return (
     <Popover width={400} trapFocus position="right-start" withArrow shadow="md">
       <Popover.Target>
-        <Tooltip label="未設定のアカウントです。" disabled={user.isActive}>
+        <Tooltip label="未設定のユーザーは編集できません。" disabled={user.isActive}>
           <Box>
             <ActionIcon ref={buttonRef} disabled={!user.isActive}>
               <IconPencil size={14} />
@@ -65,16 +70,9 @@ export const UsersEditUserButtonPopUp: React.FC<Props> = ({ user }) => {
         >
           {({ register, formState: { errors } }) => (
             <Stack spacing="sm">
-              <InputField
-                label="名前"
-                error={errors.name}
-                placeholder="テスト太郎"
-                registration={register('name')}
-                required
-                size="xs"
-              />
+              <InputField label="名前" error={errors.name} registration={register('name')} required size="xs" />
               <Group position="right">
-                <Button type="submit" loading={isLoading}>
+                <Button type="submit" size="xs" loading={isLoading}>
                   送信
                 </Button>
               </Group>

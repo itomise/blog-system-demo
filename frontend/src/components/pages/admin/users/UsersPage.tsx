@@ -6,7 +6,7 @@ import { UsersDeleteUserButtonPopUp } from './_ui/UsersDeleteUserButtonPopUp'
 import { UsersCreateUserButtonPopUp } from './_ui/UsersCreateUserButtonPopUp'
 import { useUserList } from '@/services/user/api/useUserList'
 import { useCheckMe } from '@/services/auth/api/useCheckMe'
-import { AdminLayout } from '@/components/shared/layout/AdminLayout'
+import { AdminTemplate } from '@/components/shared/layout/AdminTemplate'
 
 export const UsersPage: React.FC = () => {
   const allUsers = useUserList()
@@ -16,9 +16,9 @@ export const UsersPage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>users</title>
+        <title>ユーザー一覧 | itomise blog admin</title>
       </Head>
-      <AdminLayout>
+      <AdminTemplate>
         <main ref={rootRef}>
           <Title order={1} size="h3">
             ユーザー一覧
@@ -52,7 +52,7 @@ export const UsersPage: React.FC = () => {
             ))}
           </List>
         </main>
-      </AdminLayout>
+      </AdminTemplate>
     </>
   )
 }

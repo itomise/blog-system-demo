@@ -17,7 +17,7 @@ export const UsersCreateUserButtonPopUp: React.FC = () => {
   const { mutate, isLoading } = useCreateUser({
     onSuccess: () => {
       showNotification({
-        message: '仮ユーザー作成が完了しました。メール認証でアカウントがアクティベートされます。',
+        message: '入力したメールアドレスに本登録のメールを送信しました。',
         color: 'green',
       })
       buttonRef.current?.click()
@@ -56,7 +56,7 @@ export const UsersCreateUserButtonPopUp: React.FC = () => {
                 size="xs"
               />
               <Group position="right">
-                <Button type="submit" loading={isLoading}>
+                <Button type="submit" size="xs" loading={isLoading}>
                   送信
                 </Button>
               </Group>

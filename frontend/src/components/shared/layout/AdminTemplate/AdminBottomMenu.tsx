@@ -19,6 +19,7 @@ export const AdminBottomMenu: FC = () => {
     await router.push('/')
     queryClient.clear()
   }
+  if (!me) return null
 
   return (
     <Box
@@ -48,10 +49,10 @@ export const AdminBottomMenu: FC = () => {
               />
               <Box sx={{ flex: 1 }}>
                 <Text size="sm" weight={500}>
-                  {me?.name}
+                  {me.name}
                 </Text>
-                <Text color="dimmed" size="xs">
-                  {me?.email}
+                <Text color="dimmed" size="xs" sx={{ width: 110, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {me.email}
                 </Text>
               </Box>
 
