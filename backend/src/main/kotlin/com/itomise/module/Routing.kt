@@ -2,6 +2,7 @@ package com.itomise.com.itomise.module
 
 import com.itomise.com.itomise.controller.authJwtRouting
 import com.itomise.com.itomise.controller.authRouting
+import com.itomise.com.itomise.controller.postRouting
 import com.itomise.controller.userRouting
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
@@ -18,6 +19,7 @@ fun Application.routing() {
             userRouting()
             authRouting()
             authJwtRouting()
+            postRouting()
         }
     }
 }

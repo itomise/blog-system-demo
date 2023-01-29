@@ -1,4 +1,3 @@
-import 'dayjs/locale/ja'
 import Head from 'next/head'
 import { Box, Button, Stack, Group } from '@mantine/core'
 import { AdminTemplate } from '@/components/shared/layout/AdminTemplate'
@@ -7,13 +6,9 @@ import { PostRichTextEditor } from '@/services/posts/components/PostRichTextEdit
 import { Form } from '@/components/shared/form/Form'
 import { InputField } from '@/components/shared/form/InputField'
 import { z } from 'zod'
-import { TimeField } from '@/components/shared/form/TimeField'
-import { DateField } from '@/components/shared/form/DateField'
 
 const schema = z.object({
   title: z.string().min(1).max(255),
-  date: z.date().nullable(),
-  time: z.date().nullable(),
   content: z.string(),
 })
 
@@ -33,8 +28,6 @@ export const PostsNewPage: React.FC = () => {
             }}
             schema={schema}
             defaultValues={{
-              date: new Date(),
-              time: new Date(),
               content: '',
             }}
           >
@@ -62,26 +55,6 @@ export const PostsNewPage: React.FC = () => {
                     registration={register('title')}
                     required
                   />
-                  <Group>
-                    <DateField
-                      label="作成した日付"
-                      size="xs"
-                      placeholder="2023.01.01"
-                      locale="ja"
-                      required
-                      clearable={false}
-                      value={watch('date')}
-                      onChange={(value) => setValue('date', value)}
-                    />
-                    <TimeField
-                      label="作成した時間"
-                      size="xs"
-                      required
-                      value={watch('time')}
-                      clearable={false}
-                      onChange={(value) => setValue('time', value)}
-                    />
-                  </Group>
                 </Stack>
                 <Box mt="md">
                   <PostRichTextEditor value={watch('content')} onChange={(value) => setValue('content', value)} />
