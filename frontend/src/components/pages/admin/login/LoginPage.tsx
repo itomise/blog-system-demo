@@ -51,7 +51,7 @@ export const LoginPage: React.FC = () => {
       <main>
         <SystemTemplate>
           <Title order={1} align="center">
-            Login
+            ログイン
           </Title>
           <Button
             onClick={onClickGoogleLogin}

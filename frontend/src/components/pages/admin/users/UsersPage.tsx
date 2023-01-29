@@ -7,6 +7,7 @@ import { UsersCreateUserButtonPopUp } from './_ui/UsersCreateUserButtonPopUp'
 import { useUserList } from '@/services/user/api/useUserList'
 import { useCheckMe } from '@/services/auth/api/useCheckMe'
 import { AdminTemplate } from '@/components/shared/layout/AdminTemplate'
+import { AdminBreadcrumbs } from '@/components/shared/link/AdminBreadcrumbs'
 
 export const UsersPage: React.FC = () => {
   const allUsers = useUserList()
@@ -20,13 +21,11 @@ export const UsersPage: React.FC = () => {
       </Head>
       <AdminTemplate>
         <main ref={rootRef}>
-          <Title order={1} size="h3">
-            ユーザー一覧
-          </Title>
+          <AdminBreadcrumbs links={[{ title: 'ユーザー一覧', href: null }]} />
           <Group mt="lg">
             <UsersCreateUserButtonPopUp />
           </Group>
-          <List mt="lg" listStyleType="none" spacing="sm" styles={{ itemWrapper: { width: '100%' } }}>
+          <List mt="md" listStyleType="none" spacing="sm" styles={{ itemWrapper: { width: '100%' } }}>
             {allUsers?.map((user) => (
               <List.Item key={user.id}>
                 <Card shadow="sm" p="md" radius="md" withBorder sx={{ width: '100%', overflow: 'initial' }}>

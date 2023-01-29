@@ -24,7 +24,7 @@ export const AdminTemplate: React.FC<Props> = ({ children }) => {
   return (
     <AppShell
       navbar={
-        <Navbar width={{ base: 240 }} p="xs">
+        <Navbar width={{ base: 240 }} p="xs" zIndex={1}>
           <Navbar.Section>
             <Box
               sx={{

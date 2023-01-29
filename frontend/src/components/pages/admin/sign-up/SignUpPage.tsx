@@ -20,7 +20,7 @@ export const SignUpPage: React.FC = () => {
   const { mutate, isLoading } = useSignup({
     onSuccess: () => {
       showNotification({
-        message: 'Your temporary registration has been completed. Please confirm your e-mail address.',
+        message: '仮登録が完了しました。メールアドレスを確認して登録を完了してください。',
         color: 'green',
       })
       router.push('/admin/sign-up/sent')

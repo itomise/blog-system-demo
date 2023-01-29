@@ -1,3 +1,3 @@
-import { UsersPage } from '@/components/pages/admin/users'
+import { UsersPage } from '@/components/pages/admin/users/UsersPage'
 
 export default UsersPage

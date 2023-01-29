@@ -1,12 +1,12 @@
 import { FC } from 'react'
-import { IconUsers } from '@tabler/icons'
-import { UnstyledButton, Group, ThemeIcon, Text } from '@mantine/core'
+import { IconBook, IconUsers } from '@tabler/icons'
+import { UnstyledButton, Group, ThemeIcon, Text, DefaultMantineColor } from '@mantine/core'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 type MainLinkProps = {
   icon: React.ReactNode
-  color: string
+  color: DefaultMantineColor
   label: string
   href: string
 }
@@ -40,6 +40,7 @@ const MainLink: FC<MainLinkProps & { current: boolean }> = ({ icon, color, label
 
 const data: MainLinkProps[] = [
   { icon: <IconUsers size={16} />, color: 'blue', label: 'ユーザー一覧', href: '/admin/users' },
+  { icon: <IconBook size={16} />, color: 'grape', label: 'ポスト一覧', href: '/admin/posts' },
 ]
 
 export const AdminMainLinks: FC = () => {
