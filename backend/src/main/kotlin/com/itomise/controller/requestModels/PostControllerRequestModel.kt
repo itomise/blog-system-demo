@@ -1,7 +1,5 @@
 package com.itomise.com.itomise.controller.requestModels
 
-import java.util.*
-
 data class CreatePostRequestModel(
     val title: String,
     val content: String,
@@ -12,6 +10,12 @@ data class UpdatePostRequestModel(
     val content: String,
 )
 
-data class DeletePostRequestModel(
-    val id: UUID
+data class PublishPostRequestModel(
+    val title: String,
+    val content: String,
+)
+
+data class UnPublishPostRequestModel(
+    val title: String,
+    val content: String,
 )

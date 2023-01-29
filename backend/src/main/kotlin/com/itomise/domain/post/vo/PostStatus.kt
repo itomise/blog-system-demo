@@ -1,9 +1,8 @@
 package com.itomise.com.itomise.domain.post.vo
 
 enum class PostStatus(val value: Int) {
-    DRAFT(1),
-    PUBLISHED(2),
-    ARCHIVED(3);
+    UN_PUBLISHED(1),
+    PUBLISH(2);
 
     companion object {
         fun get(value: Int) =

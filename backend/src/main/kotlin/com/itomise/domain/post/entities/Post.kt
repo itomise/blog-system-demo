@@ -17,12 +17,20 @@ data class Post internal constructor(
         content = content
     )
 
+    fun publish() = this.copy(
+        status = PostStatus.PUBLIC
+    )
+
+    fun unPublish() = this.copy(
+        status = PostStatus.PRIVATE
+    )
+
     companion object {
         fun new(title: String, content: String) = Post(
             id = PostId(UUID.randomUUID()),
             title = title,
             content = content,
-            status = PostStatus.DRAFT,
+            status = PostStatus.PRIVATE,
             publishedAt = null
         )
 

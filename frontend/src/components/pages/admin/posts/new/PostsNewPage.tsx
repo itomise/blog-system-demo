@@ -6,6 +6,10 @@ import { PostRichTextEditor } from '@/services/posts/components/PostRichTextEdit
 import { Form } from '@/components/shared/form/Form'
 import { InputField } from '@/components/shared/form/InputField'
 import { z } from 'zod'
+import { useCreatePost } from '@/services/posts/api/useCreatePost'
+import { useRouter } from 'next/router'
+import { showNotification } from '@mantine/notifications'
+import { onMutateError } from '@/services/common/api/onMutateError'
 
 const schema = z.object({
   title: z.string().min(1).max(255),
@@ -15,6 +19,18 @@ const schema = z.object({
 type FormType = z.infer<typeof schema>
 
 export const PostsNewPage: React.FC = () => {
+  const router = useRouter()
+  const { mutate, isLoading } = useCreatePost({
+    onSuccess: () => {
+      router.push('/admin/posts')
+      showNotification({
+        color: 'green',
+        message: 'ポストを作成しました。',
+      })
+    },
+    onError: onMutateError('ポストの作成に失敗しました。'),
+  })
+
   return (
     <>
       <Head>
@@ -23,9 +39,7 @@ export const PostsNewPage: React.FC = () => {
       <AdminTemplate>
         <main>
           <Form<FormType>
-            onSubmit={(data) => {
-              console.log(data)
-            }}
+            onSubmit={(data) => mutate(data)}
             schema={schema}
             defaultValues={{
               content: '',
@@ -41,7 +55,7 @@ export const PostsNewPage: React.FC = () => {
                     ]}
                   />
                   <Box>
-                    <Button color="blue" type="submit">
+                    <Button color="blue" type="submit" loading={isLoading}>
                       保存する
                     </Button>
                   </Box>

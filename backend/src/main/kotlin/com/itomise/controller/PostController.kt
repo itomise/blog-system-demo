@@ -1,6 +1,8 @@
 package com.itomise.com.itomise.controller
 
 import com.itomise.com.itomise.controller.requestModels.CreatePostRequestModel
+import com.itomise.com.itomise.controller.requestModels.PublishPostRequestModel
+import com.itomise.com.itomise.controller.requestModels.UnPublishPostRequestModel
 import com.itomise.com.itomise.controller.requestModels.UpdatePostRequestModel
 import com.itomise.com.itomise.controller.responseModels.GetListPostResponseModel
 import com.itomise.com.itomise.controller.responseModels.GetPostResponseModel
@@ -20,6 +22,8 @@ fun Route.postRouting() {
     val createPostUseCase by inject<ICreatePostUseCase>()
     val updatePostUseCase by inject<IUpdatePostUseCase>()
     val deletePostUseCase by inject<IDeletePostUseCase>()
+    val publishPostUseCase by inject<IPublishPostUseCase>()
+    val unPublishPostUseCase by inject<IUnPublishPostUseCase>()
 
     authenticate("auth-session") {
         route("/posts") {
@@ -85,6 +89,39 @@ fun Route.postRouting() {
                     val postId = call.parameters["postId"] ?: throw IllegalArgumentException()
 
                     deletePostUseCase.handle(UUID.fromString(postId))
+
+                    call.respond(HttpStatusCode.OK)
+                }
+
+                put("/publish") {
+                    val postId = call.parameters["postId"] ?: throw IllegalArgumentException()
+                    val request = call.receive<PublishPostRequestModel>()
+
+                    updatePostUseCase.handle(
+                        IUpdatePostUseCase.Command(
+                            id = UUID.fromString(postId),
+                            title = request.title,
+                            content = request.content
+                        )
+                    )
+
+                    publishPostUseCase.handle(UUID.fromString(postId))
+
+                    call.respond(HttpStatusCode.OK)
+                }
+                put("/un-publish") {
+                    val postId = call.parameters["postId"] ?: throw IllegalArgumentException()
+                    val request = call.receive<UnPublishPostRequestModel>()
+
+                    updatePostUseCase.handle(
+                        IUpdatePostUseCase.Command(
+                            id = UUID.fromString(postId),
+                            title = request.title,
+                            content = request.content
+                        )
+                    )
+
+                    unPublishPostUseCase.handle(UUID.fromString(postId))
 
                     call.respond(HttpStatusCode.OK)
                 }

@@ -44,6 +44,8 @@ val useCaseModule = module {
     single<IUpdatePostUseCase> { UpdatePostInteractor() }
     single<IDeletePostUseCase> { DeletePostInteractor() }
     single<ICreatePostUseCase> { CreatePostInteractor() }
+    single<IPublishPostUseCase> { PublishPostInteractor() }
+    single<IUnPublishPostUseCase> { UnPublishPostInteractor() }
 }
 
 val repositoryModule = module {

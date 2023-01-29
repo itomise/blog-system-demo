@@ -22,10 +22,10 @@ export const UsersPage: React.FC = () => {
       <AdminTemplate>
         <main ref={rootRef}>
           <AdminBreadcrumbs links={[{ title: 'ユーザー一覧', href: null }]} />
-          <Group mt="sm">
+          <Group mt="lg">
             <UsersCreateUserButtonPopUp />
           </Group>
-          <List mt="lg" listStyleType="none" spacing="sm" styles={{ itemWrapper: { width: '100%' } }}>
+          <List mt="md" listStyleType="none" spacing="sm" styles={{ itemWrapper: { width: '100%' } }}>
             {allUsers?.map((user) => (
               <List.Item key={user.id}>
                 <Card shadow="sm" p="md" radius="md" withBorder sx={{ width: '100%', overflow: 'initial' }}>

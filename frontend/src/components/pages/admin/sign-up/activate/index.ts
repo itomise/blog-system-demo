@@ -1,1 +1,0 @@
-export { SignUpActivatePage } from './SignUpActivatePage'

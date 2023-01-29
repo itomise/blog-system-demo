@@ -23,7 +23,7 @@ class PostRepository : IPostRepository {
     override suspend fun getList(): List<Post> {
         return PostTable
             .selectAll()
-            .orderBy(PostTable.updatedAt)
+            .orderBy(PostTable.updatedAt, SortOrder.DESC)
             .map(::resultRowToPostEntity)
     }
 
