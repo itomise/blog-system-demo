@@ -7,6 +7,7 @@ import com.itomise.com.itomise.controller.requestModels.UpdatePostRequestModel
 import com.itomise.com.itomise.controller.responseModels.GetListPostResponseModel
 import com.itomise.com.itomise.controller.responseModels.GetPostResponseModel
 import com.itomise.com.itomise.usecase.interfaces.post.*
+import com.itomise.com.itomise.util.removeHtmlTagFromString
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -36,7 +37,8 @@ fun Route.postRouting() {
                             id = it.id,
                             title = it.title,
                             content = it.content,
-                            status = it.status
+                            status = it.status,
+                            displayContent = removeHtmlTagFromString(it.content),
                         )
                     }
                 ))
@@ -64,7 +66,8 @@ fun Route.postRouting() {
                                 id = result.id,
                                 title = result.title,
                                 content = result.content,
-                                status = result.status
+                                status = result.status,
+                                displayContent = removeHtmlTagFromString(result.content),
                             )
                         )
                     } else {

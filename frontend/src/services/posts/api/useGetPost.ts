@@ -9,6 +9,7 @@ type Response = {
   title: string
   content: string
   status: PostStatus
+  displayContent: string
 }
 
 const getPostApi = async (id: UUID) => {

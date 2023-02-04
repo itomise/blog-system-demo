@@ -10,6 +10,7 @@ type Response = {
     title: string
     content: string
     status: PostStatus
+    displayContent: string
   }[]
 }
 

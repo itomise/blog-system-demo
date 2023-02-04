@@ -25,8 +25,8 @@ fun Route.userRouting() {
     val updateUserUseCase: IUpdateAccountUseCase by inject()
     val deleteUserUseCase: IDeleteAccountUseCase by inject()
 
-    route("/users") {
-        authenticate("auth-session") {
+    authenticate("auth-session") {
+        route("/users") {
             get("") {
                 val result = getUserListUseCase.handle()
 

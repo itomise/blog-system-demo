@@ -47,7 +47,7 @@ export const PostsPage: React.FC = () => {
                     </td>
                     <td>{post.title}</td>
                     <td>
-                      <Text lineClamp={2}>{post.content}</Text>
+                      <Text lineClamp={2}>{post.displayContent}</Text>
                     </td>
                   </tr>
                 ))}

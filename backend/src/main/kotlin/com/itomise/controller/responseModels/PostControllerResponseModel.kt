@@ -10,5 +10,6 @@ data class GetPostResponseModel(
     val id: UUID,
     val title: String,
     val content: String,
+    val displayContent: String,
     val status: Int,
 )
