@@ -10,6 +10,7 @@ import com.itomise.admin.usecase.interfaces.account.ICreateAccountUseCase
 import com.itomise.admin.usecase.interfaces.account.IGetAccountListUseCase
 import controller.BaseTestApplication.Companion.cleanup
 import controller.BaseTestApplication.Companion.setUpTables
+import io.ktor.server.config.*
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
@@ -29,6 +30,7 @@ internal class CreateAccountInteractorTest : KoinTest {
 
     @BeforeTest
     fun prepare() {
+        val file = ApplicationConfig("application.test.conf")
         envConfig = EnvConfig(
             isTest = true,
             allowHost = "localhost:3000",
