@@ -6,10 +6,10 @@ import com.itomise.admin.controller.requestModels.CreateUserRequestModel
 import com.itomise.admin.controller.requestModels.UpdateUserRequestModel
 import com.itomise.admin.controller.responseModels.CreateUserResponseModel
 import com.itomise.admin.controller.responseModels.GetListUserResponseModel
-import controller.BaseTestApplication
-import controller.BaseTestApplication.Companion.appTestApplication
-import controller.BaseTestApplication.Companion.authSessionUserForTest
-import controller.BaseTestApplication.Companion.cleanup
+import helper.KtorTestApplication
+import helper.KtorTestApplication.appTestApplication
+import helper.KtorTestApplication.authSessionUserForTest
+import helper.KtorTestApplication.cleanup
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -46,7 +46,7 @@ internal class UpdateAccountTest {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
-                    BaseTestApplication.Companion.ActivateTestUserRequest(
+                    KtorTestApplication.ActivateTestUserRequest(
                         id = createResBody.id,
                         name = "test太郎",
                         email = email,
