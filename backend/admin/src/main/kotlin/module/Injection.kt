@@ -38,7 +38,6 @@ val useCaseModule = module {
     single<IActivateUserUseCase> { ActivateUserInteractor() }
     single<IRequestGoogleOAuth2UseCase> { RequestGoogleOAuth2Interactor() }
     single<ICallbackGoogleOAuth2UseCase> { CallbackGoogleOAuth2Interactor() }
-    single<IPostRepository> { PostRepository() }
     single<IGetListPostUseCase> { GetListPostInteractor() }
     single<IGetPostUseCase> { GetPostInteractor() }
     single<IUpdatePostUseCase> { UpdatePostInteractor() }
@@ -50,6 +49,7 @@ val useCaseModule = module {
 
 val repositoryModule = module {
     single<IUserRepository> { UserRepository() }
+    single<IPostRepository> { PostRepository() }
 }
 
 val serviceModule = module {

@@ -17,11 +17,11 @@ internal class CreateAccountInteractorTest : KoinTest {
 
     @BeforeTest
     fun prepare() {
-        UnitTestHelper.prepare(withDatabase = true)
+        UnitTestHelper.prepare(withDatabase = false)
     }
 
     @AfterTest
-    fun after() = UnitTestHelper.cleanup(withDatabase = true)
+    fun after() = UnitTestHelper.cleanup(withDatabase = false)
 
     @Test
     fun `ユーザーが作成できること`() = runBlocking {
