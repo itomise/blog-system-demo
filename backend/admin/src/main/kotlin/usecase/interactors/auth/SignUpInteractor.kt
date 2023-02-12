@@ -3,15 +3,16 @@ package com.itomise.admin.usecase.interactors.auth
 import com.itomise.admin.domain.account.entities.User
 import com.itomise.admin.domain.account.interfaces.IUserRepository
 import com.itomise.admin.domain.account.vo.Email
+import com.itomise.admin.infrastructure.dbQuery
 import com.itomise.admin.usecase.interfaces.auth.ISignUpUseCase
 import com.itomise.admin.usecase.interfaces.mail.ISendSignUpMailUseCase
-import com.itomise.admin.util.getKoinInstance
-import com.itomise.admin.infrastructure.dbQuery
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.util.*
 
-class SignUpInteractor : ISignUpUseCase {
-    private val sendSignUpMailUseCase = getKoinInstance<ISendSignUpMailUseCase>()
-    private val userRepository = getKoinInstance<IUserRepository>()
+class SignUpInteractor : ISignUpUseCase, KoinComponent {
+    private val sendSignUpMailUseCase by inject<ISendSignUpMailUseCase>()
+    private val userRepository by inject<IUserRepository>()
 
     override suspend fun handle(command: ISignUpUseCase.Command): UUID {
         val user = dbQuery {

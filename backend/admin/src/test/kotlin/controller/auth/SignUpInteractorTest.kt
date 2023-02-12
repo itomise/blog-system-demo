@@ -2,8 +2,8 @@ package controller.auth
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.itomise.admin.controller.requestModels.SignUpRequestModel
-import controller.BaseTestApplication
-import controller.BaseTestApplication.Companion.appTestApplication
+import helper.KtorTestApplication
+import helper.KtorTestApplication.appTestApplication
 import io.ktor.client.request.*
 import io.ktor.http.*
 import java.util.*
@@ -13,7 +13,7 @@ import kotlin.test.assertEquals
 
 internal class SignUpInteractorTest {
     @AfterTest
-    fun after() = BaseTestApplication.cleanup()
+    fun after() = KtorTestApplication.cleanup()
 
     private val objectMapper = jacksonObjectMapper()
 

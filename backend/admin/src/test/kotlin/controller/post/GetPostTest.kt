@@ -5,9 +5,9 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.admin.controller.requestModels.CreatePostRequestModel
 import com.itomise.admin.controller.responseModels.GetListPostResponseModel
 import com.itomise.admin.controller.responseModels.GetPostResponseModel
-import controller.BaseTestApplication.Companion.appTestApplication
-import controller.BaseTestApplication.Companion.authSessionUserForTest
-import controller.BaseTestApplication.Companion.cleanup
+import helper.KtorTestApplication.appTestApplication
+import helper.KtorTestApplication.authSessionUserForTest
+import helper.KtorTestApplication.cleanup
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*

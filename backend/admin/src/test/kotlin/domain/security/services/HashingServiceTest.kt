@@ -4,23 +4,23 @@ import com.itomise.admin.domain.security.interfaces.IHashingService
 import com.itomise.admin.domain.security.vo.HashAlgorithm
 import com.itomise.admin.domain.security.vo.SaltedHash
 import com.itomise.admin.module.serviceModule
-import com.itomise.admin.util.getKoinInstance
+import org.koin.core.component.inject
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
+import org.koin.test.KoinTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 
-class HashingServiceTest {
-    private lateinit var hashingService: IHashingService
+class HashingServiceTest : KoinTest {
+    private val hashingService by inject<IHashingService>()
 
     @BeforeTest
     fun prepare() {
         startKoin {
             modules(serviceModule)
         }
-        hashingService = getKoinInstance()
     }
 
     @AfterTest

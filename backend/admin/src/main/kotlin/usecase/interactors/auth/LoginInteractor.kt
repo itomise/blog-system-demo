@@ -3,13 +3,14 @@ package com.itomise.admin.usecase.interactors.auth
 import com.itomise.admin.domain.account.interfaces.IUserRepository
 import com.itomise.admin.domain.account.interfaces.IUserService
 import com.itomise.admin.domain.account.vo.Email
-import com.itomise.admin.usecase.interfaces.auth.ILoginUseCase
-import com.itomise.admin.util.getKoinInstance
 import com.itomise.admin.infrastructure.dbQuery
+import com.itomise.admin.usecase.interfaces.auth.ILoginUseCase
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class LoginInteractor : ILoginUseCase {
-    private val userRepository = getKoinInstance<IUserRepository>()
-    private val userService = getKoinInstance<IUserService>()
+class LoginInteractor : ILoginUseCase, KoinComponent {
+    private val userRepository by inject<IUserRepository>()
+    private val userService by inject<IUserService>()
 
     override suspend fun handle(command: ILoginUseCase.Command): ILoginUseCase.OutputDtoUser? {
 

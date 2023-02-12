@@ -1,6 +1,7 @@
 package com.itomise.admin.module
 
 import io.ktor.server.application.*
+import io.ktor.server.config.*
 
 lateinit var envConfig: EnvConfig
 
@@ -58,15 +59,19 @@ data class EnvConfig(
 }
 
 fun Application.configureEnvironmentVariables() {
+    initializeEnvConfig(environment.config)
+}
+
+fun initializeEnvConfig(config: ApplicationConfig) {
     fun fromConfig(path: String): String =
-        environment.config.propertyOrNull(path)?.getString()
+        config.propertyOrNull(path)?.getString()
             ?: throw IllegalStateException("ktorの環境変数が見つかりません。 path: $path")
 
     fun fromConfigOrNull(path: String): String? =
-        environment.config.propertyOrNull(path)?.getString()
+        config.propertyOrNull(path)?.getString()
 
     envConfig = EnvConfig(
-        isTest = environment.config.propertyOrNull("app.test") != null,
+        isTest = config.propertyOrNull("app.test") != null,
         allowHost = fromConfig("app.allowHost"),
         db = EnvConfig.EnvConfigDb(
             url = fromConfig("app.db.url"),

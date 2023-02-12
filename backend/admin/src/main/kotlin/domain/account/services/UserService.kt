@@ -7,22 +7,21 @@ import com.itomise.admin.domain.account.vo.UserId
 import com.itomise.admin.domain.account.vo.UserInternalLoginInfo
 import com.itomise.admin.domain.security.interfaces.IHashingService
 import com.itomise.admin.domain.security.interfaces.IJwtTokenService
-import com.itomise.admin.domain.security.interfaces.INestedJwtTokenService
 import com.itomise.admin.domain.security.vo.HashAlgorithm
 import com.itomise.admin.domain.security.vo.SaltedHash
 import com.itomise.admin.domain.security.vo.TokenClaim
 import com.itomise.admin.module.envConfig
 import com.itomise.admin.module.jwtTokenConfig
-import com.itomise.admin.util.getKoinInstance
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.security.KeyFactory
 import java.security.spec.PKCS8EncodedKeySpec
 import java.time.LocalDateTime
 import java.util.*
 
-class UserService : IUserService {
-    private val hashingService = getKoinInstance<IHashingService>()
-    private val jwtTokenService = getKoinInstance<IJwtTokenService>()
-    private val nestedJwtTokenService = getKoinInstance<INestedJwtTokenService>()
+class UserService : IUserService, KoinComponent {
+    private val hashingService by inject<IHashingService>()
+    private val jwtTokenService by inject<IJwtTokenService>()
 
     override suspend fun isDuplicateUser(allUsers: List<User>, user: User): Boolean {
         val targetUser = allUsers.find {

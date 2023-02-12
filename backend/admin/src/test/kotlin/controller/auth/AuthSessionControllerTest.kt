@@ -6,8 +6,8 @@ import com.itomise.admin.controller.requestModels.LoginRequestModel
 import com.itomise.admin.controller.requestModels.SignUpRequestModel
 import com.itomise.admin.controller.responseModels.MeResponseModel
 import com.itomise.admin.controller.responseModels.SignUpResponseModel
-import controller.BaseTestApplication
-import controller.BaseTestApplication.Companion.appTestApplication
+import helper.KtorTestApplication
+import helper.KtorTestApplication.appTestApplication
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -19,7 +19,7 @@ import kotlin.test.assertEquals
 
 internal class AuthSessionControllerTest {
     @AfterTest
-    fun after() = BaseTestApplication.cleanup()
+    fun after() = KtorTestApplication.cleanup()
 
     private val objectMapper = jacksonObjectMapper()
 
@@ -49,7 +49,7 @@ internal class AuthSessionControllerTest {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
-                    BaseTestApplication.Companion.ActivateTestUserRequest(
+                    KtorTestApplication.ActivateTestUserRequest(
                         id = signUpResBody.userId,
                         name = name,
                         email = email,
