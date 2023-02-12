@@ -1,1 +1,2 @@
-rootProject.name = "com.itomise.backend"
+rootProject.name = "com.itomise"
+include("admin")
