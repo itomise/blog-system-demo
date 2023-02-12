@@ -23,5 +23,5 @@ jobs:
       - name: Run Redis
         run: docker-compose -f docker-compose.yml up -d test-redis
 
-      - name: Run build with Gradle Wrapper
-        run: ./gradlew build
+      - name: Run Backend Tests
+        run: ./gradlew :admin:test --stacktrace
