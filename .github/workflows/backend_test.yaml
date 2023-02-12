@@ -23,8 +23,14 @@ jobs:
       - name: Run Redis
         run: docker-compose -f docker-compose.yml up -d test-redis
 
+      - uses: actions/setup-java@v2
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+
       - name: Run Backend Tests
-        run: ./gradlew :admin:test --stacktrace
+        run: ./gradlew :admin:test --stacktrace --no-parallel --no-daemon --build-cache
         env:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_URL: ${{ secrets.DB_URL }}
@@ -40,9 +46,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: |
-            .gradle/caches
-            .gradle/wrapper
-            !.gradle/wrapper/dists/**/gradle*.zip
+            ~/backend/.gradle/caches
+            ~/backend/.gradle/wrapper
+            !~/backend/.gradle/wrapper/dists/**/gradle*.zip
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
