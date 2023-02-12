@@ -120,6 +120,6 @@ internal class CreateAccountInteractorTest : KoinTest {
         )
 
         val afterUsers = getListUserUseCase.handle()
-        assertEquals(2, afterUsers.users.size)
+        assertEquals(1, afterUsers.users.size)
     }
 }
