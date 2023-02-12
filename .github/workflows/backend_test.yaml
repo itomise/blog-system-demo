@@ -24,7 +24,7 @@ jobs:
         run: docker-compose -f docker-compose.yml up -d test-redis
 
       - name: Run Backend Tests
-        run: ./gradlew :admin:test --stacktrace
+        run: SESSION_SIGN_KEY=${{ env.SESSION_SIGN_KEY }} ./gradlew :admin:test --stacktrace
         env:
           DB_PASSWORD: ${{ env.DB_PASSWORD }}
           DB_URL: ${{ env.DB_URL }}
