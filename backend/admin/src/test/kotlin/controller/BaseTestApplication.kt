@@ -14,6 +14,7 @@ import com.itomise.admin.module.jwkProvider
 import com.itomise.admin.usecase.interfaces.account.ICreateAccountUseCase
 import com.itomise.admin.usecase.interfaces.auth.IActivateUserUseCase
 import com.itomise.admin.util.getKoinInstance
+import helper.DatabaseTestHelper
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -29,12 +30,8 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.unmockkAll
-import org.jetbrains.exposed.sql.transactions.TransactionManager
-import org.jetbrains.exposed.sql.transactions.transaction
 import org.koin.core.context.GlobalContext
 import org.koin.core.context.stopKoin
-import java.nio.file.Files
-import java.nio.file.Path
 import java.util.*
 
 class BaseTestApplication() {
@@ -48,7 +45,7 @@ class BaseTestApplication() {
                 }
                 application {
                     // application が起動してからでないと DB などが立ち上がっていないため
-                    setUpTables()
+                    DatabaseTestHelper.setUpSchema()
 
                     // メールは全てモックをさす
                     mockkObject(SendGridClient)
@@ -173,24 +170,6 @@ class BaseTestApplication() {
             val password: String
         )
 
-        fun setUpTables() {
-            transaction {
-                val sqlForDropAllSchema = """
-                    drop schema if exists main cascade;
-                """.trimIndent()
-                TransactionManager.current().exec(sqlForDropAllSchema)
-
-                val migrationSql = getAllMigrationSql()
-                val sql = """
-                    create schema if not exists main;
-                    SET search_path TO main;
-                    $migrationSql
-                """.trimIndent()
-
-                TransactionManager.current().exec(sql)
-            }
-        }
-
         fun cleanup() {
             // test が fail すると Koin が残ったままになるため
             if (GlobalContext.getOrNull() != null) {
@@ -199,31 +178,7 @@ class BaseTestApplication() {
 
             unmockkAll()
 
-            transaction {
-                val sqlForDropAllSchema = """
-                    drop schema if exists main cascade;
-                """.trimIndent()
-                TransactionManager.current().exec(sqlForDropAllSchema)
-            }
-        }
-
-        private fun getAllMigrationSql(): String {
-            var sqlString = ""
-            Files.list(Path.of("../db/migration"))
-                .filter { it.toString().endsWith(".sql") }
-                .sorted(compareBy {
-                    val versionNum = it.toString().split("__")[0]
-                    versionNum.split("V")[1].toInt()
-                })
-                .forEach { path ->
-                    Files.readAllLines(path)
-                        .filter { it.toString().isNotBlank() }
-                        .forEach {
-                            val str = it.toString()
-                            sqlString += " $str"
-                        }
-                }
-            return sqlString
+            DatabaseTestHelper.cleanupSchema()
         }
     }
 }
