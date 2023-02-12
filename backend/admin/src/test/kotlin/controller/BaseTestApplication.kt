@@ -1,5 +1,7 @@
 package controller
 
+import com.auth0.jwk.Jwk
+import com.auth0.jwk.JwkProvider
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.admin.domain.account.entities.User
@@ -8,6 +10,7 @@ import com.itomise.admin.domain.account.vo.Email
 import com.itomise.admin.domain.account.vo.UserId
 import com.itomise.admin.domain.account.vo.UserPrincipal
 import com.itomise.admin.lib.sendgrid.SendGridClient
+import com.itomise.admin.module.jwkProvider
 import com.itomise.admin.usecase.interfaces.account.ICreateAccountUseCase
 import com.itomise.admin.usecase.interfaces.auth.IActivateUserUseCase
 import com.itomise.admin.util.getKoinInstance
@@ -23,6 +26,7 @@ import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import io.ktor.server.testing.*
 import io.mockk.every
+import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.unmockkAll
 import org.jetbrains.exposed.sql.transactions.TransactionManager
@@ -56,6 +60,20 @@ class BaseTestApplication() {
                             val createUserUseCase = getKoinInstance<ICreateAccountUseCase>()
                             val userService = getKoinInstance<IUserService>()
                             val activateUserUseCase = getKoinInstance<IActivateUserUseCase>()
+
+                            val mockJwkProvider = mockk<JwkProvider>()
+                            every { mockJwkProvider.get(any()) } returns Jwk.fromValues(
+                                mapOf(
+                                    "use" to "sig",
+                                    "kty" to "RSA",
+                                    "n" to "ql5HLRkh27pA0zONngdyk_mRo7TgcR7Et31YbqDsWDcfLYN_P1XrdTetg89HHuSC_P_G5rabx3NIzenK_Ej8lZES0F7lpagIwaMZQjPO0urEp53MuRhoogppBr6uxRP_Mkv-bESK_cTNaTgG5nfkWzjfq6Bx1wjNOhWQDONAd81V9jFt8vm0oDzdErsBKUmuysRo7Seuol2mgD5D8AyBYyv79NRaP1anuje4h0DUo45yevxOjjdyAwCcM6uZPPNtDN7AoM469il--rgV-17DJSz3lKnYUdwepqn0ULeqCPORRjJ0p-B5VDJI0_CuYMiO8XsQh43y-znq8pYiIkISow",
+                                    "e" to "AQAB",
+                                    "kid" to "673a5ea3-a4ae-422b-be55-a9c98e674550",
+                                    "alg" to "RS256"
+                                )
+                            )
+
+                            jwkProvider = mockJwkProvider
 
                             val result = createUserUseCase.handle(ICreateAccountUseCase.Command(request.email))
 
