@@ -13,7 +13,6 @@ import com.itomise.admin.lib.sendgrid.SendGridClient
 import com.itomise.admin.module.jwkProvider
 import com.itomise.admin.usecase.interfaces.account.ICreateAccountUseCase
 import com.itomise.admin.usecase.interfaces.auth.IActivateUserUseCase
-import com.itomise.admin.util.getKoinInstance
 import helper.DatabaseTestHelper
 import io.ktor.client.*
 import io.ktor.client.request.*
@@ -30,6 +29,8 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.unmockkAll
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import org.koin.core.context.GlobalContext
 import org.koin.core.context.stopKoin
 import java.util.*
@@ -181,4 +182,10 @@ class BaseTestApplication() {
             DatabaseTestHelper.cleanupSchema()
         }
     }
+}
+
+private inline fun <reified T> getKoinInstance(): T {
+    return object : KoinComponent {
+        val value: T by inject()
+    }.value
 }

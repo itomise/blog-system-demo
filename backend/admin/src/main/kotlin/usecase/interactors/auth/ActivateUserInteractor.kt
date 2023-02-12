@@ -6,13 +6,14 @@ import com.itomise.admin.domain.account.vo.UserId
 import com.itomise.admin.domain.account.vo.UserLoginType
 import com.itomise.admin.domain.account.vo.Username
 import com.itomise.admin.domain.common.exception.CustomBadRequestException
-import com.itomise.admin.usecase.interfaces.auth.IActivateUserUseCase
-import com.itomise.admin.util.getKoinInstance
 import com.itomise.admin.infrastructure.dbQuery
+import com.itomise.admin.usecase.interfaces.auth.IActivateUserUseCase
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class ActivateUserInteractor : IActivateUserUseCase {
-    private val userRepository = getKoinInstance<IUserRepository>()
-    private val userService = getKoinInstance<IUserService>()
+class ActivateUserInteractor : IActivateUserUseCase, KoinComponent {
+    private val userRepository by inject<IUserRepository>()
+    private val userService by inject<IUserService>()
 
     override suspend fun handle(command: IActivateUserUseCase.Command): UserId {
         val userId = try {

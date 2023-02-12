@@ -5,15 +5,16 @@ import com.itomise.admin.domain.account.interfaces.IUserRepository
 import com.itomise.admin.domain.account.interfaces.IUserService
 import com.itomise.admin.domain.account.vo.Email
 import com.itomise.admin.domain.account.vo.UserLoginType
+import com.itomise.admin.infrastructure.dbQuery
 import com.itomise.admin.lib.google.GoogleAuthentication
 import com.itomise.admin.usecase.interfaces.auth.ICallbackGoogleOAuth2UseCase
-import com.itomise.admin.util.getKoinInstance
-import com.itomise.admin.infrastructure.dbQuery
 import io.ktor.server.plugins.*
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class CallbackGoogleOAuth2Interactor : ICallbackGoogleOAuth2UseCase {
-    private val userRepository = getKoinInstance<IUserRepository>()
-    private val userService = getKoinInstance<IUserService>()
+class CallbackGoogleOAuth2Interactor : ICallbackGoogleOAuth2UseCase, KoinComponent {
+    private val userRepository by inject<IUserRepository>()
+    private val userService by inject<IUserService>()
 
     override suspend fun handle(code: String): ICallbackGoogleOAuth2UseCase.OutputDto {
         val googleUserInfo = GoogleAuthentication.getGoogleUserInfoByCode(code)

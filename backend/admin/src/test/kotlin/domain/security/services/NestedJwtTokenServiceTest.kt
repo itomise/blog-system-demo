@@ -2,7 +2,6 @@ package domain.security.services
 
 import com.itomise.admin.domain.security.interfaces.INestedJwtTokenService
 import com.itomise.admin.module.serviceModule
-import com.itomise.admin.util.getKoinInstance
 import com.nimbusds.jose.EncryptionMethod
 import com.nimbusds.jose.JWEAlgorithm
 import com.nimbusds.jose.JWEObject
@@ -13,6 +12,8 @@ import com.nimbusds.jose.jwk.JWKSet
 import com.nimbusds.jose.jwk.RSAKey
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
+import org.koin.test.KoinTest
+import org.koin.test.inject
 import java.security.KeyFactory
 import java.security.PrivateKey
 import java.security.spec.PKCS8EncodedKeySpec
@@ -21,15 +22,14 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-class NestedJwtTokenServiceTest {
-    private lateinit var nestedJwtTokenService: INestedJwtTokenService
+class NestedJwtTokenServiceTest : KoinTest {
+    private val nestedJwtTokenService by inject<INestedJwtTokenService>()
 
     @BeforeTest
     fun prepare() {
         startKoin {
             modules(serviceModule)
         }
-        nestedJwtTokenService = getKoinInstance()
     }
 
     @AfterTest

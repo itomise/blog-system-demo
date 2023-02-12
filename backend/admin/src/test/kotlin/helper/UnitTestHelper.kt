@@ -14,7 +14,7 @@ import org.koin.core.context.GlobalContext
 import org.koin.core.context.startKoin
 
 object UnitTestHelper {
-    fun prepare(withDatabase: Boolean = false) {
+    fun prepare(withDatabase: Boolean) {
         val file = ApplicationConfig("application.test.conf")
 
         initializeEnvConfig(file)
@@ -55,7 +55,7 @@ object UnitTestHelper {
         }
     }
 
-    fun cleanup(withDatabase: Boolean = false) {
+    fun cleanup(withDatabase: Boolean) {
         // test が fail すると Koin が残ったままになるため
 //        if (GlobalContext.getOrNull() != null) {
 //            stopKoin()

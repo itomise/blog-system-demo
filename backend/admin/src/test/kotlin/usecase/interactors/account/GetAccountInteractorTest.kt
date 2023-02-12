@@ -1,7 +1,6 @@
 package usecase.interactors.account
 
 import com.itomise.admin.usecase.interfaces.account.ICreateAccountUseCase
-import com.itomise.admin.usecase.interfaces.account.IGetAccountListUseCase
 import com.itomise.admin.usecase.interfaces.account.IGetAccountUseCase
 import helper.UnitTestHelper
 import kotlinx.coroutines.runBlocking
@@ -15,13 +14,11 @@ import kotlin.test.assertEquals
 
 class GetAccountInteractorTest : KoinTest {
     private val createUserUseCase by inject<ICreateAccountUseCase>()
-    private val getListUserUseCase by inject<IGetAccountListUseCase>()
     private val getUserUseCase by inject<IGetAccountUseCase>()
 
     private val userEmail = "${UUID.randomUUID()}@test.test"
     private lateinit var userId: UUID
-
-
+    
     @BeforeTest
     fun prepare() {
         UnitTestHelper.prepare(withDatabase = true)
