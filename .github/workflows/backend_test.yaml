@@ -14,9 +14,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
-
       - name: Run PostgreSQL
         run: docker-compose -f docker-compose.yml up -d test-db
 
