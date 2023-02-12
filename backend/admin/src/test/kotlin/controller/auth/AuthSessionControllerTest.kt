@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.admin.controller.requestModels.LoginRequestModel
 import com.itomise.admin.controller.requestModels.SignUpRequestModel
+import com.itomise.admin.controller.responseModels.MeResponseModel
 import com.itomise.admin.controller.responseModels.SignUpResponseModel
 import controller.BaseTestApplication
 import controller.BaseTestApplication.Companion.appTestApplication
@@ -74,15 +75,14 @@ internal class AuthSessionControllerTest {
             assertEquals(HttpStatusCode.OK, this.status)
         }
 
-        // verifier のモックがうまくいかないので一旦offる
-//        client.get("/api/auth/me").apply {
-//            assertEquals(HttpStatusCode.OK, this.status)
-//            val body = objectMapper.readValue<MeResponseModel>(this.bodyAsText())
-//
-//            assertEquals(signUpResBody.userId, body.id)
-//            assertEquals(name, body.name)
-//            assertEquals(email, body.email)
-//        }
+        client.get("/api/auth/me").apply {
+            assertEquals(HttpStatusCode.OK, this.status)
+            val body = objectMapper.readValue<MeResponseModel>(this.bodyAsText())
+
+            assertEquals(signUpResBody.userId, body.id)
+            assertEquals(name, body.name)
+            assertEquals(email, body.email)
+        }
     }
 
     @Test
