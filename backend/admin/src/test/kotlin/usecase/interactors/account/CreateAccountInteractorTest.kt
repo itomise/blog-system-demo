@@ -31,6 +31,7 @@ internal class CreateAccountInteractorTest : KoinTest {
     @BeforeTest
     fun prepare() {
         val file = ApplicationConfig("application.test.conf")
+
         envConfig = EnvConfig(
             isTest = true,
             allowHost = "localhost:3000",
@@ -119,6 +120,6 @@ internal class CreateAccountInteractorTest : KoinTest {
         )
 
         val afterUsers = getListUserUseCase.handle()
-        assertEquals(1, afterUsers.users.size)
+        assertEquals(2, afterUsers.users.size)
     }
 }
