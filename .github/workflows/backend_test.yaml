@@ -24,17 +24,17 @@ jobs:
         run: docker-compose -f docker-compose.yml up -d test-redis
 
       - name: Run Backend Tests
-        run: SESSION_SIGN_KEY=${{ env.SESSION_SIGN_KEY }} ./gradlew :admin:test --stacktrace
+        run: ./gradlew :admin:test --stacktrace
         env:
-          DB_PASSWORD: ${{ env.DB_PASSWORD }}
-          DB_URL: ${{ env.DB_URL }}
-          DB_USER: ${{ env.DB_USER }}
-          GOOGLE_OAUTH2_CLIENT_SECRET: ${{ env.GOOGLE_OAUTH2_CLIENT_SECRET }}
-          JWT_ENCRYPTION_KEY: ${{ env.JWT_ENCRYPTION_KEY }}
-          JWT_PRIVATE_KEY: ${{ env.JWT_PRIVATE_KEY }}
-          REDIS_ENDPOINT: ${{ env.REDIS_ENDPOINT }}
-          SENDGRID_API_KEY: ${{ env.SENDGRID_API_KEY }}
-          SESSION_SIGN_KEY: ${{ env.SESSION_SIGN_KEY }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_USER: ${{ secrets.DB_USER }}
+          GOOGLE_OAUTH2_CLIENT_SECRET: ${{ secrets.GOOGLE_OAUTH2_CLIENT_SECRET }}
+          JWT_ENCRYPTION_KEY: ${{ secrets.JWT_ENCRYPTION_KEY }}
+          JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+          REDIS_ENDPOINT: ${{ secrets.REDIS_ENDPOINT }}
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          SESSION_SIGN_KEY: ${{ secrets.SESSION_SIGN_KEY }}
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v3
