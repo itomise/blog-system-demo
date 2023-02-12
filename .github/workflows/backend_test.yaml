@@ -1,0 +1,27 @@
+name: Run Backend Tests
+
+on:
+  push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: backend
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2
+
+    - name: Run PostgreSQL
+      run: docker-compose -f docker-compose.yml up -d test-db
+
+    - name: Run Redis
+      run: docker-compose -f docker-compose.yml up -d test-redis
+
+    - name: Run build with Gradle Wrapper
+      run: ./gradlew build
