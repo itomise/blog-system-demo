@@ -2,6 +2,7 @@ package com.itomise.admin.usecase.interactors.account
 
 import com.itomise.admin.domain.account.interfaces.IUserRepository
 import com.itomise.admin.domain.account.vo.UserId
+import com.itomise.admin.domain.common.exception.NotFoundException
 import com.itomise.admin.infrastructure.dbQuery
 import com.itomise.admin.usecase.interfaces.account.IDeleteAccountUseCase
 import org.koin.core.component.KoinComponent
@@ -16,7 +17,7 @@ class DeleteAccountInteractor : IDeleteAccountUseCase, KoinComponent {
             if (targetUser != null) {
                 userRepository.delete(targetUser)
             } else {
-                throw IllegalArgumentException("指定された userId は存在しません")
+                throw NotFoundException("指定された userId は存在しません")
             }
         }
     }

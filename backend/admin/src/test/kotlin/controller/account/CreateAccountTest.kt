@@ -5,25 +5,16 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.admin.controller.requestModels.CreateUserRequestModel
 import com.itomise.admin.controller.responseModels.CreateUserResponseModel
 import com.itomise.admin.controller.responseModels.GetListUserResponseModel
-import com.itomise.admin.domain.account.interfaces.IUserService
-import com.itomise.admin.usecase.interfaces.account.ICreateAccountUseCase
-import com.itomise.admin.usecase.interfaces.auth.IActivateUserUseCase
 import helper.KtorTestApplication.appTestApplication
 import helper.KtorTestApplication.authSessionUserForTest
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-internal class CreateAccountTest : KoinComponent {
-    val createUserUseCase by inject<ICreateAccountUseCase>()
-    val useService by inject<IUserService>()
-    val activateUserCase by inject<IActivateUserUseCase>()
-
+internal class CreateAccountTest {
     private val objectMapper = jacksonObjectMapper()
 
     @Test

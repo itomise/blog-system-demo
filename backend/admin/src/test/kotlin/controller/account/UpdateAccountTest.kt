@@ -110,7 +110,7 @@ internal class UpdateAccountTest {
     }
 
     @Test
-    fun `存在しないUserIdのパスで叩くと400になること`() = appTestApplication {
+    fun `存在しないUserIdのパスで叩くと404になること`() = appTestApplication {
         val client = createClient { install(HttpCookies) }
         authSessionUserForTest(client)
 
@@ -122,8 +122,25 @@ internal class UpdateAccountTest {
                 )
             )
         }.apply {
+            assertEquals(HttpStatusCode.NotFound, this.status)
+        }
+
+        client.put("/api/users/hogehoge") {
+            contentType(ContentType.Application.Json)
+            setBody(
+                objectMapper.writeValueAsString(
+                    UpdateUserRequestModel("04テスト太郎"),
+                )
+            )
+        }.apply {
             assertEquals(HttpStatusCode.BadRequest, this.status)
         }
+    }
+
+    @Test
+    fun `不正なUUIDのパスで叩くと400になること`() = appTestApplication {
+        val client = createClient { install(HttpCookies) }
+        authSessionUserForTest(client)
 
         client.put("/api/users/hogehoge") {
             contentType(ContentType.Application.Json)

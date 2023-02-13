@@ -80,13 +80,19 @@ internal class DeleteAccountTest {
     }
 
     @Test
-    fun `存在しないユーザーIDで叩くと400になること`() = appTestApplication {
+    fun `存在しないユーザーIDで叩くと404になること`() = appTestApplication {
         val client = createClient { install(HttpCookies) }
         authSessionUserForTest(client)
 
         client.delete("/api/users/${UUID.randomUUID()}").apply {
-            assertEquals(HttpStatusCode.BadRequest, this.status)
+            assertEquals(HttpStatusCode.NotFound, this.status)
         }
+    }
+
+    @Test
+    fun `不正なユーザーIDで叩くと400になること`() = appTestApplication {
+        val client = createClient { install(HttpCookies) }
+        authSessionUserForTest(client)
 
         client.delete("/api/users/hogehoge").apply {
             assertEquals(HttpStatusCode.BadRequest, this.status)
