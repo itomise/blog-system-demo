@@ -11,7 +11,8 @@ import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 object DataBaseFactory {
-    fun getMainSchema() = "main"
+    private const val mainSchema = "main"
+    fun getMainSchema() = mainSchema
 
     fun init() {
         Database.connect(hikari())
