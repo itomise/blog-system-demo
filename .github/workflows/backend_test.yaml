@@ -28,7 +28,7 @@ jobs:
           cache: gradle
 
       - name: Run Backend Tests
-        run: ./gradlew :admin:test --stacktrace --no-parallel --no-daemon --build-cache
+        run: ./gradlew :admin:test --stacktrace --no-daemon --build-cache
         env:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_URL: ${{ secrets.DB_URL }}
