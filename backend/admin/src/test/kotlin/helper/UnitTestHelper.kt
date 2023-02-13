@@ -12,6 +12,7 @@ import io.mockk.mockkObject
 import io.mockk.unmockkAll
 import org.koin.core.context.GlobalContext
 import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
 
 object UnitTestHelper {
     fun prepare(withDatabase: Boolean) {
@@ -42,24 +43,32 @@ object UnitTestHelper {
             publicKeyId = envConfig.jwt.publicKeyId
         )
 
+        val commonModules = useCaseModule + serviceModule
+
         if (withDatabase) {
             DataBaseFactory.init()
             DatabaseTestHelper.setUpSchema()
-        }
 
-        // 既に koin が立ち上がっていれば立ち上げない
-        if (GlobalContext.getOrNull() == null) {
             startKoin {
-                modules(useCaseModule + repositoryModule + serviceModule)
+                modules(commonModules + repositoryModule)
+            }
+        } else {
+            // DBと接続しないとExposedのトランザクションの関数がエラーになるため
+            // TODO: dbQuery 関数をモックできるようにする
+            DataBaseFactory.init()
+            
+            // DBを使わずにテストするときのRepository層はインメモリのインスタンスをDIする
+            startKoin {
+                modules(commonModules + InMemoryRepositoryModule)
             }
         }
     }
 
     fun cleanup(withDatabase: Boolean) {
         // test が fail すると Koin が残ったままになるため
-//        if (GlobalContext.getOrNull() != null) {
-//            stopKoin()
-//        }
+        if (GlobalContext.getOrNull() != null) {
+            stopKoin()
+        }
 
         unmockkAll()
 

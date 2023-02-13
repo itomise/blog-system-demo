@@ -84,3 +84,9 @@ dependencies {
     testImplementation("io.insert-koin:koin-test-junit4:$koin_version")
     testImplementation("io.mockk:mockk:$mockk_version")
 }
+
+tasks.test {
+    maxHeapSize = "2g"
+
+    maxParallelForks = 5
+}

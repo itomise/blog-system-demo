@@ -9,6 +9,7 @@ import com.itomise.admin.domain.account.interfaces.IUserService
 import com.itomise.admin.domain.account.vo.Email
 import com.itomise.admin.domain.account.vo.UserId
 import com.itomise.admin.domain.account.vo.UserPrincipal
+import com.itomise.admin.infrastructure.DataBaseFactory
 import com.itomise.admin.lib.sendgrid.SendGridClient
 import com.itomise.admin.module.jwkProvider
 import com.itomise.admin.usecase.interfaces.account.ICreateAccountUseCase
@@ -43,6 +44,10 @@ object KtorTestApplication {
                 config = ApplicationConfig("application.test.conf")
             }
             application {
+                val schemaName = "test${UUID.randomUUID().toString().replace("-", "")}"
+                mockkObject(DataBaseFactory)
+                every { DataBaseFactory.getMainSchema() } returns schemaName
+
                 // application が起動してからでないと DB などが立ち上がっていないため
                 DatabaseTestHelper.setUpSchema()
 

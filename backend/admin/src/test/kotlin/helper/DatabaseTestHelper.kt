@@ -1,22 +1,25 @@
 package helper
 
+import com.itomise.admin.infrastructure.DataBaseFactory
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.nio.file.Files
 import java.nio.file.Path
 
 object DatabaseTestHelper {
+
     fun setUpSchema() {
+        val mainSchema = DataBaseFactory.getMainSchema()
         transaction {
             val sqlForDropAllSchema = """
-                    drop schema if exists main cascade;
+                    drop schema if exists $mainSchema cascade;
                 """.trimIndent()
             TransactionManager.current().exec(sqlForDropAllSchema)
 
             val migrationSql = getAllMigrationSql()
             val sql = """
-                    create schema if not exists main;
-                    SET search_path TO main;
+                    create schema if not exists $mainSchema;
+                    SET search_path TO $mainSchema;
                     $migrationSql
                 """.trimIndent()
 
@@ -25,11 +28,9 @@ object DatabaseTestHelper {
     }
 
     fun cleanupSchema() {
+        val mainSchema = DataBaseFactory.getMainSchema()
         transaction {
-            val sqlForDropAllSchema = """
-                    drop schema if exists main cascade;
-                """.trimIndent()
-            TransactionManager.current().exec(sqlForDropAllSchema)
+            TransactionManager.current().exec("drop schema if exists $mainSchema cascade;")
         }
     }
 

@@ -18,10 +18,10 @@ class GetAccountInteractorTest : KoinTest {
 
     private val userEmail = "${UUID.randomUUID()}@test.test"
     private lateinit var userId: UUID
-    
+
     @BeforeTest
     fun prepare() {
-        UnitTestHelper.prepare(withDatabase = true)
+        UnitTestHelper.prepare(withDatabase = false)
         runBlocking {
             userId = createUserUseCase.handle(
                 ICreateAccountUseCase.Command(email = userEmail)
@@ -30,7 +30,7 @@ class GetAccountInteractorTest : KoinTest {
     }
 
     @AfterTest
-    fun after() = UnitTestHelper.cleanup(withDatabase = true)
+    fun after() = UnitTestHelper.cleanup(withDatabase = false)
 
     @Test
     fun `ユーザーが取得できること`() = runBlocking {
