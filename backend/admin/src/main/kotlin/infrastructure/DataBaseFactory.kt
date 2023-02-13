@@ -11,6 +11,8 @@ import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
 object DataBaseFactory {
+    fun getMainSchema() = "main"
+
     fun init() {
         Database.connect(hikari())
     }
@@ -37,6 +39,7 @@ object DataBaseFactory {
 }
 
 suspend fun <T> dbQuery(block: suspend (transaction: Transaction) -> T): T = newSuspendedTransaction(Dispatchers.IO) {
-    SchemaUtils.setSchema(Schema("main"))
+    val mainSchema = DataBaseFactory.getMainSchema()
+    SchemaUtils.setSchema(Schema(mainSchema))
     block(this)
 }
