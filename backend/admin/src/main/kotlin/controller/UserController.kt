@@ -52,7 +52,7 @@ fun Route.userRouting() {
             }
 
             get("/{userId}") {
-                val userId = call.parameters["userId"] ?: throw IllegalArgumentException()
+                val userId = call.parameters["userId"]
 
                 val user = getUserUseCase.handle(
                     IGetAccountUseCase.Command(
@@ -72,7 +72,7 @@ fun Route.userRouting() {
 
             put("/{userId}") {
                 val request = call.receive<UpdateUserRequestModel>()
-                val userId = call.parameters["userId"] ?: return@put throw IllegalArgumentException()
+                val userId = call.parameters["userId"]
 
                 updateUserUseCase.handle(
                     IUpdateAccountUseCase.Command(
@@ -85,7 +85,7 @@ fun Route.userRouting() {
             }
 
             delete("/{userId}") {
-                val userId = call.parameters["userId"] ?: return@delete throw IllegalArgumentException()
+                val userId = call.parameters["userId"]
                 val principal = call.userSessionPrincipal()
 
                 if (userId == principal.id) {
