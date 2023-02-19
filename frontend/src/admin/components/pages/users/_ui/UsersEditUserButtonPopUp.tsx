@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { useRef } from 'react'
 import { IconPencil } from '@tabler/icons'
 import { showNotification } from '@mantine/notifications'
-import { Popover, ActionIcon, Stack, Button, Group, Box, Tooltip } from '@mantine/core'
+import { Popover, ActionIcon, Stack, Button, Group, Box, Tooltip, Text } from '@mantine/core'
 import { queryClient } from '@/libs/react-query'
 import { InputField } from '@/admin/components/shared/form/InputField'
 import { Form } from '@/admin/components/shared/form/Form'
@@ -30,9 +30,9 @@ export const UsersEditUserButtonPopUp: React.FC<Props> = ({ user }) => {
         color: 'green',
       })
       buttonRef.current?.click()
-      queryClient.invalidateQueries(['/admin/user'])
+      queryClient.invalidateQueries(['/user'])
       if (me.id === user.id) {
-        queryClient.invalidateQueries(['/admin/auth/me'])
+        queryClient.invalidateQueries(['/auth/me'])
       }
     },
     onError: (e) => {
@@ -49,13 +49,13 @@ export const UsersEditUserButtonPopUp: React.FC<Props> = ({ user }) => {
       <Popover.Target>
         <Tooltip label="未設定のユーザーは編集できません。" disabled={user.isActive}>
           <Box>
-            <ActionIcon ref={buttonRef} disabled={!user.isActive}>
+            <ActionIcon ref={buttonRef} disabled={!user.isActive} role="button" aria-label="ユーザー編集ボタン">
               <IconPencil size={14} />
             </ActionIcon>
           </Box>
         </Tooltip>
       </Popover.Target>
-      <Popover.Dropdown>
+      <Popover.Dropdown aria-label="ユーザー編集モーダル">
         <Form<FormType>
           onSubmit={(data) => {
             mutate({

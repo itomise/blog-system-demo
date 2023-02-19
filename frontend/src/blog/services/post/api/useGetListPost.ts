@@ -13,7 +13,7 @@ type Response = {
 }
 
 const getListPostApi = async () => {
-  const { data } = await blogAppAxios.get<Response>(`/posts`)
+  const { data } = await blogAppAxios.get<string>(`/posts`)
   return data
 }
 
