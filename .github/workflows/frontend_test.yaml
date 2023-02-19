@@ -2,9 +2,9 @@
 name: Run Frontend Tests
 
 on:
-  push
-  paths:
-    - 'frontend/**'
+  push:
+    paths:
+      - 'frontend/**'
 
 jobs:
   test:
