@@ -4,7 +4,7 @@ import { UUID } from '@/shared/types'
 import { useQuery } from '@tanstack/react-query'
 import { PostStatus } from '../types'
 
-type Response = {
+export type AdminGetListPostsResponse = {
   posts: {
     id: UUID
     title: string
@@ -15,7 +15,7 @@ type Response = {
 }
 
 const getListPostApi = async () => {
-  const { data } = await adminAppAxios.get<Response>(`/posts`)
+  const { data } = await adminAppAxios.get<AdminGetListPostsResponse>(`/posts`)
   return data
 }
 

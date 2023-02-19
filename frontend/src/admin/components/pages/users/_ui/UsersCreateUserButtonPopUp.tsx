@@ -21,7 +21,7 @@ export const UsersCreateUserButtonPopUp: React.FC = () => {
         color: 'green',
       })
       buttonRef.current?.click()
-      queryClient.invalidateQueries(['/admin/user'])
+      queryClient.invalidateQueries(['/user'])
     },
     onError: (e) => {
       showNotification({

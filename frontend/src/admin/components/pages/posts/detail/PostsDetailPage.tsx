@@ -30,7 +30,7 @@ export const PostsDetailPage: React.FC = () => {
   const post = useGetPost(postId)
   const { mutate, isLoading } = useUpdatePost({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/admin/posts'] })
+      queryClient.invalidateQueries({ queryKey: ['/posts'] })
       router.push('/admin/posts')
       showNotification({
         color: 'green',
@@ -41,7 +41,7 @@ export const PostsDetailPage: React.FC = () => {
   })
   const { mutate: publishMutate, isLoading: publishing } = usePublishPost({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/admin/posts'] })
+      queryClient.invalidateQueries({ queryKey: ['/posts'] })
       router.push('/admin/posts')
       showNotification({
         color: 'green',
@@ -52,7 +52,7 @@ export const PostsDetailPage: React.FC = () => {
   })
   const { mutate: unPublishMutate, isLoading: unPublishing } = useUnPublishPost({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/admin/posts'] })
+      queryClient.invalidateQueries({ queryKey: ['/posts'] })
       router.push('/admin/posts')
       showNotification({
         color: 'green',
@@ -68,72 +68,70 @@ export const PostsDetailPage: React.FC = () => {
         <title>ポスト編集 | itomise admin</title>
       </Head>
       <AdminTemplate>
-        <main>
-          {post && (
-            <Form<FormType>
-              onSubmit={(data) =>
-                mutate({
-                  ...data,
-                  id: postId,
-                })
-              }
-              schema={schema}
-              defaultValues={{
-                title: post.title,
-                content: post.content,
-              }}
-            >
-              {({ register, setValue, formState: { errors }, watch }) => (
-                <>
-                  <Group position="apart" align="flex-start">
-                    <AdminBreadcrumbs
-                      links={[
-                        { title: 'ポスト一覧', href: '/admin/posts' },
-                        { title: 'ポスト編集', href: null },
-                      ]}
+        {post && (
+          <Form<FormType>
+            onSubmit={(data) =>
+              mutate({
+                ...data,
+                id: postId,
+              })
+            }
+            schema={schema}
+            defaultValues={{
+              title: post.title,
+              content: post.content,
+            }}
+          >
+            {({ register, setValue, formState: { errors }, watch }) => (
+              <>
+                <Group position="apart" align="flex-start">
+                  <AdminBreadcrumbs
+                    links={[
+                      { title: 'ポスト一覧', href: '/admin/posts' },
+                      { title: 'ポスト編集', href: null },
+                    ]}
+                  />
+                  <Group>
+                    <PublishOrUnPublishButton
+                      status={post.status}
+                      otherLoading={isLoading}
+                      publishLoading={publishing}
+                      unPublishLoading={unPublishing}
+                      onPublish={() =>
+                        publishMutate({
+                          ...watch(),
+                          id: postId,
+                        })
+                      }
+                      onUnPublish={() =>
+                        unPublishMutate({
+                          ...watch(),
+                          id: postId,
+                        })
+                      }
                     />
-                    <Group>
-                      <PublishOrUnPublishButton
-                        status={post.status}
-                        otherLoading={isLoading}
-                        publishLoading={publishing}
-                        unPublishLoading={unPublishing}
-                        onPublish={() =>
-                          publishMutate({
-                            ...watch(),
-                            id: postId,
-                          })
-                        }
-                        onUnPublish={() =>
-                          unPublishMutate({
-                            ...watch(),
-                            id: postId,
-                          })
-                        }
-                      />
-                      <Button color="blue" type="submit" loading={isLoading} disabled={isLoading}>
-                        保存する
-                      </Button>
-                    </Group>
+                    <Button color="blue" type="submit" loading={isLoading} disabled={isLoading}>
+                      保存する
+                    </Button>
                   </Group>
-                  <Stack spacing="sm" mt="sm">
-                    <InputField
-                      label="タイトル"
-                      size="xs"
-                      placeholder="タイトル"
-                      error={errors.title}
-                      registration={register('title')}
-                      required
-                    />
-                  </Stack>
-                  <Box mt="md">
-                    <PostRichTextEditor value={watch('content')} onChange={(value) => setValue('content', value)} />
-                  </Box>
-                </>
-              )}
-            </Form>
-          )}
-        </main>
+                </Group>
+                <Stack spacing="sm" mt="sm">
+                  <InputField
+                    label="タイトル"
+                    size="xs"
+                    placeholder="タイトル"
+                    error={errors.title}
+                    registration={register('title')}
+                    required
+                  />
+                </Stack>
+                <Box mt="md">
+                  <PostRichTextEditor value={watch('content')} onChange={(value) => setValue('content', value)} />
+                </Box>
+              </>
+            )}
+          </Form>
+        )}
       </AdminTemplate>
     </>
   )

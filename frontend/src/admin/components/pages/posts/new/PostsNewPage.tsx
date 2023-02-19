@@ -37,46 +37,44 @@ export const PostsNewPage: React.FC = () => {
         <title>ポスト新規作成 | itomise admin</title>
       </Head>
       <AdminTemplate>
-        <main>
-          <Form<FormType>
-            onSubmit={(data) => mutate(data)}
-            schema={schema}
-            defaultValues={{
-              content: '',
-            }}
-          >
-            {({ register, setValue, formState: { errors }, watch }) => (
-              <>
-                <Group position="apart" align="flex-start">
-                  <AdminBreadcrumbs
-                    links={[
-                      { title: 'ポスト一覧', href: '/admin/posts' },
-                      { title: 'ポスト新規作成', href: null },
-                    ]}
-                  />
-                  <Box>
-                    <Button color="blue" type="submit" loading={isLoading}>
-                      保存する
-                    </Button>
-                  </Box>
-                </Group>
-                <Stack spacing="sm" mt="sm">
-                  <InputField
-                    label="タイトル"
-                    size="xs"
-                    placeholder="タイトル"
-                    error={errors.title}
-                    registration={register('title')}
-                    required
-                  />
-                </Stack>
-                <Box mt="md">
-                  <PostRichTextEditor value={watch('content')} onChange={(value) => setValue('content', value)} />
+        <Form<FormType>
+          onSubmit={(data) => mutate(data)}
+          schema={schema}
+          defaultValues={{
+            content: '',
+          }}
+        >
+          {({ register, setValue, formState: { errors }, watch }) => (
+            <>
+              <Group position="apart" align="flex-start">
+                <AdminBreadcrumbs
+                  links={[
+                    { title: 'ポスト一覧', href: '/admin/posts' },
+                    { title: 'ポスト新規作成', href: null },
+                  ]}
+                />
+                <Box>
+                  <Button color="blue" type="submit" loading={isLoading}>
+                    保存する
+                  </Button>
                 </Box>
-              </>
-            )}
-          </Form>
-        </main>
+              </Group>
+              <Stack spacing="sm" mt="sm">
+                <InputField
+                  label="タイトル"
+                  size="xs"
+                  placeholder="タイトル"
+                  error={errors.title}
+                  registration={register('title')}
+                  required
+                />
+              </Stack>
+              <Box mt="md">
+                <PostRichTextEditor value={watch('content')} onChange={(value) => setValue('content', value)} />
+              </Box>
+            </>
+          )}
+        </Form>
       </AdminTemplate>
     </>
   )

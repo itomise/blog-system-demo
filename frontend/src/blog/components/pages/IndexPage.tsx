@@ -48,8 +48,6 @@ export const IndexPage: React.FC = () => {
   const theme = useMantineTheme()
   const posts = useGetListPost()
 
-  console.log(posts)
-
   return (
     <>
       <Head>
@@ -93,6 +91,8 @@ export const IndexPage: React.FC = () => {
               </Grid.Col>
             ))}
           </Grid>
+
+          <h3>{posts}</h3>
         </Container>
       </main>
     </>
