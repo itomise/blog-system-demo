@@ -2,6 +2,7 @@ package com.itomise.admin.module
 
 import com.itomise.admin.domain.common.exception.CustomBadRequestException
 import com.itomise.admin.domain.common.exception.NotFoundException
+import com.itomise.shared.module.IllegalInvalidCsrfHeaderException
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.statuspages.*
@@ -14,7 +15,7 @@ fun Application.statusPage() {
             this@statusPage.log.info("BadRequest : ${e.localizedMessage}")
             call.respond(HttpStatusCode.BadRequest)
         }
-        exception<IllegalHeaderException> { call, _ ->
+        exception<IllegalInvalidCsrfHeaderException> { call, _ ->
             call.respond(HttpStatusCode.Forbidden)
         }
         exception<CustomBadRequestException> { call, e ->

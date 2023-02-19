@@ -1,3 +1,3 @@
-import { SignUpActivatePage } from '@/components/pages/admin/sign-up/activate/SignUpActivatePage'
+import { SignUpActivatePage } from '@/admin/components/pages/sign-up/activate/SignUpActivatePage'
 
 export default SignUpActivatePage

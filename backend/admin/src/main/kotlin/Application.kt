@@ -1,9 +1,9 @@
 package com.itomise.admin
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.itomise.admin.infrastructure.DataBaseFactory
 import com.itomise.admin.infrastructure.RedisFactory
 import com.itomise.admin.module.*
+import com.itomise.shared.infrastructure.DataBaseFactory
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
@@ -45,7 +45,7 @@ fun Application.module() {
     }
 
     // cors
-    val allowHost = envConfig.allowHost
+    val allowHost = adminEnvConfig.allowHost
     install(CORS) {
         allowHost(host = allowHost, schemes = listOf("http", "https"))
         allowMethod(HttpMethod.Options)
@@ -70,5 +70,11 @@ fun Application.module() {
 
     RedisFactory.init()
 
-    DataBaseFactory.init()
+    DataBaseFactory.init(
+        url = adminEnvConfig.db.url,
+        user = adminEnvConfig.db.user,
+        password = adminEnvConfig.db.password,
+        instanceUnixSocket = adminEnvConfig.db.instanceUnixSocket,
+        instanceConnectionName = adminEnvConfig.db.instanceConnectionName
+    )
 }

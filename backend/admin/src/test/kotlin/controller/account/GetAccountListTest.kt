@@ -38,7 +38,7 @@ internal class GetAccountListTest {
         val user = authSessionUserForTest(client, "05テスト太郎", "05@example.com")
 
         prepareCreateUserRequests.forEach {
-            val res = client.post("/api/users") {
+            val res = client.post("/api/admin/users") {
                 contentType(ContentType.Application.Json)
                 setBody(objectMapper.writeValueAsString(it))
             }
@@ -48,7 +48,7 @@ internal class GetAccountListTest {
         // ログインユーザはリストの最後に入れる
         requestUserIdList.add(user.id)
 
-        client.get("/api/users").apply {
+        client.get("/api/admin/users").apply {
             assertEquals(HttpStatusCode.OK, this.status)
 
             val res = objectMapper.readValue<GetListUserResponseModel>(this.bodyAsText())
@@ -84,7 +84,7 @@ internal class GetAccountListTest {
     @Test
     fun `未ログイン状態でユーザ一覧を叩くと401になること`() = appTestApplication {
         val client = createClient { install(HttpCookies) }
-        client.get("/api/users").apply {
+        client.get("/api/admin/users").apply {
             assertEquals(HttpStatusCode.Unauthorized, this.status)
         }
     }

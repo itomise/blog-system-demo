@@ -34,7 +34,7 @@ internal class UpdateAccountTest {
         val email = "${UUID.randomUUID()}@example.com"
         val password = "${UUID.randomUUID()}"
 
-        val createRes = client.post("/api/users") {
+        val createRes = client.post("/api/admin/users") {
             contentType(ContentType.Application.Json)
             setBody(objectMapper.writeValueAsString(CreateUserRequestModel(email)))
         }.apply {
@@ -58,7 +58,7 @@ internal class UpdateAccountTest {
             assertEquals(HttpStatusCode.OK, this.status)
         }
 
-        client.get("/api/users").apply {
+        client.get("/api/admin/users").apply {
             assertEquals(HttpStatusCode.OK, this.status)
 
             val res = objectMapper.readValue<GetListUserResponseModel>(this.bodyAsText())
@@ -69,7 +69,7 @@ internal class UpdateAccountTest {
             }
         }
 
-        client.put("/api/users/${createResBody.id}") {
+        client.put("/api/admin/users/${createResBody.id}") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -80,7 +80,7 @@ internal class UpdateAccountTest {
             assertEquals(HttpStatusCode.OK, this.status)
         }
 
-        client.get("/api/users").apply {
+        client.get("/api/admin/users").apply {
             assertEquals(HttpStatusCode.OK, this.status)
 
             val res = objectMapper.readValue<GetListUserResponseModel>(this.bodyAsText())
@@ -95,7 +95,7 @@ internal class UpdateAccountTest {
     @Test
     fun `未ログイン状態で叩くと401になること`() = appTestApplication {
         val client = createClient { install(HttpCookies) }
-        client.post("/api/users") {
+        client.post("/api/admin/users") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -114,7 +114,7 @@ internal class UpdateAccountTest {
         val client = createClient { install(HttpCookies) }
         authSessionUserForTest(client)
 
-        client.put("/api/users/${UUID.randomUUID()}") {
+        client.put("/api/admin/users/${UUID.randomUUID()}") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -125,7 +125,7 @@ internal class UpdateAccountTest {
             assertEquals(HttpStatusCode.NotFound, this.status)
         }
 
-        client.put("/api/users/hogehoge") {
+        client.put("/api/admin/users/hogehoge") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -142,7 +142,7 @@ internal class UpdateAccountTest {
         val client = createClient { install(HttpCookies) }
         authSessionUserForTest(client)
 
-        client.put("/api/users/hogehoge") {
+        client.put("/api/admin/users/hogehoge") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(

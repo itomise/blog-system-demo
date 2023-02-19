@@ -2,9 +2,9 @@ package helper
 
 import com.auth0.jwk.Jwk
 import com.itomise.admin.domain.security.vo.TokenConfig
-import com.itomise.admin.infrastructure.DataBaseFactory
 import com.itomise.admin.lib.sendgrid.SendGridClient
 import com.itomise.admin.module.*
+import com.itomise.shared.infrastructure.DataBaseFactory
 import io.ktor.server.config.*
 import io.mockk.every
 import io.mockk.mockk
@@ -37,16 +37,20 @@ object UnitTestHelper {
         )
 
         jwtTokenConfig = TokenConfig(
-            issuer = envConfig.jwt.issuer,
-            audience = envConfig.jwt.audience,
+            issuer = adminEnvConfig.jwt.issuer,
+            audience = adminEnvConfig.jwt.audience,
             expiresIn = 365L * 1000L * 60L * 60L * 24L,
-            publicKeyId = envConfig.jwt.publicKeyId
+            publicKeyId = adminEnvConfig.jwt.publicKeyId
         )
 
         val commonModules = useCaseModule + serviceModule
 
         if (withDatabase) {
-            DataBaseFactory.init()
+            DataBaseFactory.init(
+                url = adminEnvConfig.db.url,
+                user = adminEnvConfig.db.user,
+                password = adminEnvConfig.db.password
+            )
             DatabaseTestHelper.setUpSchema()
 
             startKoin {
@@ -55,8 +59,12 @@ object UnitTestHelper {
         } else {
             // DBと接続しないとExposedのトランザクションの関数がエラーになるため
             // TODO: dbQuery 関数をモックできるようにする
-            DataBaseFactory.init()
-            
+            DataBaseFactory.init(
+                url = adminEnvConfig.db.url,
+                user = adminEnvConfig.db.user,
+                password = adminEnvConfig.db.password
+            )
+
             // DBを使わずにテストするときのRepository層はインメモリのインスタンスをDIする
             startKoin {
                 modules(commonModules + InMemoryRepositoryModule)

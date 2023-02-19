@@ -1,3 +1,3 @@
-import { SignUpSentPage } from '@/components/pages/admin/sign-up/sent/SignUpSentPage'
+import { SignUpSentPage } from '@/admin/components/pages/sign-up/sent/SignUpSentPage'
 
 export default SignUpSentPage

@@ -20,7 +20,7 @@ lateinit var jwtTokenConfig: TokenConfig
 
 fun Application.authentication() {
     val isDev = environment.developmentMode
-    val secretSignKey = hex(envConfig.session.signKey)
+    val secretSignKey = hex(adminEnvConfig.session.signKey)
 
     install(Sessions) {
         cookie<UserPrincipal>("user_session", SessionStorageRedis()) {
@@ -35,10 +35,10 @@ fun Application.authentication() {
     }
 
     jwtTokenConfig = TokenConfig(
-        issuer = envConfig.jwt.issuer,
-        audience = envConfig.jwt.audience,
+        issuer = adminEnvConfig.jwt.issuer,
+        audience = adminEnvConfig.jwt.audience,
         expiresIn = 365L * 1000L * 60L * 60L * 24L,
-        publicKeyId = envConfig.jwt.publicKeyId
+        publicKeyId = adminEnvConfig.jwt.publicKeyId
     )
 
     install(Authentication) {
@@ -53,14 +53,14 @@ fun Application.authentication() {
             }
         }
 
-        jwkProvider = JwkProviderBuilder(envConfig.jwt.issuer)
+        jwkProvider = JwkProviderBuilder(adminEnvConfig.jwt.issuer)
             .cached(10, 24, TimeUnit.HOURS)
             .rateLimited(10, 1, TimeUnit.MINUTES)
             .build()
 
         jwt("auth-jwt") {
-            realm = envConfig.jwt.realm
-            verifier(jwkProvider, envConfig.jwt.issuer) {
+            realm = adminEnvConfig.jwt.realm
+            verifier(jwkProvider, adminEnvConfig.jwt.issuer) {
                 acceptLeeway(3)
             }
             validate { credential ->

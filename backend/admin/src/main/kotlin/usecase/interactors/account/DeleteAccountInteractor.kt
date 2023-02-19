@@ -3,8 +3,8 @@ package com.itomise.admin.usecase.interactors.account
 import com.itomise.admin.domain.account.interfaces.IUserRepository
 import com.itomise.admin.domain.account.vo.UserId
 import com.itomise.admin.domain.common.exception.NotFoundException
-import com.itomise.admin.infrastructure.dbQuery
 import com.itomise.admin.usecase.interfaces.account.IDeleteAccountUseCase
+import com.itomise.shared.infrastructure.dbQuery
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

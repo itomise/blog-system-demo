@@ -1,6 +1,6 @@
 package com.itomise.admin.lib.sendgrid
 
-import com.itomise.admin.module.envConfig
+import com.itomise.admin.module.adminEnvConfig
 import com.sendgrid.Method
 import com.sendgrid.Request
 import com.sendgrid.SendGrid
@@ -17,7 +17,7 @@ object SendGridClient {
         val to = Email(command.to.value)
         val content = Content("text/plain", command.content)
         val mail = Mail(from, subject, to, content)
-        val sg = SendGrid(envConfig.sendGrid.apiKey)
+        val sg = SendGrid(adminEnvConfig.sendGrid.apiKey)
         val request = Request()
         try {
             request.method = Method.POST

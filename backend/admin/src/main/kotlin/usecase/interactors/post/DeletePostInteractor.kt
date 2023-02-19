@@ -4,7 +4,7 @@ import com.itomise.admin.domain.common.exception.NotFoundException
 import com.itomise.admin.domain.post.interfaces.IPostRepository
 import com.itomise.admin.domain.post.vo.PostId
 import com.itomise.admin.usecase.interfaces.post.IDeletePostUseCase
-import com.itomise.admin.infrastructure.dbQuery
+import com.itomise.shared.infrastructure.dbQuery
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.*

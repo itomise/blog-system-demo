@@ -7,7 +7,7 @@ import com.itomise.admin.controller.responseModels.MeResponseModel
 import com.itomise.admin.controller.responseModels.SignUpResponseModel
 import com.itomise.admin.controller.utils.userSessionPrincipal
 import com.itomise.admin.domain.account.vo.UserPrincipal
-import com.itomise.admin.module.envConfig
+import com.itomise.admin.module.adminEnvConfig
 import com.itomise.admin.usecase.interfaces.auth.*
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -116,9 +116,9 @@ fun Route.authRouting() {
                 val redirectUrl = if (result.isActiveUser) {
                     // ログイン状態にしてリダイレクトさせる
                     call.sessions.set(UserPrincipal(id = result.userId.toString()))
-                    URIBuilder(envConfig.urls.adminRootUrl).build().toURL()
+                    URIBuilder(adminEnvConfig.urls.adminRootUrl).build().toURL()
                 } else {
-                    URIBuilder(envConfig.urls.accountActivateUrl)
+                    URIBuilder(adminEnvConfig.urls.accountActivateUrl)
                         .addParameter("token", result.activateToken)
                         .build().toURL()
                 }

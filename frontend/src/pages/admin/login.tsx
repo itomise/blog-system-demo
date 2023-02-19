@@ -1,3 +1,3 @@
-import { LoginPage } from '@/components/pages/admin/login/LoginPage'
+import { LoginPage } from '@/admin/components/pages/login/LoginPage'
 
 export default LoginPage

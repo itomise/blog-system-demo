@@ -5,7 +5,7 @@ import com.itomise.admin.controller.requestModels.LoginRequestModel
 import com.itomise.admin.controller.responseModels.MeResponseModel
 import com.itomise.admin.domain.security.interfaces.IJwtTokenService
 import com.itomise.admin.domain.security.vo.TokenClaim
-import com.itomise.admin.module.envConfig
+import com.itomise.admin.module.adminEnvConfig
 import com.itomise.admin.module.jwtTokenConfig
 import com.itomise.admin.usecase.interfaces.auth.ILoginUseCase
 import com.itomise.admin.usecase.interfaces.auth.IMeUseCase
@@ -42,7 +42,7 @@ fun Route.authJwtRouting() {
                 return@post
             }
 
-            val keySpecPKCS8 = PKCS8EncodedKeySpec(Base64.getDecoder().decode(envConfig.jwt.privateKey))
+            val keySpecPKCS8 = PKCS8EncodedKeySpec(Base64.getDecoder().decode(adminEnvConfig.jwt.privateKey))
             val privateKey = KeyFactory.getInstance("RSA").generatePrivate(keySpecPKCS8)
 
             val token = tokenService.generate(

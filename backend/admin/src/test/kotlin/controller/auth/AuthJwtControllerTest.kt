@@ -31,7 +31,7 @@ internal class AuthJwtControllerTest {
         authSessionUserForTest(client, name, email, password)
 
         var token = ""
-        client.post("/api/auth-jwt/login") {
+        client.post("/api/admin/auth-jwt/login") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -47,7 +47,7 @@ internal class AuthJwtControllerTest {
         }
 
         // verifier のモックがうまくいかないので一旦offる
-//        client.get("/api/auth-jwt/me") {
+//        client.get("/api/admin/auth-jwt/me") {
 //            header(HttpHeaders.Authorization, "Bearer $token")
 //        }.apply {
 //            assertEquals(HttpStatusCode.OK, this.status)
