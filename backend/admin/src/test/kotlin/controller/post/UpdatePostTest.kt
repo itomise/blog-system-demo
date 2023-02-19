@@ -29,7 +29,7 @@ internal class UpdatePostTest {
 
         authSessionUserForTest(client)
 
-        client.post("/api/posts") {
+        client.post("/api/admin/posts") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -43,7 +43,7 @@ internal class UpdatePostTest {
             assertEquals(HttpStatusCode.OK, this.status)
         }
 
-        val res1 = client.get("/api/posts")
+        val res1 = client.get("/api/admin/posts")
 
         assertEquals(HttpStatusCode.OK, res1.status)
         val result = objectMapper.readValue<GetListPostResponseModel>(res1.bodyAsText())
@@ -53,7 +53,7 @@ internal class UpdatePostTest {
         assertEquals("title", post.title)
         assertEquals("<p>test content</p>", post.content)
 
-        client.put("/api/posts/${post.id}") {
+        client.put("/api/admin/posts/${post.id}") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -67,7 +67,7 @@ internal class UpdatePostTest {
             assertEquals(HttpStatusCode.OK, this.status)
         }
 
-        val res2 = client.get("/api/posts")
+        val res2 = client.get("/api/admin/posts")
 
         assertEquals(HttpStatusCode.OK, res2.status)
         val result2 = objectMapper.readValue<GetListPostResponseModel>(res2.bodyAsText())
@@ -81,7 +81,7 @@ internal class UpdatePostTest {
     @Test
     fun `未ログインユーザーで叩くと401になること`() = appTestApplication {
         val client = createClient { install(HttpCookies) }
-        client.put("/api/posts/${UUID.randomUUID()}") {
+        client.put("/api/admin/posts/${UUID.randomUUID()}") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(

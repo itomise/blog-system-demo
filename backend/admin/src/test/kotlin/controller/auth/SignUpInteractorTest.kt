@@ -19,7 +19,7 @@ internal class SignUpInteractorTest {
 
     @Test
     fun `ユーザー作成できること`() = appTestApplication {
-        client.post("/api/auth/sign-up") {
+        client.post("/api/admin/auth/sign-up") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -35,7 +35,7 @@ internal class SignUpInteractorTest {
 
     @Test
     fun `Emailが空文字だとBadRequestになること`() = appTestApplication {
-        client.post("/api/auth/sign-up") {
+        client.post("/api/admin/auth/sign-up") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(

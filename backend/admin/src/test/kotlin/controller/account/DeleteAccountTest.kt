@@ -30,7 +30,7 @@ internal class DeleteAccountTest {
 
         authSessionUserForTest(client)
 
-        val createRes = client.post("/api/users") {
+        val createRes = client.post("/api/admin/users") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -45,7 +45,7 @@ internal class DeleteAccountTest {
         val createResBody = objectMapper.readValue<CreateUserResponseModel>(createRes.bodyAsText())
 
 
-        client.get("/api/users").apply {
+        client.get("/api/admin/users").apply {
             assertEquals(HttpStatusCode.OK, this.status)
 
             val res = objectMapper.readValue<GetListUserResponseModel>(this.bodyAsText())
@@ -57,11 +57,11 @@ internal class DeleteAccountTest {
             }
         }
 
-        client.delete("/api/users/${createResBody.id}").apply {
+        client.delete("/api/admin/users/${createResBody.id}").apply {
             assertEquals(HttpStatusCode.OK, this.status)
         }
 
-        client.get("/api/users").apply {
+        client.get("/api/admin/users").apply {
             assertEquals(HttpStatusCode.OK, this.status)
 
             val res = objectMapper.readValue<GetListUserResponseModel>(this.bodyAsText())
@@ -74,7 +74,7 @@ internal class DeleteAccountTest {
     fun `未ログイン状態で叩くと401になること`() = appTestApplication {
         val client = createClient { install(HttpCookies) }
 
-        client.delete("/api/users/${UUID.randomUUID()}").apply {
+        client.delete("/api/admin/users/${UUID.randomUUID()}").apply {
             assertEquals(HttpStatusCode.Unauthorized, this.status)
         }
     }
@@ -84,7 +84,7 @@ internal class DeleteAccountTest {
         val client = createClient { install(HttpCookies) }
         authSessionUserForTest(client)
 
-        client.delete("/api/users/${UUID.randomUUID()}").apply {
+        client.delete("/api/admin/users/${UUID.randomUUID()}").apply {
             assertEquals(HttpStatusCode.NotFound, this.status)
         }
     }
@@ -94,7 +94,7 @@ internal class DeleteAccountTest {
         val client = createClient { install(HttpCookies) }
         authSessionUserForTest(client)
 
-        client.delete("/api/users/hogehoge").apply {
+        client.delete("/api/admin/users/hogehoge").apply {
             assertEquals(HttpStatusCode.BadRequest, this.status)
         }
     }
@@ -104,7 +104,7 @@ internal class DeleteAccountTest {
         val client = createClient { install(HttpCookies) }
         val user = authSessionUserForTest(client)
 
-        client.delete("/api/users/${user.id}").apply {
+        client.delete("/api/admin/users/${user.id}").apply {
             assertEquals(HttpStatusCode.BadRequest, this.status)
         }
     }

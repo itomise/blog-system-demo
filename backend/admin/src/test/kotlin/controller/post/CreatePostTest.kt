@@ -31,7 +31,7 @@ class CreatePostTest {
 
         val test = removeHtmlTagFromString("<p>テストコンテンツ</p>")
 
-        client.post("/api/posts") {
+        client.post("/api/admin/posts") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -45,7 +45,7 @@ class CreatePostTest {
             assertEquals(HttpStatusCode.OK, this.status)
         }
 
-        client.get("/api/posts").run {
+        client.get("/api/admin/posts").run {
             assertEquals(HttpStatusCode.OK, this.status)
             val result = objectMapper.readValue<GetListPostResponseModel>(this.bodyAsText())
 
@@ -61,7 +61,7 @@ class CreatePostTest {
     @Test
     fun `未ログインユーザーで叩くと401になること`() = appTestApplication {
         val client = createClient { install(HttpCookies) }
-        client.post("/api/posts") {
+        client.post("/api/admin/posts") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(

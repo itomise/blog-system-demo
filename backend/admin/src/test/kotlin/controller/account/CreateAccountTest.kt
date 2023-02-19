@@ -23,7 +23,7 @@ internal class CreateAccountTest {
 
         authSessionUserForTest(client, "05テスト太郎", "05@example.com")
 
-        val res = client.post("/api/users") {
+        val res = client.post("/api/admin/users") {
             contentType(ContentType.Application.Json)
             setBody(objectMapper.writeValueAsString(CreateUserRequestModel("test@test.test")))
         }.apply {
@@ -31,7 +31,7 @@ internal class CreateAccountTest {
         }
         val resBody = objectMapper.readValue<CreateUserResponseModel>(res.bodyAsText())
 
-        client.get("/api/users").apply {
+        client.get("/api/admin/users").apply {
 
             val res = objectMapper.readValue<GetListUserResponseModel>(this.bodyAsText())
             assertEquals(2, res.users.size)
@@ -46,7 +46,7 @@ internal class CreateAccountTest {
     @Test
     fun `未ログイン状態で叩くと401になること`() = appTestApplication {
         val client = createClient { install(HttpCookies) }
-        client.post("/api/users") {
+        client.post("/api/admin/users") {
             contentType(ContentType.Application.Json)
             setBody(objectMapper.writeValueAsString(CreateUserRequestModel("04@example.com")))
         }.apply {
