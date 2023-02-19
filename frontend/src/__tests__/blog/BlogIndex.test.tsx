@@ -1,9 +1,9 @@
 import IndexPage from '@/pages'
 import { render, screen, within } from '@testing-library/react'
-import { expect, test } from 'vitest'
+import { expect, it } from 'vitest'
 import { TestApp } from '../helper/TestApp'
 
-test('home', async () => {
+it('home', async () => {
   render(
     <TestApp>
       <IndexPage />

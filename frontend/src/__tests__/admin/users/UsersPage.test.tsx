@@ -1,15 +1,13 @@
 import UsersPage from '@/pages/admin/users'
 import { TestApp } from '@/__tests__/helper/TestApp'
-import { render, screen, waitFor, within } from '@testing-library/react'
-import { expect, test, vi, describe, beforeEach } from 'vitest'
-import userEvent from '@testing-library/user-event'
+import { render, screen, within, cleanup } from '@testing-library/react'
+import { expect, vi, describe, beforeEach, it, afterEach } from 'vitest'
 import { server } from '@/__tests__/testDouble/server'
 import { rest } from 'msw'
 import { GetListUserResponse } from '@/admin/services/user/api/useUserList'
 import { queryClient } from '@/libs/react-query'
-import { debug } from 'vitest-preview'
+import userEvent from '@testing-library/user-event'
 
-// モック用に追記
 vi.mock('next/router', () => ({
   useRouter() {
     return {
@@ -25,7 +23,7 @@ const usersPageRender = () =>
     </TestApp>
   )
 
-describe('admin/users ページ', () => {
+describe('admin/users ページ', async () => {
   beforeEach(() => {
     server.use(
       rest.get('http://localhost:8080/api/admin/users', (req, res, ctx) => {
@@ -60,36 +58,40 @@ describe('admin/users ページ', () => {
       })
     )
   })
-  test('正しく表示されること', async () => {
+  afterEach(() => cleanup())
+  it('正しく表示されること', async () => {
     usersPageRender()
     const main = within(await screen.findByRole('main'))
 
     expect(main.getByRole('heading', { level: 1, name: /ユーザー一覧/i })).toBeDefined()
   })
 
-  test('ユーザーが編集できること', async () => {
-    const { findAllByLabelText, findByLabelText, getByText } = usersPageRender()
-    const userEditButtons = await findAllByLabelText('ユーザー編集ボタン')
-    await userEvent.click(userEditButtons[0])
-    const modal = await findByLabelText('ユーザー編集モーダル')
+  it('ユーザーが編集できること', async () => {
+    usersPageRender()
     const spy = vi.spyOn(queryClient, 'invalidateQueries').mockImplementation(async () => {})
+    const userEditButtons = await screen.findAllByLabelText('ユーザー編集ボタン')
+    await userEvent.click(userEditButtons[0])
+    const modal = await screen.findByLabelText('ユーザー編集モーダル')
 
     await userEvent.type(modal.querySelector('input')!!, 'test')
-    await userEvent.click(getByText('送信'))
+    await userEvent.click(screen.getByText('送信'))
 
+    expect(screen.getByText(/ユーザー情報を更新しました/i)).toBeDefined()
     expect(spy).toHaveBeenCalledTimes(1)
     expect(spy).toHaveBeenCalledWith(['/user'])
   })
-  test('ユーザー編集の名前が空だった場合送信できないこと', async () => {
+
+  it('ユーザー編集の名前が空だった場合送信できないこと', async () => {
     usersPageRender()
     const userEditButtons = await screen.findAllByLabelText('ユーザー編集ボタン')
     await userEvent.click(userEditButtons[0])
     const modal = await screen.findByLabelText('ユーザー編集モーダル')
-    const spy1 = vi.spyOn(queryClient, 'invalidateQueries').mockImplementation(async () => {})
+    const spy = vi.spyOn(queryClient, 'invalidateQueries').mockImplementation(async () => {})
 
     await userEvent.clear(modal.querySelector('input')!!)
     await userEvent.click(screen.getByText('送信'))
 
-    expect(spy1).toHaveBeenCalledTimes(0)
+    expect(spy).toHaveBeenCalledTimes(0)
+    expect(screen.getByText(/must contain at least 5 character/i)).toBeDefined()
   })
 })

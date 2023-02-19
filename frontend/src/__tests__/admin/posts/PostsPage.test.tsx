@@ -1,7 +1,7 @@
 import PostsPage from '@/pages/admin/posts'
 import { TestApp } from '@/__tests__/helper/TestApp'
 import { render, screen, within } from '@testing-library/react'
-import { expect, test, vi, describe } from 'vitest'
+import { expect, vi, describe, it } from 'vitest'
 
 // モック用に追記
 vi.mock('next/router', () => ({
@@ -12,8 +12,8 @@ vi.mock('next/router', () => ({
   },
 }))
 
-describe('admin/posts ページ', () => {
-  test('正しく表示されること', async () => {
+describe.concurrent('admin/posts ページ', async () => {
+  it.concurrent('正しく表示されること', async () => {
     render(
       <TestApp>
         <PostsPage />

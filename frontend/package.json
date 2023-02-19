@@ -5,6 +5,7 @@
     "build": "next build",
     "start": "next start",
     "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "next lint --dir src",
     "scaffdog": "scaffdog generate",
     "vitest-preview": "vitest-preview"
