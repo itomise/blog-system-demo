@@ -12,11 +12,12 @@
   - Jackson
   - SendGrid
   - Auth
-    - session (ktor)
+    - session
       - Redis
-    - jwt (nimbus-jose-jwt / ktor-server-auth-jwt)
+    - jwt
   - Test
     - Ktor
+    - JUnit
     - mockk
 - frontend
   - Next.js
@@ -26,8 +27,8 @@
   - Emotion
   - React Hook Form
   - zod
-- cloud
-  - GCP
+  - Vitest
+- cloud (GCP)
   - Cloud Run
   - Cloud Storage
   - Secret Manager
