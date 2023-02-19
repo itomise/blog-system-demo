@@ -1,3 +1,3 @@
-import { PostsPage } from '@/components/pages/admin/posts/PostsPage'
+import { PostsPage } from '@/admin/components/pages/posts/PostsPage'
 
 export default PostsPage

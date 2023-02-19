@@ -1,2 +1,2 @@
 rootProject.name = "com.itomise"
-include("admin")
+include("admin", "blog", "shared")

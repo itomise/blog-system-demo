@@ -10,7 +10,7 @@ import com.itomise.admin.domain.security.interfaces.IJwtTokenService
 import com.itomise.admin.domain.security.vo.HashAlgorithm
 import com.itomise.admin.domain.security.vo.SaltedHash
 import com.itomise.admin.domain.security.vo.TokenClaim
-import com.itomise.admin.module.envConfig
+import com.itomise.admin.module.adminEnvConfig
 import com.itomise.admin.module.jwtTokenConfig
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -55,7 +55,7 @@ class UserService : IUserService, KoinComponent {
     }
 
     override fun generateActivationToken(user: User): String {
-        val keySpecPKCS8 = PKCS8EncodedKeySpec(Base64.getDecoder().decode(envConfig.jwt.privateKey))
+        val keySpecPKCS8 = PKCS8EncodedKeySpec(Base64.getDecoder().decode(adminEnvConfig.jwt.privateKey))
         val privateKey = KeyFactory.getInstance("RSA").generatePrivate(keySpecPKCS8)
 
         return jwtTokenService.generate(

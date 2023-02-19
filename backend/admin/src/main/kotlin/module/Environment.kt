@@ -3,9 +3,9 @@ package com.itomise.admin.module
 import io.ktor.server.application.*
 import io.ktor.server.config.*
 
-lateinit var envConfig: EnvConfig
+lateinit var adminEnvConfig: AdminEnvConfig
 
-data class EnvConfig(
+data class AdminEnvConfig(
     val isTest: Boolean,
     val allowHost: String,
     val db: EnvConfigDb,
@@ -70,23 +70,23 @@ fun initializeEnvConfig(config: ApplicationConfig) {
     fun fromConfigOrNull(path: String): String? =
         config.propertyOrNull(path)?.getString()
 
-    envConfig = EnvConfig(
+    adminEnvConfig = AdminEnvConfig(
         isTest = config.propertyOrNull("app.test") != null,
         allowHost = fromConfig("app.allowHost"),
-        db = EnvConfig.EnvConfigDb(
+        db = AdminEnvConfig.EnvConfigDb(
             url = fromConfig("app.db.url"),
             user = fromConfig("app.db.user"),
             password = fromConfig("app.db.password"),
             instanceUnixSocket = fromConfigOrNull("app.db.instanceUnixSocket"),
             instanceConnectionName = fromConfigOrNull("app.db.instanceConnectionName"),
         ),
-        redis = EnvConfig.EnvConfigRedis(
+        redis = AdminEnvConfig.EnvConfigRedis(
             endpoint = fromConfig("app.redis.endpoint"),
         ),
-        session = EnvConfig.EnvConfigSession(
+        session = AdminEnvConfig.EnvConfigSession(
             signKey = fromConfig("app.sessionSignKey"),
         ),
-        jwt = EnvConfig.EnvConfigJwt(
+        jwt = AdminEnvConfig.EnvConfigJwt(
             privateKey = fromConfig("app.jwt.privateKey"),
             publicKeyId = fromConfig("app.jwt.publicKeyId"),
             issuer = fromConfig("app.jwt.issuer"),
@@ -94,16 +94,16 @@ fun initializeEnvConfig(config: ApplicationConfig) {
             realm = fromConfig("app.jwt.realm"),
             encryptionKey = fromConfig("app.jwt.encryptionKey")
         ),
-        urls = EnvConfig.Urls(
+        urls = AdminEnvConfig.Urls(
             accountSignUpUrl = fromConfig("app.urls.accountSignInUrl"),
             accountActivateUrl = fromConfig("app.urls.accountActivateUrl"),
             adminRootUrl = fromConfig("app.urls.adminRootUrl"),
             googleOAuth2CallbackUrl = fromConfig("app.urls.googleOAuth2CallbackUrl")
         ),
-        sendGrid = EnvConfig.SendGridConfig(
+        sendGrid = AdminEnvConfig.SendGridConfig(
             apiKey = fromConfig("sendGrid.apiKey"),
         ),
-        google = EnvConfig.GoogleConfig(
+        google = AdminEnvConfig.GoogleConfig(
             oauth2ClientId = fromConfig("google.oauth2ClientId"),
             oauth2ClientSecret = fromConfig("google.oauth2ClientSecret"),
         )

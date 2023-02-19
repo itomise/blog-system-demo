@@ -22,7 +22,8 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 
-class NestedJwtTokenServiceTest : KoinTest {
+class
+NestedJwtTokenServiceTest : KoinTest {
     private val nestedJwtTokenService by inject<INestedJwtTokenService>()
 
     @BeforeTest

@@ -9,11 +9,11 @@ import com.itomise.admin.domain.account.interfaces.IUserService
 import com.itomise.admin.domain.account.vo.Email
 import com.itomise.admin.domain.account.vo.UserId
 import com.itomise.admin.domain.account.vo.UserPrincipal
-import com.itomise.admin.infrastructure.DataBaseFactory
 import com.itomise.admin.lib.sendgrid.SendGridClient
 import com.itomise.admin.module.jwkProvider
 import com.itomise.admin.usecase.interfaces.account.ICreateAccountUseCase
 import com.itomise.admin.usecase.interfaces.auth.IActivateUserUseCase
+import com.itomise.shared.infrastructure.DataBaseFactory
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*

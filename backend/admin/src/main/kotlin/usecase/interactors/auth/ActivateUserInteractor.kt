@@ -6,8 +6,8 @@ import com.itomise.admin.domain.account.vo.UserId
 import com.itomise.admin.domain.account.vo.UserLoginType
 import com.itomise.admin.domain.account.vo.Username
 import com.itomise.admin.domain.common.exception.CustomBadRequestException
-import com.itomise.admin.infrastructure.dbQuery
 import com.itomise.admin.usecase.interfaces.auth.IActivateUserUseCase
+import com.itomise.shared.infrastructure.dbQuery
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

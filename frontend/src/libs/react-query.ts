@@ -1,13 +1,6 @@
 import { AsyncReturnType } from 'type-fest'
 import { AxiosError } from 'axios'
-import {
-  DefaultOptions,
-  QueryClient,
-  QueryFunction,
-  QueryKey,
-  QueryOptions,
-  UseMutationOptions,
-} from '@tanstack/react-query'
+import { DefaultOptions, QueryClient, UseMutationOptions } from '@tanstack/react-query'
 
 const queryConfig: DefaultOptions = {
   queries: {

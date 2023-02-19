@@ -10,7 +10,7 @@ class RequestGoogleOAuth2Interactor : IRequestGoogleOAuth2UseCase {
         val state = BigInteger(130, SecureRandom()).toString(32)
 
         val authenticationURI = GoogleAuthentication.createOpenConnectAuthURI(state)
-        
+
         return IRequestGoogleOAuth2UseCase.OutputDto(
             state = state,
             authenticationURI = authenticationURI

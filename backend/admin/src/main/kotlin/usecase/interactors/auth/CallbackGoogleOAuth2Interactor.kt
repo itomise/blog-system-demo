@@ -5,9 +5,9 @@ import com.itomise.admin.domain.account.interfaces.IUserRepository
 import com.itomise.admin.domain.account.interfaces.IUserService
 import com.itomise.admin.domain.account.vo.Email
 import com.itomise.admin.domain.account.vo.UserLoginType
-import com.itomise.admin.infrastructure.dbQuery
 import com.itomise.admin.lib.google.GoogleAuthentication
 import com.itomise.admin.usecase.interfaces.auth.ICallbackGoogleOAuth2UseCase
+import com.itomise.shared.infrastructure.dbQuery
 import io.ktor.server.plugins.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
