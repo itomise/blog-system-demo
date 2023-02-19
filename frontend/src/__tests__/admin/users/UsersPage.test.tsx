@@ -86,7 +86,6 @@ describe('admin/users ページ', () => {
     await userEvent.click(userEditButtons[0])
     const modal = await screen.findByLabelText('ユーザー編集モーダル')
     const spy1 = vi.spyOn(queryClient, 'invalidateQueries').mockImplementation(async () => {})
-    expect(spy1).toHaveBeenCalledTimes(0)
 
     await userEvent.clear(modal.querySelector('input')!!)
     await userEvent.click(screen.getByText('送信'))
