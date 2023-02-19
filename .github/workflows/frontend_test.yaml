@@ -3,6 +3,8 @@ name: Run Frontend Tests
 
 on:
   push
+  paths:
+    - 'frontend/**'
 
 jobs:
   test:
@@ -25,6 +27,7 @@ jobs:
         with:
           node-version: '16'
           cache: 'pnpm'
+          cache-dependency-path: frontend/pnpm-lock.yaml
       
       - name: Install Dependency
         run: pnpm install --frozen-lockfile
