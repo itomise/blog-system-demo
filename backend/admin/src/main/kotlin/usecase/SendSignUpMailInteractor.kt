@@ -1,13 +1,14 @@
 package com.itomise.admin.usecase
 
 import com.itomise.admin.domain.user.entities.User
+import com.itomise.admin.domain.user.services.UserService
 import com.itomise.admin.lib.sendgrid.SendGridClient
 import com.itomise.admin.module.adminEnvConfig
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class SendSignUpMailInteractor : KoinComponent {
-    private val userService by inject<IUserService>()
+    private val userService by inject<UserService>()
 
     private val subject = "[itomise] アカウント登録確認メール"
 

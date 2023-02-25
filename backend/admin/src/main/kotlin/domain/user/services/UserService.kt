@@ -1,6 +1,6 @@
 package com.itomise.admin.domain.user.services
 
-import com.itomise.admin.domain.user.vo.AccountOperationType
+import com.itomise.admin.domain.user.vo.UserOperationType
 import com.itomise.admin.domain.user.vo.UserId
 import com.itomise.admin.domain.user.vo.UserInternalLoginInfo
 import com.itomise.admin.domain.security.services.HashingService
@@ -62,7 +62,7 @@ class UserService : KoinComponent {
             privateKey = privateKey,
             claims = arrayOf(
                 TokenClaim("userId", user.id.toString()),
-                TokenClaim("operationType", AccountOperationType.ACTIVATE.value),
+                TokenClaim("operationType", UserOperationType.ACTIVATE.value),
                 TokenClaim("expires", LocalDateTime.now().plusHours(24).toString()),
                 TokenClaim("loginType", user.loginType.value.toString()) // internal の場合は null になっているため
             )
@@ -75,9 +75,9 @@ class UserService : KoinComponent {
             token = token
         ) ?: throw IllegalArgumentException("tokenが不正です。")
 
-        val operationType = AccountOperationType.get(decodedJwt.getClaim("operationType").asString())
+        val operationType = UserOperationType.get(decodedJwt.getClaim("operationType").asString())
 
-        if (operationType != AccountOperationType.ACTIVATE) {
+        if (operationType != UserOperationType.ACTIVATE) {
             throw IllegalArgumentException("tokenが不正です。")
         }
 
