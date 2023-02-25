@@ -1,12 +1,14 @@
 package com.itomise.adminApi.controller.auth
 
+import com.itomise.adminApi.module.jwkProvider
+import com.itomise.adminApi.module.jwtTokenConfig
+import com.itomise.blogDb.lib.dbQuery
+import com.itomise.blogDb.repository.UserRepository
 import com.itomise.core.domain.user.services.UserService
 import com.itomise.core.domain.user.vo.UserLoginType
 import com.itomise.core.domain.user.vo.UserPrincipal
 import com.itomise.core.domain.user.vo.Username
 import com.itomise.core.exception.CustomBadRequestException
-import com.itomise.blogDb.repository.UserRepository
-import com.itomise.blogDb.lib.dbQuery
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -23,7 +25,11 @@ fun Route.authSignUpActivate() {
         val request = call.receive<ActivateRequestModel>()
 
         val userId = try {
-            userService.getUserIdFromActivationToken(request.token)
+            userService.getUserIdFromActivationToken(
+                token = request.token,
+                tokenConfig = jwtTokenConfig,
+                publicKey = jwkProvider.get(jwtTokenConfig.publicKeyId).publicKey
+            )
         } catch (e: IllegalArgumentException) {
             throw CustomBadRequestException(e.message.toString())
         }

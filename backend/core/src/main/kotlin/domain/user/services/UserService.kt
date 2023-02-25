@@ -1,20 +1,19 @@
 package com.itomise.core.domain.user.services
 
-import com.itomise.core.domain.user.vo.UserOperationType
-import com.itomise.core.domain.user.vo.UserId
-import com.itomise.core.domain.user.vo.UserInternalLoginInfo
 import com.itomise.core.domain.security.services.HashingService
 import com.itomise.core.domain.security.services.JwtTokenService
 import com.itomise.core.domain.security.vo.HashAlgorithm
 import com.itomise.core.domain.security.vo.SaltedHash
 import com.itomise.core.domain.security.vo.TokenClaim
+import com.itomise.core.domain.security.vo.TokenConfig
 import com.itomise.core.domain.user.entities.User
-import com.itomise.adminApi.module.adminApiEnvConfig
-import com.itomise.adminApi.module.jwtTokenConfig
+import com.itomise.core.domain.user.vo.UserId
+import com.itomise.core.domain.user.vo.UserInternalLoginInfo
+import com.itomise.core.domain.user.vo.UserOperationType
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.security.KeyFactory
-import java.security.spec.PKCS8EncodedKeySpec
+import java.security.PrivateKey
+import java.security.PublicKey
 import java.time.LocalDateTime
 import java.util.*
 
@@ -53,13 +52,16 @@ class UserService : KoinComponent {
         )
     }
 
-    fun generateActivationToken(user: User): String {
-        val keySpecPKCS8 = PKCS8EncodedKeySpec(Base64.getDecoder().decode(adminApiEnvConfig.jwt.privateKey))
-        val privateKey = KeyFactory.getInstance("RSA").generatePrivate(keySpecPKCS8)
-
+    fun generateActivationToken(
+        user: User,
+        tokenConfig: TokenConfig,
+        publicKey: PublicKey,
+        privateKey: PrivateKey
+    ): String {
         return jwtTokenService.generate(
-            config = jwtTokenConfig,
+            config = tokenConfig,
             privateKey = privateKey,
+            publicKey = publicKey,
             claims = arrayOf(
                 TokenClaim("userId", user.id.toString()),
                 TokenClaim("operationType", UserOperationType.ACTIVATE.value),
@@ -69,10 +71,11 @@ class UserService : KoinComponent {
         )
     }
 
-    fun getUserIdFromActivationToken(token: String): UserId {
+    fun getUserIdFromActivationToken(token: String, tokenConfig: TokenConfig, publicKey: PublicKey): UserId {
         val decodedJwt = jwtTokenService.verify(
-            config = jwtTokenConfig,
-            token = token
+            config = tokenConfig,
+            token = token,
+            publicKey = publicKey
         ) ?: throw IllegalArgumentException("tokenが不正です。")
 
         val operationType = UserOperationType.get(decodedJwt.getClaim("operationType").asString())

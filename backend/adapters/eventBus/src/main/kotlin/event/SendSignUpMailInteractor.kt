@@ -1,17 +1,13 @@
 package com.itomise.eventBus.event
 
 import com.itomise.core.domain.user.entities.User
-import com.itomise.core.domain.user.services.UserService
 import com.itomise.eventBus.lib.SendGridClient
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
 /*
     TODO: 後でちゃんと Event Bus Pattern にする
  */
 class SendSignUpMailInteractor : KoinComponent {
-    private val userService by inject<UserService>()
-
     private val subject = "[itomise] アカウント登録確認メール"
 
     private fun getMailContent(token: String, accountActivateUrl: String, accountSignUpUrl: String) =
@@ -26,9 +22,7 @@ $accountActivateUrl?token=$token
 $accountSignUpUrl
 """.trimIndent()
 
-    fun handle(user: User, accountActivateUrl: String, accountSignUpUrl: String) {
-        val token = userService.generateActivationToken(user)
-
+    fun handle(user: User, accountActivateUrl: String, accountSignUpUrl: String, token: String) {
         SendGridClient.send(
             SendGridClient.SendMailCommand(
                 to = user.email,

@@ -1,14 +1,15 @@
 package com.itomise.adminApi.controller.authJwt
 
 import com.itomise.adminApi.controller.auth.LoginRequestModel
-import com.itomise.core.domain.user.services.UserService
-import com.itomise.core.domain.user.vo.Email
-import com.itomise.core.domain.security.services.JwtTokenService
-import com.itomise.core.domain.security.vo.TokenClaim
-import com.itomise.blogDb.repository.UserRepository
 import com.itomise.adminApi.module.adminApiEnvConfig
+import com.itomise.adminApi.module.jwkProvider
 import com.itomise.adminApi.module.jwtTokenConfig
 import com.itomise.blogDb.lib.dbQuery
+import com.itomise.blogDb.repository.UserRepository
+import com.itomise.core.domain.security.services.JwtTokenService
+import com.itomise.core.domain.security.vo.TokenClaim
+import com.itomise.core.domain.user.services.UserService
+import com.itomise.core.domain.user.vo.Email
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -49,12 +50,16 @@ fun Route.authJwtLogin() {
         val keySpecPKCS8 = PKCS8EncodedKeySpec(Base64.getDecoder().decode(adminApiEnvConfig.jwt.privateKey))
         val privateKey = KeyFactory.getInstance("RSA").generatePrivate(keySpecPKCS8)
 
+
         val token = tokenService.generate(
             config = jwtTokenConfig,
             privateKey = privateKey,
-            TokenClaim(
-                name = "userId",
-                value = user.id.toString()
+            publicKey = jwkProvider.get(jwtTokenConfig.publicKeyId).publicKey,
+            claims = arrayOf(
+                TokenClaim(
+                    name = "userId",
+                    value = user.id.toString()
+                )
             )
         )
 

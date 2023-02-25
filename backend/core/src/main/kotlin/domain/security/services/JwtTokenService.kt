@@ -5,16 +5,14 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.DecodedJWT
 import com.itomise.core.domain.security.vo.TokenClaim
 import com.itomise.core.domain.security.vo.TokenConfig
-import com.itomise.adminApi.module.jwkProvider
 import java.security.PrivateKey
+import java.security.PublicKey
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
 import java.util.*
 
 class JwtTokenService {
-    fun generate(config: TokenConfig, privateKey: PrivateKey, vararg claims: TokenClaim): String {
-        val publicKey = jwkProvider.get(config.publicKeyId).publicKey
-
+    fun generate(config: TokenConfig, privateKey: PrivateKey, publicKey: PublicKey, vararg claims: TokenClaim): String {
         var token = JWT.create()
             .withAudience(config.audience)
             .withIssuer(config.issuer)
@@ -25,9 +23,7 @@ class JwtTokenService {
         return token.sign(Algorithm.RSA256(publicKey as RSAPublicKey, privateKey as RSAPrivateKey))
     }
 
-    fun verify(config: TokenConfig, token: String): DecodedJWT? {
-        val publicKey = jwkProvider.get(config.publicKeyId).publicKey
-
+    fun verify(config: TokenConfig, token: String, publicKey: PublicKey): DecodedJWT? {
         val algorithm = Algorithm.RSA256(publicKey as RSAPublicKey, null)
 
         val verifier = JWT.require(algorithm)

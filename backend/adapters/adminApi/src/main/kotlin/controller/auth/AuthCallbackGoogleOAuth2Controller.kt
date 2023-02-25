@@ -1,14 +1,16 @@
 package com.itomise.adminApi.controller.auth
 
+import com.itomise.adminApi.module.adminApiEnvConfig
+import com.itomise.adminApi.module.jwkProvider
+import com.itomise.adminApi.module.jwtTokenConfig
+import com.itomise.blogDb.lib.dbQuery
+import com.itomise.blogDb.repository.UserRepository
 import com.itomise.core.domain.user.entities.User
 import com.itomise.core.domain.user.services.UserService
 import com.itomise.core.domain.user.vo.Email
 import com.itomise.core.domain.user.vo.UserLoginType
 import com.itomise.core.domain.user.vo.UserPrincipal
-import com.itomise.blogDb.repository.UserRepository
 import com.itomise.core.lib.google.GoogleAuthentication
-import com.itomise.adminApi.module.adminApiEnvConfig
-import com.itomise.blogDb.lib.dbQuery
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.*
@@ -17,6 +19,9 @@ import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import org.apache.http.client.utils.URIBuilder
 import org.koin.ktor.ext.inject
+import java.security.KeyFactory
+import java.security.spec.PKCS8EncodedKeySpec
+import java.util.*
 
 fun Route.callbackGoogleOAuth2() {
     val userRepository by inject<UserRepository>()
@@ -56,7 +61,15 @@ fun Route.callbackGoogleOAuth2() {
             }
 
             val activateToken = if (user.isActive) null else {
-                userService.generateActivationToken(user)
+                val keySpecPKCS8 = PKCS8EncodedKeySpec(Base64.getDecoder().decode(adminApiEnvConfig.jwt.privateKey))
+                val privateKey = KeyFactory.getInstance("RSA").generatePrivate(keySpecPKCS8)
+
+                userService.generateActivationToken(
+                    user = user,
+                    tokenConfig = jwtTokenConfig,
+                    publicKey = jwkProvider.get(jwtTokenConfig.publicKeyId).publicKey,
+                    privateKey = privateKey
+                )
             }
 
             Pair(user, activateToken)
