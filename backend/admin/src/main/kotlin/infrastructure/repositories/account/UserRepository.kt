@@ -1,7 +1,6 @@
 package com.itomise.admin.infrastructure.repositories.account
 
 import com.itomise.admin.domain.account.entities.User
-import com.itomise.admin.domain.account.interfaces.IUserRepository
 import com.itomise.admin.domain.account.vo.*
 import com.itomise.admin.infrastructure.dao.UserExternalLoginInfoTable
 import com.itomise.admin.infrastructure.dao.UserInternalLoginInfoTable
@@ -10,7 +9,7 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import java.time.LocalDateTime
 
-class UserRepository : IUserRepository {
+class UserRepository {
     private fun resultRowToUserEntity(row: ResultRow): User {
         val profile = row[UserTable.name]?.let {
             UserProfile(
@@ -36,14 +35,14 @@ class UserRepository : IUserRepository {
         } else null
 
         return User.from(
-            id = UserId(row[UserTable.id].value),
+            id = row[UserTable.id].value,
             email = Email(row[UserTable.email]),
             profile = profile,
             loginInfo = loginInfo,
         )
     }
 
-    override suspend fun getList(): List<User> {
+    fun getList(): List<User> {
         return UserTable
             .join(
                 otherTable = UserInternalLoginInfoTable,
@@ -60,7 +59,7 @@ class UserRepository : IUserRepository {
             .map(::resultRowToUserEntity)
     }
 
-    override suspend fun findByUserId(id: UserId): User? {
+    fun findByUserId(id: UserId): User? {
         return UserTable
             .join(
                 otherTable = UserInternalLoginInfoTable,
@@ -72,19 +71,19 @@ class UserRepository : IUserRepository {
                 joinType = JoinType.LEFT,
                 additionalConstraint = { UserTable.id eq UserExternalLoginInfoTable.id }
             )
-            .select(UserTable.id eq id.value)
+            .select(UserTable.id eq id)
             .map(::resultRowToUserEntity)
             .firstOrNull()
     }
 
-    private suspend fun findInternalLoginInfoByUserId(id: UserId): Boolean {
+    private fun findInternalLoginInfoByUserId(id: UserId): Boolean {
         val exists = UserInternalLoginInfoTable
-            .select(UserInternalLoginInfoTable.id eq id.value)
+            .select(UserInternalLoginInfoTable.id eq id)
             .firstOrNull()
         return exists != null
     }
 
-    override suspend fun findByEmail(email: Email): User? {
+    fun findByEmail(email: Email): User? {
         return UserTable
             .join(
                 otherTable = UserInternalLoginInfoTable,
@@ -101,7 +100,7 @@ class UserRepository : IUserRepository {
             .firstOrNull()
     }
 
-    override suspend fun save(user: User) {
+    fun save(user: User) {
         val isExists = findByUserId(user.id) != null
         if (isExists) {
             update(user)
@@ -110,9 +109,9 @@ class UserRepository : IUserRepository {
         }
     }
 
-    private suspend fun update(user: User) {
+    private fun update(user: User) {
         UserTable.update({
-            UserTable.id eq user.id.value
+            UserTable.id eq user.id
         }) {
             it[name] = user.profile?.name?.value
             it[email] = user.email.value
@@ -122,7 +121,7 @@ class UserRepository : IUserRepository {
             if (user.loginInfo is UserInternalLoginInfo) {
                 if (findInternalLoginInfoByUserId(user.id)) {
                     UserInternalLoginInfoTable.update({
-                        UserInternalLoginInfoTable.id eq user.id.value
+                        UserInternalLoginInfoTable.id eq user.id
                     }) {
                         it[passwordHash] = user.loginInfo.passwordHash
                         it[passwordSalt] = user.loginInfo.passwordSalt
@@ -131,7 +130,7 @@ class UserRepository : IUserRepository {
                     }
                 } else {
                     UserInternalLoginInfoTable.insert {
-                        it[id] = user.id.value
+                        it[id] = user.id
                         it[passwordHash] = user.loginInfo.passwordHash
                         it[passwordSalt] = user.loginInfo.passwordSalt
                         it[hashAlgorithmId] = user.loginInfo.hashAlgorithmId.value
@@ -141,16 +140,16 @@ class UserRepository : IUserRepository {
         }
     }
 
-    private suspend fun insert(user: User) {
+    private fun insert(user: User) {
         UserTable.insert {
-            it[id] = user.id.value
+            it[id] = user.id
             it[email] = user.email.value
             it[name] = user.profile?.name?.value
         }
         user.loginInfo?.let {
             if (user.loginInfo is UserInternalLoginInfo) {
                 UserInternalLoginInfoTable.insert {
-                    it[id] = user.id.value
+                    it[id] = user.id
                     it[passwordHash] = user.loginInfo.passwordHash
                     it[passwordSalt] = user.loginInfo.passwordSalt
                     it[hashAlgorithmId] = user.loginInfo.hashAlgorithmId.value
@@ -158,16 +157,16 @@ class UserRepository : IUserRepository {
             }
             if (user.loginInfo is UserExternalLoginInfo) {
                 UserExternalLoginInfoTable.insert {
-                    it[id] = user.id.value
+                    it[id] = user.id
                     it[externalServiceType] = user.loginInfo.externalServiceType.value
                 }
             }
         }
     }
 
-    override suspend fun delete(user: User) {
+    fun delete(user: User) {
         UserTable.deleteWhere {
-            UserTable.id eq user.id.value
+            UserTable.id eq user.id
         }
     }
 }

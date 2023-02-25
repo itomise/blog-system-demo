@@ -1,14 +1,12 @@
-package com.itomise.admin.usecase.interactors.mail
+package com.itomise.admin.usecase
 
 import com.itomise.admin.domain.account.entities.User
-import com.itomise.admin.domain.account.interfaces.IUserService
 import com.itomise.admin.lib.sendgrid.SendGridClient
 import com.itomise.admin.module.adminEnvConfig
-import com.itomise.admin.usecase.interfaces.mail.ISendSignUpMailUseCase
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class SendSignUpMailInteractor : ISendSignUpMailUseCase, KoinComponent {
+class SendSignUpMailInteractor : KoinComponent {
     private val userService by inject<IUserService>()
 
     private val subject = "[itomise] アカウント登録確認メール"
@@ -25,7 +23,7 @@ ${adminEnvConfig.urls.accountActivateUrl}?token=$token
 ${adminEnvConfig.urls.accountSignUpUrl}
 """.trimIndent()
 
-    override fun handle(user: User) {
+    fun handle(user: User) {
         val token = userService.generateActivationToken(user)
 
         SendGridClient.send(

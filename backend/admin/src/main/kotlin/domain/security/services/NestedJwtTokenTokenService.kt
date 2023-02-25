@@ -1,6 +1,5 @@
 package com.itomise.admin.domain.security.services
 
-import com.itomise.admin.domain.security.interfaces.INestedJwtTokenService
 import com.nimbusds.jose.*
 import com.nimbusds.jose.crypto.DirectDecrypter
 import com.nimbusds.jose.crypto.DirectEncrypter
@@ -12,9 +11,9 @@ import com.nimbusds.jwt.SignedJWT
 import java.security.PrivateKey
 import java.util.*
 
-class NestedJwtTokenTokenService : INestedJwtTokenService {
+class NestedJwtTokenTokenService {
 
-    override fun generate(
+    fun generate(
         signatureKey: PrivateKey,
         encryptionKey: ByteArray,
         claims: Map<String, String>
@@ -54,7 +53,7 @@ class NestedJwtTokenTokenService : INestedJwtTokenService {
         }
     }
 
-    override fun verify(
+    fun verify(
         token: String,
         publicKey: RSAKey,
         encryptionKey: ByteArray

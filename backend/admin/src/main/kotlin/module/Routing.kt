@@ -7,7 +7,6 @@ import com.itomise.admin.controller.post.createPost
 import com.itomise.admin.controller.post.detail.*
 import com.itomise.admin.controller.post.getListPost
 import com.itomise.admin.controller.user.*
-import com.itomise.admin.controller.userRouting
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.routing.*
@@ -20,6 +19,7 @@ fun Application.routing() {
             authSignUp()
             startGoogleOAuth2()
             callbackGoogleOAuth2()
+            authSignUpActivate()
 
             // auth-jwt
             authJwtLogin()
@@ -48,11 +48,6 @@ fun Application.routing() {
                 userUpdate()
                 userDelete()
             }
-
-
-
-            userRouting()
-
         }
     }
 }

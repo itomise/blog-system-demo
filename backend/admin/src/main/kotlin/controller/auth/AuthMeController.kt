@@ -7,10 +7,11 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.koin.ktor.ext.inject
 import java.util.*
 
 fun Route.authMe() {
-    val userRepository = UserRepository()
+    val userRepository by inject<UserRepository>()
 
     get("/auth/me") {
         val principal = call.userSessionPrincipal()

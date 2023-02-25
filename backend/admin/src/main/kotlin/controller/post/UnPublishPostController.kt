@@ -1,4 +1,4 @@
-package com.itomise.admin.controller.post.detail
+package com.itomise.admin.controller.post
 
 import com.itomise.admin.domain.common.exception.NotFoundException
 import com.itomise.admin.infrastructure.repositories.post.PostRepository
@@ -8,10 +8,11 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.koin.ktor.ext.inject
 import java.util.*
 
 fun Route.unPublishPost() {
-    val postRepository = PostRepository()
+    val postRepository by inject<PostRepository>()
 
     put("/posts/{postId}/un-publish") {
         val postId = call.parameters["postId"] ?: throw IllegalArgumentException()

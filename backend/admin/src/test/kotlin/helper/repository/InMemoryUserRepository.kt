@@ -1,7 +1,6 @@
 package helper.repository
 
 import com.itomise.admin.domain.account.entities.User
-import com.itomise.admin.domain.account.interfaces.IUserRepository
 import com.itomise.admin.domain.account.vo.Email
 import com.itomise.admin.domain.account.vo.UserId
 

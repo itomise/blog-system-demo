@@ -14,14 +14,15 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.koin.ktor.ext.inject
 import java.security.KeyFactory
 import java.security.spec.PKCS8EncodedKeySpec
 import java.util.*
 
 fun Route.authJwtLogin() {
-    val userRepository = UserRepository()
-    val userService = UserService()
-    val tokenService = JwtTokenService()
+    val userRepository by inject<UserRepository>()
+    val userService by inject<UserService>()
+    val tokenService by inject<JwtTokenService>()
 
     post("/auth-jwt/login") {
         val request = call.receive<LoginRequestModel>()

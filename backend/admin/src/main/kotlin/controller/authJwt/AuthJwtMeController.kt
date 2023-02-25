@@ -9,10 +9,11 @@ import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.koin.ktor.ext.inject
 import java.util.*
 
 fun Route.authJwtMe() {
-    val userRepository = UserRepository()
+    val userRepository by inject<UserRepository>()
 
     get("/auth-jwt/me") {
         val principal = call.principal<JWTPrincipal>()

@@ -1,7 +1,6 @@
 package com.itomise.admin.domain.account.services
 
 import com.itomise.admin.domain.account.entities.User
-import com.itomise.admin.domain.account.interfaces.IUserService
 import com.itomise.admin.domain.account.vo.AccountOperationType
 import com.itomise.admin.domain.account.vo.UserId
 import com.itomise.admin.domain.account.vo.UserInternalLoginInfo

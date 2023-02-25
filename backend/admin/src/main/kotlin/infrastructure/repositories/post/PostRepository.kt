@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 class PostRepository {
     private fun resultRowToPostEntity(row: ResultRow): Post {
         return Post.from(
-            id = PostId(row[PostTable.id].value),
+            id = row[PostTable.id].value,
             title = row[PostTable.title],
             content = row[PostTable.content],
             status = PostStatus.get(row[PostTable.status]),
@@ -28,7 +28,7 @@ class PostRepository {
 
     suspend fun findByPostId(postId: PostId): Post? {
         return PostTable
-            .select(PostTable.id eq postId.value)
+            .select(PostTable.id eq postId)
             .map(::resultRowToPostEntity)
             .firstOrNull()
     }
@@ -37,7 +37,7 @@ class PostRepository {
         val isExists = findByPostId(post.id) != null
         if (isExists) {
             PostTable.update({
-                PostTable.id eq post.id.value
+                PostTable.id eq post.id
             }) { s ->
                 s[title] = post.title
                 s[content] = post.content
@@ -57,7 +57,7 @@ class PostRepository {
 
     suspend fun delete(post: Post) {
         PostTable.deleteWhere {
-            PostTable.id eq post.id.value
+            PostTable.id eq post.id
         }
     }
 }

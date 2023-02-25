@@ -9,10 +9,11 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.koin.ktor.ext.inject
 import java.util.*
 
 fun Route.userUpdate() {
-    val userRepository = UserRepository()
+    val userRepository by inject<UserRepository>()
 
     put("/users/{userId}") {
         val request = call.receive<UpdateUserRequestModel>()

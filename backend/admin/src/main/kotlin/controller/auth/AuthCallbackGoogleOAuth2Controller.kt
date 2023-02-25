@@ -16,10 +16,11 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import org.apache.http.client.utils.URIBuilder
+import org.koin.ktor.ext.inject
 
 fun Route.callbackGoogleOAuth2() {
-    val userRepository = UserRepository()
-    val userService = UserService()
+    val userRepository by inject<UserRepository>()
+    val userService by inject<UserService>()
 
     get("/auth/google_oauth2/callback") {
         val paramState = call.parameters["state"] ?: throw IllegalArgumentException("state パラメータが存在しません。")

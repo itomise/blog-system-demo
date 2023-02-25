@@ -3,17 +3,18 @@ package com.itomise.admin.controller.auth
 import com.itomise.admin.domain.account.entities.User
 import com.itomise.admin.domain.account.vo.Email
 import com.itomise.admin.infrastructure.repositories.account.UserRepository
-import com.itomise.admin.usecase.interactors.mail.SendSignUpMailInteractor
+import com.itomise.admin.usecase.SendSignUpMailInteractor
 import com.itomise.shared.infrastructure.dbQuery
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.koin.ktor.ext.inject
 
 fun Route.authSignUp() {
-    val userRepository = UserRepository()
-    val sendSignUpMailUseCase = SendSignUpMailInteractor()
+    val userRepository by inject<UserRepository>()
+    val sendSignUpMailUseCase by inject<SendSignUpMailInteractor>()
 
     post("/auth/sign-up") {
         val request = call.receive<SignUpRequestModel>()
