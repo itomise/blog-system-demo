@@ -36,7 +36,7 @@ object DatabaseTestHelper {
 
     private fun getAllMigrationSql(): String {
         var sqlString = ""
-        Files.list(Path.of("../db/migration"))
+        Files.list(Path.of("../blogDb/src/main/resources/db/migration"))
             .filter { it.toString().endsWith(".sql") }
             .sorted(compareBy {
                 val versionNum = it.toString().split("__")[0]
