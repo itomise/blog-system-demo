@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: db
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: local
+    ports:
+      - 15432:5432
+    volumes:
+      - ./adapters/blogDb/src/main/resources/db/local/data:/var/lib/postgresql/data
+      - ./adapters/blogDb/src/main/resources/db/local/init:/docker-entrypoint-initdb.d
+  test-db:
+    image: postgres:latest
+    container_name: test-db
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: local
+    ports:
+      - 55432:5432
+    volumes:
+      - ./adapters/blogDb/src/main/resources/db/local/init:/docker-entrypoint-initdb.d
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - 16379:6379
+    volumes:
+      - ./adapters/blogDb/src/main/resources/redis/local:/data
+  test-redis:
+    image: redis:latest
+    container_name: test-redis
+    ports:
+      - 56379:6379
+  flyway:
+    image: flyway/flyway:latest
+    volumes:
+      - ./adapters/blogDb/src/main/resources/db/migration:/flyway/sql
+    depends_on:
+      - db

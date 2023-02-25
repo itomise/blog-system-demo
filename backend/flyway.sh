@@ -22,7 +22,7 @@ while true; do
 done
 
 if [ -z "$URL" ]; then
-  echo "環境変数が正しく設定されていません。"
+  echo "環境変数が正しく設定されていません。 --local or --prod で実行してください。"
   exit 1
 fi
 

@@ -35,7 +35,7 @@ out/
 ### VS Code ###
 .vscode/
 
-db/local/data
-db/redis/local
+adapters/blogDb/src/main/resources/db/local/data
+adapters/blogDb/src/main/resources/redis/local
 
 /.run/
