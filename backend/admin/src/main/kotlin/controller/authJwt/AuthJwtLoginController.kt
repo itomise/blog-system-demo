@@ -2,7 +2,7 @@ package com.itomise.admin.controller.authJwt
 
 import com.itomise.admin.controller.auth.LoginRequestModel
 import com.itomise.admin.domain.account.services.UserService
-import com.itomise.admin.domain.account.vo.Email
+import com.itomise.admin.domain.user.vo.Email
 import com.itomise.admin.domain.security.services.JwtTokenService
 import com.itomise.admin.domain.security.vo.TokenClaim
 import com.itomise.admin.infrastructure.repositories.account.UserRepository

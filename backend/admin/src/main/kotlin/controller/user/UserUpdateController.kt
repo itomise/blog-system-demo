@@ -1,6 +1,6 @@
 package com.itomise.admin.controller.user
 
-import com.itomise.admin.domain.account.vo.Username
+import com.itomise.admin.domain.user.vo.Username
 import com.itomise.admin.domain.common.exception.NotFoundException
 import com.itomise.admin.infrastructure.repositories.account.UserRepository
 import com.itomise.shared.infrastructure.dbQuery

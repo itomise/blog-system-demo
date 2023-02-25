@@ -1,4 +1,4 @@
-package com.itomise.admin.domain.account.vo
+package com.itomise.admin.domain.user.vo
 
 import java.util.*
 

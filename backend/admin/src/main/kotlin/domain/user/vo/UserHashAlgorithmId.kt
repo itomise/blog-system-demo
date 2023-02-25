@@ -1,4 +1,4 @@
-package com.itomise.admin.domain.account.vo
+package com.itomise.admin.domain.user.vo
 
 import com.itomise.admin.domain.security.vo.HashAlgorithm
 

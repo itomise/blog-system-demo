@@ -2,7 +2,7 @@ package com.itomise.admin.module
 
 import com.auth0.jwk.JwkProvider
 import com.auth0.jwk.JwkProviderBuilder
-import com.itomise.admin.domain.account.vo.UserPrincipal
+import com.itomise.admin.domain.user.vo.UserPrincipal
 import com.itomise.admin.domain.security.vo.TokenConfig
 import com.itomise.admin.infrastructure.RedisFactory
 import com.itomise.admin.infrastructure.SessionStorageRedis

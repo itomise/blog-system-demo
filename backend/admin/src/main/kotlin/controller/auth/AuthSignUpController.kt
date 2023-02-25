@@ -1,7 +1,7 @@
 package com.itomise.admin.controller.auth
 
 import com.itomise.admin.domain.account.entities.User
-import com.itomise.admin.domain.account.vo.Email
+import com.itomise.admin.domain.user.vo.Email
 import com.itomise.admin.infrastructure.repositories.account.UserRepository
 import com.itomise.admin.usecase.SendSignUpMailInteractor
 import com.itomise.shared.infrastructure.dbQuery

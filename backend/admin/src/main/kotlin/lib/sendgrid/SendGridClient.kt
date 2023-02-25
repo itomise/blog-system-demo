@@ -30,7 +30,7 @@ object SendGridClient {
     }
 
     data class SendMailCommand(
-        val to: com.itomise.admin.domain.account.vo.Email,
+        val to: com.itomise.admin.domain.user.vo.Email,
         val subject: String,
         val content: String
     )

@@ -1,7 +1,7 @@
 package com.itomise.admin.infrastructure.repositories.account
 
 import com.itomise.admin.domain.account.entities.User
-import com.itomise.admin.domain.account.vo.*
+import com.itomise.admin.domain.user.vo.*
 import com.itomise.admin.infrastructure.dao.UserExternalLoginInfoTable
 import com.itomise.admin.infrastructure.dao.UserInternalLoginInfoTable
 import com.itomise.admin.infrastructure.dao.UserTable

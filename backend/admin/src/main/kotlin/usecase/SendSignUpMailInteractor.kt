@@ -1,6 +1,6 @@
 package com.itomise.admin.usecase
 
-import com.itomise.admin.domain.account.entities.User
+import com.itomise.admin.domain.user.entities.User
 import com.itomise.admin.lib.sendgrid.SendGridClient
 import com.itomise.admin.module.adminEnvConfig
 import org.koin.core.component.KoinComponent

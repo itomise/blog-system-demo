@@ -1,8 +1,8 @@
 package helper.repository
 
 import com.itomise.admin.domain.account.entities.User
-import com.itomise.admin.domain.account.vo.Email
-import com.itomise.admin.domain.account.vo.UserId
+import com.itomise.admin.domain.user.vo.Email
+import com.itomise.admin.domain.user.vo.UserId
 
 class InMemoryUserRepository : IUserRepository {
     private val store = mutableListOf<User>()

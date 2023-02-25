@@ -1,4 +1,4 @@
-package com.itomise.admin.domain.account.vo
+package com.itomise.admin.domain.user.vo
 
 data class Email(val value: String) {
     private val emailPattern = "[a-zA-Z0-9._+-]+@[a-zA-Z0-9._+-]+\\.+[a-z]+"

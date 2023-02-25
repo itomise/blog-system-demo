@@ -1,7 +1,7 @@
-package com.itomise.admin.domain.account.entities
+package com.itomise.admin.domain.user.entities
 
-import com.itomise.admin.domain.account.vo.*
-import com.itomise.admin.domain.security.interfaces.IHashingService
+import com.itomise.admin.domain.user.vo.*
+import com.itomise.admin.domain.security.services.HashingService
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.*
@@ -13,7 +13,7 @@ data class User internal constructor(
     val profile: UserProfile?,
     val loginInfo: UserLoginInfo?
 ) : KoinComponent {
-    private val hashService by inject<IHashingService>()
+    private val hashService by inject<HashingService>()
 
     val isActive = profile != null && loginInfo != null
 

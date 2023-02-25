@@ -1,14 +1,14 @@
-package com.itomise.admin.domain.account.services
+package com.itomise.admin.domain.user.services
 
-import com.itomise.admin.domain.account.entities.User
-import com.itomise.admin.domain.account.vo.AccountOperationType
-import com.itomise.admin.domain.account.vo.UserId
-import com.itomise.admin.domain.account.vo.UserInternalLoginInfo
-import com.itomise.admin.domain.security.interfaces.IHashingService
-import com.itomise.admin.domain.security.interfaces.IJwtTokenService
+import com.itomise.admin.domain.user.vo.AccountOperationType
+import com.itomise.admin.domain.user.vo.UserId
+import com.itomise.admin.domain.user.vo.UserInternalLoginInfo
+import com.itomise.admin.domain.security.services.HashingService
+import com.itomise.admin.domain.security.services.JwtTokenService
 import com.itomise.admin.domain.security.vo.HashAlgorithm
 import com.itomise.admin.domain.security.vo.SaltedHash
 import com.itomise.admin.domain.security.vo.TokenClaim
+import com.itomise.admin.domain.user.entities.User
 import com.itomise.admin.module.adminEnvConfig
 import com.itomise.admin.module.jwtTokenConfig
 import org.koin.core.component.KoinComponent
@@ -18,11 +18,11 @@ import java.security.spec.PKCS8EncodedKeySpec
 import java.time.LocalDateTime
 import java.util.*
 
-class UserService : IUserService, KoinComponent {
-    private val hashingService by inject<IHashingService>()
-    private val jwtTokenService by inject<IJwtTokenService>()
+class UserService : KoinComponent {
+    private val hashingService by inject<HashingService>()
+    private val jwtTokenService by inject<JwtTokenService>()
 
-    override suspend fun isDuplicateUser(allUsers: List<User>, user: User): Boolean {
+    suspend fun isDuplicateUser(allUsers: List<User>, user: User): Boolean {
         val targetUser = allUsers.find {
             val isDuplicateUserId = it.id == user.id
             val isDuplicateEmail = it.email == user.email
@@ -40,7 +40,7 @@ class UserService : IUserService, KoinComponent {
         return targetUser != null
     }
 
-    override fun isValidPassword(password: String, user: User): Boolean {
+    fun isValidPassword(password: String, user: User): Boolean {
         if (user.loginInfo == null || user.loginInfo !is UserInternalLoginInfo) return false
 
         return hashingService.verifySaltedHash(
@@ -53,7 +53,7 @@ class UserService : IUserService, KoinComponent {
         )
     }
 
-    override fun generateActivationToken(user: User): String {
+    fun generateActivationToken(user: User): String {
         val keySpecPKCS8 = PKCS8EncodedKeySpec(Base64.getDecoder().decode(adminEnvConfig.jwt.privateKey))
         val privateKey = KeyFactory.getInstance("RSA").generatePrivate(keySpecPKCS8)
 
@@ -69,7 +69,7 @@ class UserService : IUserService, KoinComponent {
         )
     }
 
-    override fun getUserIdFromActivationToken(token: String): UserId {
+    fun getUserIdFromActivationToken(token: String): UserId {
         val decodedJwt = jwtTokenService.verify(
             config = jwtTokenConfig,
             token = token

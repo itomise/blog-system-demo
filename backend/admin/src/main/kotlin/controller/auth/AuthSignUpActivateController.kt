@@ -1,9 +1,9 @@
 package com.itomise.admin.controller.auth
 
 import com.itomise.admin.domain.account.services.UserService
-import com.itomise.admin.domain.account.vo.UserLoginType
-import com.itomise.admin.domain.account.vo.UserPrincipal
-import com.itomise.admin.domain.account.vo.Username
+import com.itomise.admin.domain.user.vo.UserLoginType
+import com.itomise.admin.domain.user.vo.UserPrincipal
+import com.itomise.admin.domain.user.vo.Username
 import com.itomise.admin.domain.common.exception.CustomBadRequestException
 import com.itomise.admin.infrastructure.repositories.account.UserRepository
 import com.itomise.shared.infrastructure.dbQuery
