@@ -4,10 +4,10 @@ import com.auth0.jwk.Jwk
 import com.auth0.jwk.JwkProvider
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.itomise.core.domain.user.vo.UserPrincipal
-import com.itomise.core.lib.sendgrid.SendGridClient
 import com.itomise.adminApi.module.jwkProvider
 import com.itomise.blogDb.lib.DataBaseFactory
+import com.itomise.core.domain.user.vo.UserPrincipal
+import com.itomise.eventBus.lib.SendGridClient
 import helper.factory.UserFactory
 import io.ktor.client.*
 import io.ktor.client.request.*
