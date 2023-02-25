@@ -16,7 +16,7 @@ import java.time.Instant
 import java.util.*
 
 
-class GoogleAuthentication(
+class GoogleOAuth2Authentication(
     private val oauth2ClientId: String,
     private val oauth2ClientSecret: String,
     private val callbackUrl: String

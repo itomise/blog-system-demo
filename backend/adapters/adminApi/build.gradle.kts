@@ -35,10 +35,6 @@ dependencies {
     // jwt
     implementation(libs.ktorAuthJwt)
     implementation(libs.nimbusJoseJwt)
-    // mail
-    implementation(libs.sendgrid)
-    // redis
-    implementation(libs.redisKreds)
     // serialization
     implementation(libs.ktorContentNegotiation)
     implementation(libs.ktorJackson)

@@ -32,6 +32,8 @@ dependencies {
     // database
     implementation(libs.postgres)
     implementation(libs.googleCloudSqlPostgresSocketFactory)
+    // redis
+    implementation(libs.redisKreds)
     // core
     implementation(project(":core"))
 
