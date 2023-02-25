@@ -1,10 +1,10 @@
-package controller.account
+package controller.user
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.itomise.admin.controller.requestModels.CreateUserRequestModel
-import com.itomise.admin.controller.responseModels.CreateUserResponseModel
-import com.itomise.admin.controller.responseModels.GetListUserResponseModel
+import com.itomise.admin.controller.user.CreateUserRequestModel
+import com.itomise.admin.controller.user.CreateUserResponseModel
+import com.itomise.admin.controller.user.GetListUserResponseModel
 import helper.KtorTestApplication.appTestApplication
 import helper.KtorTestApplication.authSessionUserForTest
 import io.ktor.client.plugins.cookies.*
@@ -14,7 +14,7 @@ import io.ktor.http.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-internal class CreateAccountTest {
+internal class CreateUserTest {
     private val objectMapper = jacksonObjectMapper()
 
     @Test

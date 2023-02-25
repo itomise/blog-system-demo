@@ -64,10 +64,9 @@ object UnitTestHelper {
                 user = adminEnvConfig.db.user,
                 password = adminEnvConfig.db.password
             )
-
-            // DBを使わずにテストするときのRepository層はインメモリのインスタンスをDIする
+            
             startKoin {
-                modules(commonModules + InMemoryRepositoryModule)
+                modules(commonModules + repositoryModule)
             }
         }
     }

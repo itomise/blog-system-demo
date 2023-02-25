@@ -11,6 +11,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
+import java.util.*
 
 fun Route.authSignUp() {
     val userRepository by inject<UserRepository>()
@@ -19,7 +20,7 @@ fun Route.authSignUp() {
     post("/auth/sign-up") {
         val request = call.receive<SignUpRequestModel>()
 
-        dbQuery {
+        val user = dbQuery {
             val email = Email(request.email)
             val savedUser = userRepository.findByEmail(email)
 
@@ -41,11 +42,14 @@ fun Route.authSignUp() {
 
             // 後で EventDispatcher に移す
             sendSignUpMailUseCase.handle(targetUser)
+
+            targetUser
         }
 
-        call.respond(HttpStatusCode.OK)
+        call.respond(HttpStatusCode.OK, SignUpResponseModel(user.id))
     }
 }
 
 data class SignUpRequestModel(val email: String)
 
+data class SignUpResponseModel(val userId: UUID)

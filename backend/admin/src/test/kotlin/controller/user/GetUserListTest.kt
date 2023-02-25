@@ -1,10 +1,10 @@
-package controller.account
+package controller.user
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.itomise.admin.controller.requestModels.CreateUserRequestModel
-import com.itomise.admin.controller.responseModels.CreateUserResponseModel
-import com.itomise.admin.controller.responseModels.GetListUserResponseModel
+import com.itomise.admin.controller.user.CreateUserRequestModel
+import com.itomise.admin.controller.user.CreateUserResponseModel
+import com.itomise.admin.controller.user.GetListUserResponseModel
 import helper.KtorTestApplication.appTestApplication
 import helper.KtorTestApplication.authSessionUserForTest
 import helper.KtorTestApplication.cleanup
@@ -17,7 +17,7 @@ import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-internal class GetAccountListTest {
+internal class GetUserListTest {
     @AfterTest
     fun after() = cleanup()
 

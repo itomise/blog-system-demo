@@ -4,15 +4,11 @@ import com.auth0.jwk.Jwk
 import com.auth0.jwk.JwkProvider
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.itomise.admin.domain.user.entities.User
-import com.itomise.admin.domain.user.vo.Email
-import com.itomise.admin.domain.user.vo.UserId
 import com.itomise.admin.domain.user.vo.UserPrincipal
 import com.itomise.admin.lib.sendgrid.SendGridClient
 import com.itomise.admin.module.jwkProvider
-import com.itomise.admin.usecase.interfaces.account.ICreateAccountUseCase
-import com.itomise.admin.usecase.interfaces.auth.IActivateUserUseCase
 import com.itomise.shared.infrastructure.DataBaseFactory
+import helper.factory.UserFactory
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -71,32 +67,13 @@ object KtorTestApplication {
                 routing {
                     post("/login-for-testing") {
                         val request = call.receive<CreateTestUserRequest>()
-                        val createUserUseCase = getKoinInstance<ICreateAccountUseCase>()
-                        val userService = getKoinInstance<IUserService>()
-                        val activateUserUseCase = getKoinInstance<IActivateUserUseCase>()
 
-                        val result = createUserUseCase.handle(ICreateAccountUseCase.Command(request.email))
+                        val user = UserFactory.create(request.name, request.email, request.password)
 
-                        activateUserUseCase.handle(
-                            IActivateUserUseCase.Command(
-                                token = userService.generateActivationToken(
-                                    User.from(
-                                        id = UserId(result),
-                                        email = Email(request.email),
-                                        profile = null,
-                                        loginInfo = null
-                                    )
-                                ),
-                                name = request.name,
-                                password = request.password
-                            )
-                        )
-
-
-                        call.sessions.set(UserPrincipal(result.toString()))
+                        call.sessions.set(UserPrincipal(user.id.toString()))
                         call.respond(
                             HttpStatusCode.OK, TestUser(
-                                id = result,
+                                id = user.id,
                                 name = request.name,
                                 email = request.email,
                                 password = request.password,
@@ -105,23 +82,13 @@ object KtorTestApplication {
                     }
                     post("/activate-for-testing") {
                         val request = call.receive<ActivateTestUserRequest>()
-                        val userService = getKoinInstance<IUserService>()
-                        val activateUserUseCase = getKoinInstance<IActivateUserUseCase>()
 
-                        activateUserUseCase.handle(
-                            IActivateUserUseCase.Command(
-                                token = userService.generateActivationToken(
-                                    User.from(
-                                        id = UserId(request.id),
-                                        email = Email(request.email),
-                                        profile = null,
-                                        loginInfo = null
-                                    )
-                                ),
-                                name = request.name,
-                                password = request.password
-                            )
+                        UserFactory.activate(
+                            request.id,
+                            request.name,
+                            request.password
                         )
+
                         call.respond(HttpStatusCode.OK)
                     }
                 }

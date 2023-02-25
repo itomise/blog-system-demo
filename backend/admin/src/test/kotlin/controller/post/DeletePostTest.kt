@@ -2,8 +2,8 @@ package controller.post
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.itomise.admin.controller.requestModels.CreatePostRequestModel
-import com.itomise.admin.controller.responseModels.GetListPostResponseModel
+import com.itomise.admin.controller.post.CreatePostRequestModel
+import com.itomise.admin.controller.post.GetListPostResponseModel
 import helper.KtorTestApplication.appTestApplication
 import helper.KtorTestApplication.authSessionUserForTest
 import helper.KtorTestApplication.cleanup
