@@ -4,6 +4,7 @@ import com.itomise.admin.domain.account.vo.*
 import com.itomise.admin.domain.security.interfaces.IHashingService
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.util.*
 
 data class User internal constructor(
     val id: UserId,
@@ -78,7 +79,7 @@ data class User internal constructor(
             }
 
             return User(
-                id = UserId.new(),
+                id = UUID.randomUUID(),
                 email = email,
                 loginType = loginType,
                 profile = null,

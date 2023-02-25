@@ -62,7 +62,7 @@ class UserService : IUserService, KoinComponent {
             config = jwtTokenConfig,
             privateKey = privateKey,
             claims = arrayOf(
-                TokenClaim("userId", user.id.value.toString()),
+                TokenClaim("userId", user.id.toString()),
                 TokenClaim("operationType", AccountOperationType.ACTIVATE.value),
                 TokenClaim("expires", LocalDateTime.now().plusHours(24).toString()),
                 TokenClaim("loginType", user.loginType.value.toString()) // internal の場合は null になっているため
@@ -92,6 +92,6 @@ class UserService : IUserService, KoinComponent {
             throw IllegalArgumentException("tokenの有効期限が切れています。")
         }
 
-        return UserId(UUID.fromString(decodedJwt.getClaim("userId").asString()))
+        return UUID.fromString(decodedJwt.getClaim("userId").asString())
     }
 }
