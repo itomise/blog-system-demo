@@ -1,11 +1,11 @@
 package com.itomise.admin.controller.authJwt
 
 import com.itomise.admin.controller.auth.LoginRequestModel
-import com.itomise.admin.domain.account.services.UserService
+import com.itomise.admin.domain.user.services.UserService
 import com.itomise.admin.domain.user.vo.Email
 import com.itomise.admin.domain.security.services.JwtTokenService
 import com.itomise.admin.domain.security.vo.TokenClaim
-import com.itomise.admin.infrastructure.repositories.account.UserRepository
+import com.itomise.admin.infrastructure.repositories.user.UserRepository
 import com.itomise.admin.module.adminEnvConfig
 import com.itomise.admin.module.jwtTokenConfig
 import com.itomise.shared.infrastructure.dbQuery

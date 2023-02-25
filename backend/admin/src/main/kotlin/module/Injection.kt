@@ -4,7 +4,7 @@ import com.itomise.admin.domain.security.services.HashingService
 import com.itomise.admin.domain.security.services.JwtTokenService
 import com.itomise.admin.domain.security.services.NestedJwtTokenTokenService
 import com.itomise.admin.domain.user.services.UserService
-import com.itomise.admin.infrastructure.repositories.account.UserRepository
+import com.itomise.admin.infrastructure.repositories.user.UserRepository
 import com.itomise.admin.usecase.SendSignUpMailInteractor
 import io.ktor.server.application.*
 import org.koin.dsl.module

@@ -1,6 +1,6 @@
 package helper.repository
 
-import com.itomise.admin.domain.account.entities.User
+import com.itomise.admin.domain.user.entities.User
 import com.itomise.admin.domain.user.vo.Email
 import com.itomise.admin.domain.user.vo.UserId
 

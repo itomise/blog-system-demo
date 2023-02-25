@@ -1,6 +1,6 @@
 package com.itomise.admin.controller.user
 
-import com.itomise.admin.infrastructure.repositories.account.UserRepository
+import com.itomise.admin.infrastructure.repositories.user.UserRepository
 import com.itomise.shared.infrastructure.dbQuery
 import io.ktor.http.*
 import io.ktor.server.application.*

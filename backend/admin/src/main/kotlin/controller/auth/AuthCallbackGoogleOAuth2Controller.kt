@@ -1,11 +1,11 @@
 package com.itomise.admin.controller.auth
 
-import com.itomise.admin.domain.account.entities.User
-import com.itomise.admin.domain.account.services.UserService
+import com.itomise.admin.domain.user.entities.User
+import com.itomise.admin.domain.user.services.UserService
 import com.itomise.admin.domain.user.vo.Email
 import com.itomise.admin.domain.user.vo.UserLoginType
 import com.itomise.admin.domain.user.vo.UserPrincipal
-import com.itomise.admin.infrastructure.repositories.account.UserRepository
+import com.itomise.admin.infrastructure.repositories.user.UserRepository
 import com.itomise.admin.lib.google.GoogleAuthentication
 import com.itomise.admin.module.adminEnvConfig
 import com.itomise.shared.infrastructure.dbQuery

@@ -4,7 +4,7 @@ import com.auth0.jwk.Jwk
 import com.auth0.jwk.JwkProvider
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.itomise.admin.domain.account.entities.User
+import com.itomise.admin.domain.user.entities.User
 import com.itomise.admin.domain.user.vo.Email
 import com.itomise.admin.domain.user.vo.UserId
 import com.itomise.admin.domain.user.vo.UserPrincipal
