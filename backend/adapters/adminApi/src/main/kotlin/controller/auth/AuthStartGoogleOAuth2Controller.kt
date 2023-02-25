@@ -1,18 +1,21 @@
 package com.itomise.adminApi.controller.auth
 
-import com.itomise.core.lib.google.GoogleAuthentication
+import com.itomise.core.lib.google.GoogleOAuth2Authentication
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.koin.ktor.ext.inject
 import java.math.BigInteger
 import java.security.SecureRandom
 
 fun Route.startGoogleOAuth2() {
+    val googleOAuth2Authentication by inject<GoogleOAuth2Authentication>()
+
     get {
         val state = BigInteger(130, SecureRandom()).toString(32)
 
-        val authenticationURI = GoogleAuthentication.createOpenConnectAuthURI(state)
+        val authenticationURI = googleOAuth2Authentication.createOpenConnectAuthURI(state)
 
         call.response.cookies.append(
             Cookie(

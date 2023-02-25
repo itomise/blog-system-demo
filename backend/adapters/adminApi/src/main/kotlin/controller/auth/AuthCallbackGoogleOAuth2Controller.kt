@@ -10,7 +10,7 @@ import com.itomise.core.domain.user.services.UserService
 import com.itomise.core.domain.user.vo.Email
 import com.itomise.core.domain.user.vo.UserLoginType
 import com.itomise.core.domain.user.vo.UserPrincipal
-import com.itomise.core.lib.google.GoogleAuthentication
+import com.itomise.core.lib.google.GoogleOAuth2Authentication
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.*
@@ -26,6 +26,7 @@ import java.util.*
 fun Route.callbackGoogleOAuth2() {
     val userRepository by inject<UserRepository>()
     val userService by inject<UserService>()
+    val googleOAuth2Authentication by inject<GoogleOAuth2Authentication>()
 
     get("/auth/google_oauth2/callback") {
         val paramState = call.parameters["state"] ?: throw IllegalArgumentException("state パラメータが存在しません。")
@@ -39,7 +40,7 @@ fun Route.callbackGoogleOAuth2() {
         }
 
         val (user, activateToken) = try {
-            val googleUserInfo = GoogleAuthentication.getGoogleUserInfoByCode(code)
+            val googleUserInfo = googleOAuth2Authentication.getGoogleUserInfoByCode(code)
 
             val user = dbQuery {
                 val newUser = User.new(

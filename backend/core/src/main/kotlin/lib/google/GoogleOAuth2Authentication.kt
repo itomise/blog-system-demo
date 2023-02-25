@@ -5,7 +5,6 @@ import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.extensions.jsonBody
 import com.github.kittinunf.fuel.core.isSuccessful
 import com.itomise.core.lib.fuel.responseCustomObject
-import com.itomise.adminApi.module.adminApiEnvConfig
 import com.nimbusds.jose.crypto.RSASSAVerifier
 import com.nimbusds.jose.jwk.JWKSet
 import com.nimbusds.jwt.SignedJWT
@@ -17,8 +16,12 @@ import java.time.Instant
 import java.util.*
 
 
-object GoogleAuthentication {
-    private const val GOOGLE_OPENID_CONFIGURATION_URI = "https://accounts.google.com/.well-known/openid-configuration"
+class GoogleAuthentication(
+    private val oauth2ClientId: String,
+    private val oauth2ClientSecret: String,
+    private val callbackUrl: String
+) {
+    private val GOOGLE_OPENID_CONFIGURATION_URI = "https://accounts.google.com/.well-known/openid-configuration"
     private val objectMapper = jacksonObjectMapper()
 
     fun createOpenConnectAuthURI(state: String): String {
@@ -28,9 +31,9 @@ object GoogleAuthentication {
 
         return URIBuilder(configuration.authorizationEndpoint)
             .addParameter("response_type", "code")
-            .addParameter("client_id", adminApiEnvConfig.google.oauth2ClientId)
+            .addParameter("client_id", oauth2ClientId)
             .addParameter("scope", "openid profile email")
-            .addParameter("redirect_uri", adminApiEnvConfig.urls.googleOAuth2CallbackUrl)
+            .addParameter("redirect_uri", callbackUrl)
             .addParameter("state", state)
             .addParameter("nonce", hex(nonce))
             .build().toString()
@@ -43,9 +46,9 @@ object GoogleAuthentication {
                 objectMapper.writeValueAsString(
                     mapOf(
                         "code" to code,
-                        "client_id" to adminApiEnvConfig.google.oauth2ClientId,
-                        "client_secret" to adminApiEnvConfig.google.oauth2ClientSecret,
-                        "redirect_uri" to adminApiEnvConfig.urls.googleOAuth2CallbackUrl,
+                        "client_id" to oauth2ClientId,
+                        "client_secret" to oauth2ClientSecret,
+                        "redirect_uri" to callbackUrl,
                         "grant_type" to "authorization_code"
                     )
                 )
@@ -61,7 +64,7 @@ object GoogleAuthentication {
         if (!jwt.verify(RSASSAVerifier(jwk))) throw IllegalStateException("token が不正です。")
 
         val isValidIss = jwt.jwtClaimsSet.getClaim("iss").toString().contains("accounts.google.com")
-        val isValidAud = jwt.jwtClaimsSet.getStringArrayClaim("aud")[0] == adminApiEnvConfig.google.oauth2ClientId
+        val isValidAud = jwt.jwtClaimsSet.getStringArrayClaim("aud")[0] == oauth2ClientId
         val isValidExp = jwt.jwtClaimsSet.getDateClaim("exp").after(Date.from(Instant.now()))
 
         if (!isValidIss || !isValidAud || !isValidExp) throw IllegalStateException("token が不正です。")

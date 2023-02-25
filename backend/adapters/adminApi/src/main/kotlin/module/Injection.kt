@@ -6,6 +6,7 @@ import com.itomise.core.domain.security.services.HashingService
 import com.itomise.core.domain.security.services.JwtTokenService
 import com.itomise.core.domain.security.services.NestedJwtTokenTokenService
 import com.itomise.core.domain.user.services.UserService
+import com.itomise.core.lib.google.GoogleOAuth2Authentication
 import com.itomise.eventBus.event.SendSignUpMailInteractor
 import io.ktor.server.application.*
 import org.koin.dsl.module
@@ -26,6 +27,13 @@ val serviceModule = module {
     single { JwtTokenService() }
     single { HashingService() }
     single { NestedJwtTokenTokenService() }
+    single {
+        GoogleOAuth2Authentication(
+            oauth2ClientId = adminApiEnvConfig.google.oauth2ClientId,
+            oauth2ClientSecret = adminApiEnvConfig.google.oauth2ClientSecret,
+            callbackUrl = adminApiEnvConfig.urls.googleOAuth2CallbackUrl
+        )
+    }
 }
 
 fun Application.injection() {
