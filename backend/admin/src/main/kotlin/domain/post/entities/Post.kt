@@ -27,7 +27,7 @@ data class Post internal constructor(
 
     companion object {
         fun new(title: String, content: String) = Post(
-            id = PostId(UUID.randomUUID()),
+            id = UUID.randomUUID(),
             title = title,
             content = content,
             status = PostStatus.UN_PUBLISHED,

@@ -1,6 +1,6 @@
 package domain.security.services
 
-import com.itomise.admin.domain.security.interfaces.IHashingService
+import com.itomise.admin.domain.security.services.HashingService
 import com.itomise.admin.domain.security.vo.HashAlgorithm
 import com.itomise.admin.domain.security.vo.SaltedHash
 import com.itomise.admin.module.serviceModule
@@ -14,7 +14,7 @@ import kotlin.test.Test
 
 
 class HashingServiceTest : KoinTest {
-    private val hashingService by inject<IHashingService>()
+    private val hashingService by inject<HashingService>()
 
     @BeforeTest
     fun prepare() {

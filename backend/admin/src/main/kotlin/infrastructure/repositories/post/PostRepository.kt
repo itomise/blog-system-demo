@@ -1,7 +1,6 @@
 package com.itomise.admin.infrastructure.repositories.post
 
 import com.itomise.admin.domain.post.entities.Post
-import com.itomise.admin.domain.post.interfaces.IPostRepository
 import com.itomise.admin.domain.post.vo.PostId
 import com.itomise.admin.domain.post.vo.PostStatus
 import com.itomise.admin.infrastructure.dao.PostTable
@@ -9,10 +8,10 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import java.time.LocalDateTime
 
-class PostRepository : IPostRepository {
+class PostRepository {
     private fun resultRowToPostEntity(row: ResultRow): Post {
         return Post.from(
-            id = PostId(row[PostTable.id].value),
+            id = row[PostTable.id].value,
             title = row[PostTable.title],
             content = row[PostTable.content],
             status = PostStatus.get(row[PostTable.status]),
@@ -20,25 +19,25 @@ class PostRepository : IPostRepository {
         )
     }
 
-    override suspend fun getList(): List<Post> {
+    suspend fun getList(): List<Post> {
         return PostTable
             .selectAll()
             .orderBy(PostTable.updatedAt, SortOrder.DESC)
             .map(::resultRowToPostEntity)
     }
 
-    override suspend fun findByPostId(postId: PostId): Post? {
+    suspend fun findByPostId(postId: PostId): Post? {
         return PostTable
-            .select(PostTable.id eq postId.value)
+            .select(PostTable.id eq postId)
             .map(::resultRowToPostEntity)
             .firstOrNull()
     }
 
-    override suspend fun save(post: Post) {
+    suspend fun save(post: Post) {
         val isExists = findByPostId(post.id) != null
         if (isExists) {
             PostTable.update({
-                PostTable.id eq post.id.value
+                PostTable.id eq post.id
             }) { s ->
                 s[title] = post.title
                 s[content] = post.content
@@ -56,9 +55,9 @@ class PostRepository : IPostRepository {
         }
     }
 
-    override suspend fun delete(post: Post) {
+    suspend fun delete(post: Post) {
         PostTable.deleteWhere {
-            PostTable.id eq post.id.value
+            PostTable.id eq post.id
         }
     }
 }

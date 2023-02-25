@@ -2,8 +2,8 @@ package controller.auth
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.itomise.admin.controller.requestModels.JwtLoginResponseModel
-import com.itomise.admin.controller.requestModels.LoginRequestModel
+import com.itomise.admin.controller.auth.LoginRequestModel
+import com.itomise.admin.controller.authJwt.JwtLoginResponseModel
 import helper.KtorTestApplication.appTestApplication
 import helper.KtorTestApplication.authSessionUserForTest
 import helper.KtorTestApplication.cleanup

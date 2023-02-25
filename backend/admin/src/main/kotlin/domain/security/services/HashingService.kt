@@ -1,13 +1,12 @@
 package com.itomise.admin.domain.security.services
 
-import com.itomise.admin.domain.security.interfaces.IHashingService
 import com.itomise.admin.domain.security.vo.HashAlgorithm
 import com.itomise.admin.domain.security.vo.SaltedHash
 import io.ktor.util.*
 import org.apache.commons.codec.digest.DigestUtils
 import java.security.SecureRandom
 
-class HashingService : IHashingService {
+class HashingService {
     private val saltLength = 32
     private val stretchingCount = 1500
 
@@ -19,7 +18,7 @@ class HashingService : IHashingService {
         }
     }
 
-    override fun generateSaltedHash(value: String): SaltedHash {
+    fun generateSaltedHash(value: String): SaltedHash {
         val salt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLength)
         val saltAsHex = hex(salt)
 
@@ -38,7 +37,7 @@ class HashingService : IHashingService {
         )
     }
 
-    override fun verifySaltedHash(value: String, saltedHash: SaltedHash): Boolean {
+    fun verifySaltedHash(value: String, saltedHash: SaltedHash): Boolean {
         var hash = hash(saltedHash.salt + value, saltedHash.algorithm)
 
         (1..stretchingCount).forEach { _ ->

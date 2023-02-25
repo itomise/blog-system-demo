@@ -1,6 +1,6 @@
 package domain.security.services
 
-import com.itomise.admin.domain.security.interfaces.INestedJwtTokenService
+import com.itomise.admin.domain.security.services.NestedJwtTokenTokenService
 import com.itomise.admin.module.serviceModule
 import com.nimbusds.jose.EncryptionMethod
 import com.nimbusds.jose.JWEAlgorithm
@@ -24,7 +24,7 @@ import kotlin.test.Test
 
 class
 NestedJwtTokenServiceTest : KoinTest {
-    private val nestedJwtTokenService by inject<INestedJwtTokenService>()
+    private val nestedJwtTokenService by inject<NestedJwtTokenTokenService>()
 
     @BeforeTest
     fun prepare() {

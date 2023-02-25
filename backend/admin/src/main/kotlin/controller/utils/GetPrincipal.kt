@@ -1,7 +1,7 @@
 package com.itomise.admin.controller.utils
 
 
-import com.itomise.admin.domain.account.vo.UserPrincipal
+import com.itomise.admin.domain.user.vo.UserPrincipal
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 
