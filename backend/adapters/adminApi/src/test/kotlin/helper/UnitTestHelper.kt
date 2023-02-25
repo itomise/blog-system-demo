@@ -1,10 +1,10 @@
 package helper
 
 import com.auth0.jwk.Jwk
-import com.itomise.core.domain.security.vo.TokenConfig
-import com.itomise.core.lib.sendgrid.SendGridClient
 import com.itomise.adminApi.module.*
 import com.itomise.blogDb.lib.DataBaseFactory
+import com.itomise.core.domain.security.vo.TokenConfig
+import com.itomise.eventBus.lib.SendGridClient
 import io.ktor.server.config.*
 import io.mockk.every
 import io.mockk.mockk
@@ -64,7 +64,7 @@ object UnitTestHelper {
                 user = adminApiEnvConfig.db.user,
                 password = adminApiEnvConfig.db.password
             )
-            
+
             startKoin {
                 modules(commonModules + repositoryModule)
             }
