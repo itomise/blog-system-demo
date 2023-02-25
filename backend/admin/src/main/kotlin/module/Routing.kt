@@ -3,9 +3,7 @@ package com.itomise.admin.module
 import com.itomise.admin.controller.auth.*
 import com.itomise.admin.controller.authJwt.authJwtLogin
 import com.itomise.admin.controller.authJwt.authJwtMe
-import com.itomise.admin.controller.post.createPost
-import com.itomise.admin.controller.post.detail.*
-import com.itomise.admin.controller.post.getListPost
+import com.itomise.admin.controller.post.*
 import com.itomise.admin.controller.user.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
