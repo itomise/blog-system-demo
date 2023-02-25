@@ -1,2 +1,9 @@
 rootProject.name = "com.itomise"
-include("admin", "blog", "shared")
+
+include(
+    "adapters:adminApi",
+    "adapters:blogApi",
+    "adapters:blogDb",
+    "adapters:eventBus",
+    "core"
+)
