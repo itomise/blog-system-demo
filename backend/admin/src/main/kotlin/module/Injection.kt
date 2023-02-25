@@ -4,6 +4,7 @@ import com.itomise.admin.domain.security.services.HashingService
 import com.itomise.admin.domain.security.services.JwtTokenService
 import com.itomise.admin.domain.security.services.NestedJwtTokenTokenService
 import com.itomise.admin.domain.user.services.UserService
+import com.itomise.admin.infrastructure.repositories.post.PostRepository
 import com.itomise.admin.infrastructure.repositories.user.UserRepository
 import com.itomise.admin.usecase.SendSignUpMailInteractor
 import io.ktor.server.application.*
@@ -17,6 +18,7 @@ val useCaseModule = module {
 
 val repositoryModule = module {
     single { UserRepository() }
+    single { PostRepository() }
 }
 
 val serviceModule = module {
