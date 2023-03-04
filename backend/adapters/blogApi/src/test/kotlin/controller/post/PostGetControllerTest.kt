@@ -9,23 +9,20 @@ import helper.BlogApiTestApplication.appTestApplication
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import org.koin.core.component.inject
-import org.koin.test.KoinTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-
-class PostGetControllerTest : KoinTest {
+class PostGetControllerTest {
     private val objectMapper = jacksonObjectMapper()
-    private val postRepository by inject<PostRepository>()
+    private val postRepository = PostRepository()
 
     @Test
-    fun `公開されているポストが取得できること`() = appTestApplication {
-        (0..2).forEach {
+    fun `公開されているポストが取得できること`() = appTestApplication({
+        (1..3).forEach {
             val post = Post.new(title = "テストタイトル$it", content = "<p>テストコンテンツ$it</p>").publish()
             postRepository.save(post)
         }
-
+    }) {
         val sut = client.get("/api/public/posts")
 
         assertEquals(HttpStatusCode.OK, sut.status)
@@ -55,15 +52,16 @@ class PostGetControllerTest : KoinTest {
                 }
             }
         }
+
     }
 
     @Test
-    fun `公開されていないポストを取得できないこと`() = appTestApplication {
+    fun `公開されていないポストを取得できないこと`() = appTestApplication({
         (0..2).forEach {
             val post = Post.new(title = "テストタイトル$it", content = "<p>テストコンテンツ$it</p>")
             postRepository.save(post)
         }
-
+    }) {
         val sut = client.get("/api/public/posts")
 
         assertEquals(HttpStatusCode.OK, sut.status)
