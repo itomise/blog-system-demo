@@ -8,8 +8,6 @@ on:
 jobs:
   call_all_tests:
     uses: ./.github/workflows/backend_test_app.yaml
-    with:
-      project_name: :adapters:blogApi
     strategy:
       fail-fast: false
       matrix:
