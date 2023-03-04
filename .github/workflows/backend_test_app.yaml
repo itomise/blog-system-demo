@@ -6,6 +6,25 @@ on:
       project_name:
         required: true
         type: string
+    secrets:
+      DB_PASSWORD:
+        required: true
+      DB_URL:
+        required: true
+      DB_USER:
+        required: true
+      GOOGLE_OAUTH2_CLIENT_SECRET:
+        required: true
+      JWT_ENCRYPTION_KEY:
+        required: true
+      JWT_PRIVATE_KEY:
+        required: true
+      REDIS_ENDPOINT:
+        required: true
+      SENDGRID_API_KEY:
+        required: true
+      SESSION_SIGN_KEY:
+        required: true
 
 jobs:
   run_tests:
