@@ -33,6 +33,11 @@ object KtorTestApplication {
     fun appTestApplication(
         block: suspend ApplicationTestBuilder.() -> Unit
     ) {
+        // test が fail すると Koin が残ったままになるため
+        if (GlobalContext.getOrNull() != null) {
+            stopKoin()
+        }
+        
         testApplication {
             environment {
                 config = ApplicationConfig("application.test.conf")

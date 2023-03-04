@@ -14,14 +14,11 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import java.util.*
-import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class AuthSessionControllerTest {
-    @AfterTest
-    fun after() = cleanup()
-
     private val objectMapper = jacksonObjectMapper()
 
     @Test

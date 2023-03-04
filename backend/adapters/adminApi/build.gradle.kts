@@ -69,6 +69,7 @@ dependencies {
     testImplementation(libs.koinTestJunit4)
     testImplementation(libs.mockk)
     testImplementation(project(":test"))
+    testImplementation("org.testng:testng:7.1.0")
 }
 
 tasks.test {

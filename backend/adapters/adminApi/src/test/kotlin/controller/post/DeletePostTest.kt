@@ -6,20 +6,15 @@ import com.itomise.adminApi.controller.post.CreatePostRequestModel
 import com.itomise.adminApi.controller.post.GetListPostResponseModel
 import com.itomise.test.helper.KtorTestApplication.appTestApplication
 import com.itomise.test.helper.KtorTestApplication.authSessionUserForTest
-import com.itomise.test.helper.KtorTestApplication.cleanup
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import java.util.*
-import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class DeletePostTest {
-    @AfterTest
-    fun after() = cleanup()
-
     private val objectMapper = jacksonObjectMapper()
 
     @Test
