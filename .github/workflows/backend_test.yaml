@@ -32,6 +32,9 @@ jobs:
   admin:
     runs-on: ubuntu-latest
     needs: setup
+    defaults:
+      run:
+        working-directory: backend
     steps:
       - name: Run AdminApi Tests
         run: ./gradlew :adapters:adminApi:test --stacktrace --no-daemon --build-cache
