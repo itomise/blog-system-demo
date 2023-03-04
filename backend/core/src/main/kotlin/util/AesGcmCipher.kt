@@ -1,4 +1,4 @@
-package com.itomise.adminApi.util
+package com.itomise.core.util
 
 import java.security.MessageDigest
 import java.security.SecureRandom

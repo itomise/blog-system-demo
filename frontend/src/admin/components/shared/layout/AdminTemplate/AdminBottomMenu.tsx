@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { IconChevronRight, IconChevronLeft, IconLogout } from '@tabler/icons'
 import { useDisclosure } from '@mantine/hooks'
@@ -11,13 +11,16 @@ export const AdminBottomMenu: FC = () => {
   const theme = useMantineTheme()
   const me = useMe()
   const [opened, { close, open }] = useDisclosure(false)
-  const { mutate, isLoading } = useLogout()
+  const { mutate, isLoading } = useLogout({
+    onSuccess: async () => {
+      await router.push('/')
+      queryClient.removeQueries({ queryKey: ['admin'] })
+    },
+  })
   const router = useRouter()
 
   const onLogout = async () => {
     mutate(undefined)
-    await router.push('/')
-    queryClient.clear()
   }
   if (!me) return null
 

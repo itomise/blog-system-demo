@@ -12,7 +12,7 @@ import java.security.SecureRandom
 fun Route.startGoogleOAuth2() {
     val googleOAuth2Authentication by inject<GoogleOAuth2Authentication>()
 
-    get {
+    get("/auth/google_oauth2") {
         val state = BigInteger(130, SecureRandom()).toString(32)
 
         val authenticationURI = googleOAuth2Authentication.createOpenConnectAuthURI(state)

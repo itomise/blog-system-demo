@@ -1,7 +1,6 @@
 package domain.security.services
 
 import com.itomise.core.domain.security.services.NestedJwtTokenTokenService
-import com.itomise.adminApi.module.serviceModule
 import com.nimbusds.jose.EncryptionMethod
 import com.nimbusds.jose.JWEAlgorithm
 import com.nimbusds.jose.JWEObject
@@ -12,6 +11,7 @@ import com.nimbusds.jose.jwk.JWKSet
 import com.nimbusds.jose.jwk.RSAKey
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
+import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.inject
 import java.security.KeyFactory
@@ -29,7 +29,7 @@ NestedJwtTokenServiceTest : KoinTest {
     @BeforeTest
     fun prepare() {
         startKoin {
-            modules(serviceModule)
+            modules(module { single { NestedJwtTokenTokenService() } })
         }
     }
 

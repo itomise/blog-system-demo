@@ -6,23 +6,18 @@ import com.itomise.adminApi.controller.user.CreateUserRequestModel
 import com.itomise.adminApi.controller.user.CreateUserResponseModel
 import com.itomise.adminApi.controller.user.GetListUserResponseModel
 import com.itomise.adminApi.controller.user.UpdateUserRequestModel
-import helper.KtorTestApplication
-import helper.KtorTestApplication.appTestApplication
-import helper.KtorTestApplication.authSessionUserForTest
-import helper.KtorTestApplication.cleanup
+import helper.AdminApiTestApplication
+import helper.AdminApiTestApplication.appTestApplication
+import helper.AdminApiTestApplication.authSessionUserForTest
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import java.util.*
-import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class UpdateUserTest {
-    @AfterTest
-    fun after() = cleanup()
-
     private val objectMapper = jacksonObjectMapper()
 
     @Test
@@ -34,7 +29,7 @@ internal class UpdateUserTest {
         val email = "${UUID.randomUUID()}@example.com"
         val password = "${UUID.randomUUID()}"
 
-        val createRes = client.post("/api/adminApi/users") {
+        val createRes = client.post("/api/admin/users") {
             contentType(ContentType.Application.Json)
             setBody(objectMapper.writeValueAsString(CreateUserRequestModel(email)))
         }.apply {
@@ -46,7 +41,7 @@ internal class UpdateUserTest {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
-                    KtorTestApplication.ActivateTestUserRequest(
+                    AdminApiTestApplication.ActivateTestUserRequest(
                         id = createResBody.id,
                         name = "test太郎",
                         email = email,
@@ -58,7 +53,7 @@ internal class UpdateUserTest {
             assertEquals(HttpStatusCode.OK, this.status)
         }
 
-        client.get("/api/adminApi/users").apply {
+        client.get("/api/admin/users").apply {
             assertEquals(HttpStatusCode.OK, this.status)
 
             val res = objectMapper.readValue<GetListUserResponseModel>(this.bodyAsText())
@@ -69,7 +64,7 @@ internal class UpdateUserTest {
             }
         }
 
-        client.put("/api/adminApi/users/${createResBody.id}") {
+        client.put("/api/admin/users/${createResBody.id}") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -80,7 +75,7 @@ internal class UpdateUserTest {
             assertEquals(HttpStatusCode.OK, this.status)
         }
 
-        client.get("/api/adminApi/users").apply {
+        client.get("/api/admin/users").apply {
             assertEquals(HttpStatusCode.OK, this.status)
 
             val res = objectMapper.readValue<GetListUserResponseModel>(this.bodyAsText())
@@ -95,7 +90,7 @@ internal class UpdateUserTest {
     @Test
     fun `未ログイン状態で叩くと401になること`() = appTestApplication {
         val client = createClient { install(HttpCookies) }
-        client.post("/api/adminApi/users") {
+        client.post("/api/admin/users") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -114,7 +109,7 @@ internal class UpdateUserTest {
         val client = createClient { install(HttpCookies) }
         authSessionUserForTest(client)
 
-        client.put("/api/adminApi/users/${UUID.randomUUID()}") {
+        client.put("/api/admin/users/${UUID.randomUUID()}") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -125,7 +120,7 @@ internal class UpdateUserTest {
             assertEquals(HttpStatusCode.NotFound, this.status)
         }
 
-        client.put("/api/adminApi/users/hogehoge") {
+        client.put("/api/admin/users/hogehoge") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -142,7 +137,7 @@ internal class UpdateUserTest {
         val client = createClient { install(HttpCookies) }
         authSessionUserForTest(client)
 
-        client.put("/api/adminApi/users/hogehoge") {
+        client.put("/api/admin/users/hogehoge") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(

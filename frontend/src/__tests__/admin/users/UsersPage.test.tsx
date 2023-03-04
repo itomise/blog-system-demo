@@ -78,7 +78,7 @@ describe('admin/users ページ', async () => {
 
     expect(screen.getByText(/ユーザー情報を更新しました/i)).toBeDefined()
     expect(spy).toHaveBeenCalledTimes(1)
-    expect(spy).toHaveBeenCalledWith(['/user'])
+    expect(spy).toHaveBeenCalledWith(['admin', 'user'])
   })
 
   it('ユーザー編集の名前が空だった場合送信できないこと', async () => {

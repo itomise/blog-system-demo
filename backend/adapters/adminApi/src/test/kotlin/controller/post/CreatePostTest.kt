@@ -5,22 +5,17 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.adminApi.controller.post.CreatePostRequestModel
 import com.itomise.adminApi.controller.post.GetListPostResponseModel
 import com.itomise.core.domain.post.vo.PostStatus
-import com.itomise.adminApi.util.removeHtmlTagFromString
-import helper.KtorTestApplication.appTestApplication
-import helper.KtorTestApplication.authSessionUserForTest
-import helper.KtorTestApplication.cleanup
+import com.itomise.core.util.removeHtmlTagFromString
+import helper.AdminApiTestApplication.appTestApplication
+import helper.AdminApiTestApplication.authSessionUserForTest
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class CreatePostTest {
-    @AfterTest
-    fun after() = cleanup()
-
     private val objectMapper = jacksonObjectMapper()
 
     @Test
@@ -31,7 +26,7 @@ class CreatePostTest {
 
         val test = removeHtmlTagFromString("<p>テストコンテンツ</p>")
 
-        client.post("/api/adminApi/posts") {
+        client.post("/api/admin/posts") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -45,7 +40,7 @@ class CreatePostTest {
             assertEquals(HttpStatusCode.OK, this.status)
         }
 
-        client.get("/api/adminApi/posts").run {
+        client.get("/api/admin/posts").run {
             assertEquals(HttpStatusCode.OK, this.status)
             val result = objectMapper.readValue<GetListPostResponseModel>(this.bodyAsText())
 
@@ -61,7 +56,7 @@ class CreatePostTest {
     @Test
     fun `未ログインユーザーで叩くと401になること`() = appTestApplication {
         val client = createClient { install(HttpCookies) }
-        client.post("/api/adminApi/posts") {
+        client.post("/api/admin/posts") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(

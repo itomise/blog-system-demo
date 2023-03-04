@@ -5,22 +5,17 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.adminApi.controller.post.CreatePostRequestModel
 import com.itomise.adminApi.controller.post.GetListPostResponseModel
 import com.itomise.adminApi.controller.post.GetPostResponseModel
-import helper.KtorTestApplication.appTestApplication
-import helper.KtorTestApplication.authSessionUserForTest
-import helper.KtorTestApplication.cleanup
+import helper.AdminApiTestApplication.appTestApplication
+import helper.AdminApiTestApplication.authSessionUserForTest
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import java.util.*
-import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class GetPostTest {
-    @AfterTest
-    fun after() = cleanup()
-
     private val objectMapper = jacksonObjectMapper()
 
     @Test
@@ -29,7 +24,7 @@ internal class GetPostTest {
 
         authSessionUserForTest(client)
 
-        client.post("/api/adminApi/posts") {
+        client.post("/api/admin/posts") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -43,7 +38,7 @@ internal class GetPostTest {
             assertEquals(HttpStatusCode.OK, this.status)
         }
 
-        val getListRes = client.get("/api/adminApi/posts")
+        val getListRes = client.get("/api/admin/posts")
 
         assertEquals(HttpStatusCode.OK, getListRes.status)
         val getListResult = objectMapper.readValue<GetListPostResponseModel>(getListRes.bodyAsText())
@@ -53,14 +48,14 @@ internal class GetPostTest {
         assertEquals("title", post1.title)
         assertEquals("<p>test content</p>", post1.content)
 
-        val getRes = client.get("/api/adminApi/posts/${post1.id}")
+        val getRes = client.get("/api/admin/posts/${post1.id}")
         assertEquals(HttpStatusCode.OK, getRes.status)
         val getResult = objectMapper.readValue<GetPostResponseModel>(getRes.bodyAsText())
 
         assertEquals("title", getResult.title)
         assertEquals("<p>test content</p>", getResult.content)
 
-        client.post("/api/adminApi/posts") {
+        client.post("/api/admin/posts") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -74,7 +69,7 @@ internal class GetPostTest {
             assertEquals(HttpStatusCode.OK, this.status)
         }
 
-        val res2 = client.get("/api/adminApi/posts")
+        val res2 = client.get("/api/admin/posts")
 
         assertEquals(HttpStatusCode.OK, res2.status)
         val result2 = objectMapper.readValue<GetListPostResponseModel>(res2.bodyAsText())
@@ -93,13 +88,13 @@ internal class GetPostTest {
     @Test
     fun `未ログインユーザーで叩くと401になること`() = appTestApplication {
         val client = createClient { install(HttpCookies) }
-        client.get("/api/adminApi/posts") {
+        client.get("/api/admin/posts") {
             contentType(ContentType.Application.Json)
         }.apply {
             assertEquals(HttpStatusCode.Unauthorized, this.status)
         }
 
-        client.get("/api/adminApi/posts/${UUID.randomUUID()}") {
+        client.get("/api/admin/posts/${UUID.randomUUID()}") {
             contentType(ContentType.Application.Json)
         }.apply {
             assertEquals(HttpStatusCode.Unauthorized, this.status)

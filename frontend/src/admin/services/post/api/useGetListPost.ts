@@ -21,7 +21,7 @@ const getListPostApi = async () => {
 
 export const useGetListPost = () => {
   const { data } = useQuery<ExtractFnReturnType<typeof getListPostApi>>({
-    queryKey: ['/posts'],
+    queryKey: ['admin', 'posts'],
     queryFn: getListPostApi,
   })
   return data

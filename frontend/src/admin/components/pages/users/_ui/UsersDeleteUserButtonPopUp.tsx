@@ -20,7 +20,7 @@ export const UsersDeleteUserButtonPopUp: FC<Props> = ({ user, isMe }) => {
         color: 'green',
       })
       buttonRef.current?.click()
-      queryClient.invalidateQueries(['/user'])
+      queryClient.invalidateQueries(['admin', 'user'])
     },
     onError: (e) => {
       showNotification({

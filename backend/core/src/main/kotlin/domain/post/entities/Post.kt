@@ -18,7 +18,8 @@ data class Post internal constructor(
     )
 
     fun publish() = this.copy(
-        status = PostStatus.PUBLISH
+        status = PostStatus.PUBLISH,
+        publishedAt = LocalDateTime.now()
     )
 
     fun unPublish() = this.copy(

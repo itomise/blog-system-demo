@@ -30,9 +30,9 @@ export const UsersEditUserButtonPopUp: React.FC<Props> = ({ user }) => {
         color: 'green',
       })
       buttonRef.current?.click()
-      queryClient.invalidateQueries(['/user'])
+      queryClient.invalidateQueries(['admin', 'user'])
       if (me.id === user.id) {
-        queryClient.invalidateQueries(['/auth/me'])
+        queryClient.invalidateQueries(['admin', 'auth', 'me'])
       }
     },
     onError: (e) => {
