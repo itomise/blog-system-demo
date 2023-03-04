@@ -1,10 +1,10 @@
-package helper.factory
+package com.itomise.test.helper.factory
 
+import com.itomise.blogDb.lib.dbQuery
+import com.itomise.blogDb.repository.UserRepository
 import com.itomise.core.domain.security.services.HashingService
 import com.itomise.core.domain.user.entities.User
 import com.itomise.core.domain.user.vo.*
-import com.itomise.blogDb.repository.UserRepository
-import com.itomise.blogDb.lib.dbQuery
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.*

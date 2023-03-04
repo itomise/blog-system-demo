@@ -4,9 +4,9 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.adminApi.controller.auth.LoginRequestModel
 import com.itomise.adminApi.controller.authJwt.JwtLoginResponseModel
-import helper.KtorTestApplication.appTestApplication
-import helper.KtorTestApplication.authSessionUserForTest
-import helper.KtorTestApplication.cleanup
+import com.itomise.test.helper.KtorTestApplication.appTestApplication
+import com.itomise.test.helper.KtorTestApplication.authSessionUserForTest
+import com.itomise.test.helper.KtorTestApplication.cleanup
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -31,7 +31,7 @@ internal class AuthJwtControllerTest {
         authSessionUserForTest(client, name, email, password)
 
         var token = ""
-        client.post("/api/adminApi/auth-jwt/login") {
+        client.post("/api/admin/auth-jwt/login") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -47,7 +47,7 @@ internal class AuthJwtControllerTest {
         }
 
         // verifier のモックがうまくいかないので一旦offる
-//        client.get("/api/adminApi/auth-jwt/me") {
+//        client.get("/api/admin/auth-jwt/me") {
 //            header(HttpHeaders.Authorization, "Bearer $token")
 //        }.apply {
 //            assertEquals(HttpStatusCode.OK, this.status)

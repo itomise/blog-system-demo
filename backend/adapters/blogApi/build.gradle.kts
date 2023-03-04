@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.googleCloudSqlPostgresSocketFactory)
     // share
     implementation(project(":core"))
+    implementation(project(":adapters:blogDb"))
 
     // test
     implementation(libs.ktorServerTests)

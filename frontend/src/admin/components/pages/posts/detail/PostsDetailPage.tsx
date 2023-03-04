@@ -30,7 +30,7 @@ export const PostsDetailPage: React.FC = () => {
   const post = useGetPost(postId)
   const { mutate, isLoading } = useUpdatePost({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/posts'] })
+      queryClient.invalidateQueries({ queryKey: ['admin', 'posts'] })
       router.push('/admin/posts')
       showNotification({
         color: 'green',
@@ -41,7 +41,7 @@ export const PostsDetailPage: React.FC = () => {
   })
   const { mutate: publishMutate, isLoading: publishing } = usePublishPost({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/posts'] })
+      queryClient.invalidateQueries({ queryKey: ['admin', 'posts'] })
       router.push('/admin/posts')
       showNotification({
         color: 'green',
@@ -52,7 +52,7 @@ export const PostsDetailPage: React.FC = () => {
   })
   const { mutate: unPublishMutate, isLoading: unPublishing } = useUnPublishPost({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/posts'] })
+      queryClient.invalidateQueries({ queryKey: ['admin', '/posts'] })
       router.push('/admin/posts')
       showNotification({
         color: 'green',
@@ -68,7 +68,7 @@ export const PostsDetailPage: React.FC = () => {
         <title>ポスト編集 | itomise admin</title>
       </Head>
       <AdminTemplate>
-        {post && (
+        {post !== undefined && (
           <Form<FormType>
             onSubmit={(data) =>
               mutate({

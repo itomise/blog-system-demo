@@ -82,7 +82,7 @@ fun Route.callbackGoogleOAuth2() {
         val redirectUrl = if (user.isActive) {
             // ログイン状態にしてリダイレクトさせる
             call.sessions.set(UserPrincipal(id = user.id.toString()))
-            URIBuilder(adminApiEnvConfig.urls.adminApiRootUrl).build().toURL()
+            URIBuilder(adminApiEnvConfig.urls.adminRootUrl).build().toURL()
         } else {
             URIBuilder(adminApiEnvConfig.urls.accountActivateUrl)
                 .addParameter("token", activateToken)

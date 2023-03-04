@@ -11,6 +11,8 @@ import { useToggle } from '@mantine/hooks'
 import { SystemTemplate } from '@/admin/components/shared/layout/SystemTemplate'
 import { InternalLink } from '@/admin/components/shared/link/InternalLink'
 import { onGoogleOAuth2Request } from '@/admin/services/auth/api/onGoogleOAuth2Request'
+import { useCheckMe } from '@/admin/services/auth/api/useMe'
+import { useEffect } from 'react'
 
 const schema = z.object({
   email: z.string().min(5).max(255).email(),
@@ -35,7 +37,11 @@ export const LoginPage: React.FC = () => {
       },
     },
   })
-  const theme = useMantineTheme()
+  const { me } = useCheckMe()
+
+  useEffect(() => {
+    if (me) router.push('/admin/users')
+  }, [me])
 
   const onClickGoogleLogin = () => {
     setIsGoogleLoginStart(true)

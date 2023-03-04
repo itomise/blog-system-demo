@@ -5,9 +5,9 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.adminApi.controller.user.CreateUserRequestModel
 import com.itomise.adminApi.controller.user.CreateUserResponseModel
 import com.itomise.adminApi.controller.user.GetListUserResponseModel
-import helper.KtorTestApplication.appTestApplication
-import helper.KtorTestApplication.authSessionUserForTest
-import helper.KtorTestApplication.cleanup
+import com.itomise.test.helper.KtorTestApplication.appTestApplication
+import com.itomise.test.helper.KtorTestApplication.authSessionUserForTest
+import com.itomise.test.helper.KtorTestApplication.cleanup
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -38,7 +38,7 @@ internal class GetUserListTest {
         val user = authSessionUserForTest(client, "05テスト太郎", "05@example.com")
 
         prepareCreateUserRequests.forEach {
-            val res = client.post("/api/adminApi/users") {
+            val res = client.post("/api/admin/users") {
                 contentType(ContentType.Application.Json)
                 setBody(objectMapper.writeValueAsString(it))
             }
@@ -48,7 +48,7 @@ internal class GetUserListTest {
         // ログインユーザはリストの最後に入れる
         requestUserIdList.add(user.id)
 
-        client.get("/api/adminApi/users").apply {
+        client.get("/api/admin/users").apply {
             assertEquals(HttpStatusCode.OK, this.status)
 
             val res = objectMapper.readValue<GetListUserResponseModel>(this.bodyAsText())
@@ -84,7 +84,7 @@ internal class GetUserListTest {
     @Test
     fun `未ログイン状態でユーザ一覧を叩くと401になること`() = appTestApplication {
         val client = createClient { install(HttpCookies) }
-        client.get("/api/adminApi/users").apply {
+        client.get("/api/admin/users").apply {
             assertEquals(HttpStatusCode.Unauthorized, this.status)
         }
     }

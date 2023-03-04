@@ -1,6 +1,6 @@
 package util
 
-import com.itomise.adminApi.util.AesGcmCipher
+import com.itomise.core.util.AesGcmCipher
 import kotlin.test.Test
 
 class AesGcmCipherTest {

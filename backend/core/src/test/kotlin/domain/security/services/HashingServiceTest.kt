@@ -3,10 +3,10 @@ package domain.security.services
 import com.itomise.core.domain.security.services.HashingService
 import com.itomise.core.domain.security.vo.HashAlgorithm
 import com.itomise.core.domain.security.vo.SaltedHash
-import com.itomise.adminApi.module.serviceModule
 import org.koin.core.component.inject
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
+import org.koin.dsl.module
 import org.koin.test.KoinTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -19,7 +19,11 @@ class HashingServiceTest : KoinTest {
     @BeforeTest
     fun prepare() {
         startKoin {
-            modules(serviceModule)
+            modules(
+                module {
+                    single { HashingService() }
+                }
+            )
         }
     }
 

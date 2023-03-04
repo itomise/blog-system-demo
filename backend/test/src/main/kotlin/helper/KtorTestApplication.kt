@@ -1,14 +1,13 @@
-package helper
+package com.itomise.test.helper
 
 import com.auth0.jwk.Jwk
 import com.auth0.jwk.JwkProvider
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.itomise.adminApi.module.jwkProvider
 import com.itomise.blogDb.lib.DataBaseFactory
 import com.itomise.core.domain.user.vo.UserPrincipal
 import com.itomise.eventBus.lib.SendGridClient
-import helper.factory.UserFactory
+import com.itomise.test.helper.factory.UserFactory
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -62,7 +61,7 @@ object KtorTestApplication {
                     )
                 )
 
-                jwkProvider = mockJwkProvider
+//                jwkProvider = mockJwkProvider
 
                 routing {
                     post("/login-for-testing") {

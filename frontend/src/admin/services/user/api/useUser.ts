@@ -9,7 +9,7 @@ const getUser = async (userId: string): Promise<User> => {
 
 export const useUser = (userId?: string) => {
   const { data } = useQuery({
-    queryKey: ['/user', userId],
+    queryKey: ['admin', 'user', userId],
     enabled: !!userId,
     queryFn: () => getUser(userId!!),
   })

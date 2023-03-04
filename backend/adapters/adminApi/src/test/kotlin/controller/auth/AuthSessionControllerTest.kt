@@ -2,9 +2,13 @@ package controller.auth
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.itomise.adminApi.controller.auth.*
-import helper.KtorTestApplication
-import helper.KtorTestApplication.appTestApplication
+import com.itomise.adminApi.controller.auth.LoginRequestModel
+import com.itomise.adminApi.controller.auth.MeResponseModel
+import com.itomise.adminApi.controller.auth.SignUpRequestModel
+import com.itomise.adminApi.controller.auth.SignUpResponseModel
+import com.itomise.test.helper.KtorTestApplication
+import com.itomise.test.helper.KtorTestApplication.appTestApplication
+import com.itomise.test.helper.KtorTestApplication.cleanup
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -16,7 +20,7 @@ import kotlin.test.assertEquals
 
 internal class AuthSessionControllerTest {
     @AfterTest
-    fun after() = KtorTestApplication.cleanup()
+    fun after() = cleanup()
 
     private val objectMapper = jacksonObjectMapper()
 
@@ -28,7 +32,7 @@ internal class AuthSessionControllerTest {
         val email = "${UUID.randomUUID()}@example.com"
         val password = UUID.randomUUID()
 
-        val signUpRes = client.post("/api/adminApi/auth/sign-up") {
+        val signUpRes = client.post("/api/admin/auth/sign-up") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -58,7 +62,7 @@ internal class AuthSessionControllerTest {
             assertEquals(HttpStatusCode.OK, this.status)
         }
 
-        client.post("/api/adminApi/auth/login") {
+        client.post("/api/admin/auth/login") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -72,7 +76,7 @@ internal class AuthSessionControllerTest {
             assertEquals(HttpStatusCode.OK, this.status)
         }
 
-        client.get("/api/adminApi/auth/me").apply {
+        client.get("/api/admin/auth/me").apply {
             assertEquals(HttpStatusCode.OK, this.status)
             val body = objectMapper.readValue<MeResponseModel>(this.bodyAsText())
 
@@ -86,7 +90,7 @@ internal class AuthSessionControllerTest {
     fun `未ログイン状態でMeを叩くとUnauthorizedになること`() = appTestApplication {
         val client = createClient { install(HttpCookies) }
 
-        client.get("/api/adminApi/auth/me").apply {
+        client.get("/api/admin/auth/me").apply {
             assertEquals(HttpStatusCode.Unauthorized, this.status)
         }
     }

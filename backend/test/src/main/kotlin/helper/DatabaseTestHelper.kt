@@ -1,4 +1,4 @@
-package helper
+package com.itomise.test.helper
 
 import com.itomise.blogDb.lib.DataBaseFactory
 import org.jetbrains.exposed.sql.transactions.TransactionManager

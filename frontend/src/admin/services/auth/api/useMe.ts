@@ -20,7 +20,7 @@ const getMeWithJwt = async (jwtToken: string) => {
 }
 export const useGetMeWithJwt = (token: string | undefined) => {
   const { data } = useQuery<ExtractFnReturnType<typeof getMeWithJwt>>({
-    queryKey: ['/auth-jwt/me', token],
+    queryKey: ['admin', 'auth-jwt', 'me', token],
     enabled: !!token,
     queryFn: () => getMeWithJwt(token!!),
   })
@@ -34,7 +34,7 @@ const getMeWithSession = async () => {
 
 export const useCheckMe = () => {
   const { data, isLoading } = useQuery<ExtractFnReturnType<typeof getMeWithSession>>({
-    queryKey: ['/auth/me'],
+    queryKey: ['admin', 'auth', 'me'],
     queryFn: getMeWithSession,
   })
   return { me: data, isLoading }
@@ -42,7 +42,7 @@ export const useCheckMe = () => {
 
 export const useMe = (): User => {
   const { data } = useQuery<ExtractFnReturnType<typeof getMeWithSession>>({
-    queryKey: ['/auth/me'],
+    queryKey: ['admin', 'auth', 'me'],
     queryFn: getMeWithSession,
   })
   if (!data) throw new Error('未ログインです')

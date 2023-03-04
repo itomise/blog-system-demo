@@ -5,10 +5,10 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.adminApi.controller.post.CreatePostRequestModel
 import com.itomise.adminApi.controller.post.GetListPostResponseModel
 import com.itomise.core.domain.post.vo.PostStatus
-import com.itomise.adminApi.util.removeHtmlTagFromString
-import helper.KtorTestApplication.appTestApplication
-import helper.KtorTestApplication.authSessionUserForTest
-import helper.KtorTestApplication.cleanup
+import com.itomise.core.util.removeHtmlTagFromString
+import com.itomise.test.helper.KtorTestApplication.appTestApplication
+import com.itomise.test.helper.KtorTestApplication.authSessionUserForTest
+import com.itomise.test.helper.KtorTestApplication.cleanup
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -31,7 +31,7 @@ class CreatePostTest {
 
         val test = removeHtmlTagFromString("<p>テストコンテンツ</p>")
 
-        client.post("/api/adminApi/posts") {
+        client.post("/api/admin/posts") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -45,7 +45,7 @@ class CreatePostTest {
             assertEquals(HttpStatusCode.OK, this.status)
         }
 
-        client.get("/api/adminApi/posts").run {
+        client.get("/api/admin/posts").run {
             assertEquals(HttpStatusCode.OK, this.status)
             val result = objectMapper.readValue<GetListPostResponseModel>(this.bodyAsText())
 
@@ -61,7 +61,7 @@ class CreatePostTest {
     @Test
     fun `未ログインユーザーで叩くと401になること`() = appTestApplication {
         val client = createClient { install(HttpCookies) }
-        client.post("/api/adminApi/posts") {
+        client.post("/api/admin/posts") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(

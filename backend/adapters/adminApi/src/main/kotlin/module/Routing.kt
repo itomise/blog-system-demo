@@ -11,7 +11,7 @@ import io.ktor.server.routing.*
 
 fun Application.routing() {
     routing {
-        route("/api/adminApi") {
+        route("/api/admin") {
             // auth
             authLogin()
             authSignUp()

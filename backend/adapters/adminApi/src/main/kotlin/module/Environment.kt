@@ -44,7 +44,7 @@ data class AdminEnvConfig(
     data class Urls(
         val accountSignUpUrl: String,
         val accountActivateUrl: String,
-        val adminApiRootUrl: String,
+        val adminRootUrl: String,
         val googleOAuth2CallbackUrl: String,
     )
 
@@ -97,7 +97,7 @@ fun initializeEnvConfig(config: ApplicationConfig) {
         urls = AdminEnvConfig.Urls(
             accountSignUpUrl = fromConfig("app.urls.accountSignInUrl"),
             accountActivateUrl = fromConfig("app.urls.accountActivateUrl"),
-            adminApiRootUrl = fromConfig("app.urls.adminApiRootUrl"),
+            adminRootUrl = fromConfig("app.urls.adminRootUrl"),
             googleOAuth2CallbackUrl = fromConfig("app.urls.googleOAuth2CallbackUrl")
         ),
         sendGrid = AdminEnvConfig.SendGridConfig(

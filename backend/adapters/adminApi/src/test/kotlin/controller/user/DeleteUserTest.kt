@@ -5,9 +5,9 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.adminApi.controller.user.CreateUserRequestModel
 import com.itomise.adminApi.controller.user.CreateUserResponseModel
 import com.itomise.adminApi.controller.user.GetListUserResponseModel
-import helper.KtorTestApplication.appTestApplication
-import helper.KtorTestApplication.authSessionUserForTest
-import helper.KtorTestApplication.cleanup
+import com.itomise.test.helper.KtorTestApplication.appTestApplication
+import com.itomise.test.helper.KtorTestApplication.authSessionUserForTest
+import com.itomise.test.helper.KtorTestApplication.cleanup
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -30,7 +30,7 @@ internal class DeleteUserTest {
 
         authSessionUserForTest(client)
 
-        val createRes = client.post("/api/adminApi/users") {
+        val createRes = client.post("/api/admin/users") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -45,7 +45,7 @@ internal class DeleteUserTest {
         val createResBody = objectMapper.readValue<CreateUserResponseModel>(createRes.bodyAsText())
 
 
-        client.get("/api/adminApi/users").apply {
+        client.get("/api/admin/users").apply {
             assertEquals(HttpStatusCode.OK, this.status)
 
             val res = objectMapper.readValue<GetListUserResponseModel>(this.bodyAsText())
@@ -57,11 +57,11 @@ internal class DeleteUserTest {
             }
         }
 
-        client.delete("/api/adminApi/users/${createResBody.id}").apply {
+        client.delete("/api/admin/users/${createResBody.id}").apply {
             assertEquals(HttpStatusCode.OK, this.status)
         }
 
-        client.get("/api/adminApi/users").apply {
+        client.get("/api/admin/users").apply {
             assertEquals(HttpStatusCode.OK, this.status)
 
             val res = objectMapper.readValue<GetListUserResponseModel>(this.bodyAsText())
@@ -74,7 +74,7 @@ internal class DeleteUserTest {
     fun `未ログイン状態で叩くと401になること`() = appTestApplication {
         val client = createClient { install(HttpCookies) }
 
-        client.delete("/api/adminApi/users/${UUID.randomUUID()}").apply {
+        client.delete("/api/admin/users/${UUID.randomUUID()}").apply {
             assertEquals(HttpStatusCode.Unauthorized, this.status)
         }
     }
@@ -84,7 +84,7 @@ internal class DeleteUserTest {
         val client = createClient { install(HttpCookies) }
         authSessionUserForTest(client)
 
-        client.delete("/api/adminApi/users/${UUID.randomUUID()}").apply {
+        client.delete("/api/admin/users/${UUID.randomUUID()}").apply {
             assertEquals(HttpStatusCode.NotFound, this.status)
         }
     }
@@ -94,7 +94,7 @@ internal class DeleteUserTest {
         val client = createClient { install(HttpCookies) }
         authSessionUserForTest(client)
 
-        client.delete("/api/adminApi/users/hogehoge").apply {
+        client.delete("/api/admin/users/hogehoge").apply {
             assertEquals(HttpStatusCode.BadRequest, this.status)
         }
     }
@@ -104,7 +104,7 @@ internal class DeleteUserTest {
         val client = createClient { install(HttpCookies) }
         val user = authSessionUserForTest(client)
 
-        client.delete("/api/adminApi/users/${user.id}").apply {
+        client.delete("/api/admin/users/${user.id}").apply {
             assertEquals(HttpStatusCode.BadRequest, this.status)
         }
     }

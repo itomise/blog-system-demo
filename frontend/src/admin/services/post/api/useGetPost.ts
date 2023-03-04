@@ -19,7 +19,7 @@ const getPostApi = async (id: UUID) => {
 
 export const useGetPost = (id: UUID | undefined) => {
   const { data } = useQuery<ExtractFnReturnType<typeof getPostApi>>({
-    queryKey: ['/posts', id],
+    queryKey: ['admin', 'posts', id],
     enabled: !!id,
     queryFn: () => getPostApi(id!!),
   })

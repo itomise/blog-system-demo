@@ -5,5 +5,6 @@ include(
     "adapters:blogApi",
     "adapters:blogDb",
     "adapters:eventBus",
-    "core"
+    "core",
+    "test"
 )

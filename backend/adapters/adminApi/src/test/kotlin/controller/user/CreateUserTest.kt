@@ -5,8 +5,8 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.adminApi.controller.user.CreateUserRequestModel
 import com.itomise.adminApi.controller.user.CreateUserResponseModel
 import com.itomise.adminApi.controller.user.GetListUserResponseModel
-import helper.KtorTestApplication.appTestApplication
-import helper.KtorTestApplication.authSessionUserForTest
+import com.itomise.test.helper.KtorTestApplication.appTestApplication
+import com.itomise.test.helper.KtorTestApplication.authSessionUserForTest
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -23,7 +23,7 @@ internal class CreateUserTest {
 
         authSessionUserForTest(client, "05テスト太郎", "05@example.com")
 
-        val res = client.post("/api/adminApi/users") {
+        val res = client.post("/api/admin/users") {
             contentType(ContentType.Application.Json)
             setBody(objectMapper.writeValueAsString(CreateUserRequestModel("test@test.test")))
         }.apply {
@@ -31,7 +31,7 @@ internal class CreateUserTest {
         }
         val resBody = objectMapper.readValue<CreateUserResponseModel>(res.bodyAsText())
 
-        client.get("/api/adminApi/users").apply {
+        client.get("/api/admin/users").apply {
 
             val res = objectMapper.readValue<GetListUserResponseModel>(this.bodyAsText())
             assertEquals(2, res.users.size)
@@ -46,7 +46,7 @@ internal class CreateUserTest {
     @Test
     fun `未ログイン状態で叩くと401になること`() = appTestApplication {
         val client = createClient { install(HttpCookies) }
-        client.post("/api/adminApi/users") {
+        client.post("/api/admin/users") {
             contentType(ContentType.Application.Json)
             setBody(objectMapper.writeValueAsString(CreateUserRequestModel("04@example.com")))
         }.apply {

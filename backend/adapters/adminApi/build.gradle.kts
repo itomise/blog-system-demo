@@ -63,11 +63,12 @@ dependencies {
     implementation(project(":adapters:eventBus"))
 
     // test
-    implementation(libs.ktorServerTests)
-    implementation(libs.kotlinTestJunit)
-    implementation(libs.koinTest)
-    implementation(libs.koinTestJunit4)
-    implementation(libs.mockk)
+    testImplementation(libs.ktorServerTests)
+    testImplementation(libs.kotlinTestJunit)
+    testImplementation(libs.koinTest)
+    testImplementation(libs.koinTestJunit4)
+    testImplementation(libs.mockk)
+    testImplementation(project(":test"))
 }
 
 tasks.test {

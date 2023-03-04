@@ -1,8 +1,8 @@
 package com.itomise.adminApi.controller.post
 
-import com.itomise.blogDb.repository.PostRepository
-import com.itomise.adminApi.util.removeHtmlTagFromString
 import com.itomise.blogDb.lib.dbQuery
+import com.itomise.blogDb.repository.PostRepository
+import com.itomise.core.util.removeHtmlTagFromString
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*

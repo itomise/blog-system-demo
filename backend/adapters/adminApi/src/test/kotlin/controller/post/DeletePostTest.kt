@@ -4,9 +4,9 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.adminApi.controller.post.CreatePostRequestModel
 import com.itomise.adminApi.controller.post.GetListPostResponseModel
-import helper.KtorTestApplication.appTestApplication
-import helper.KtorTestApplication.authSessionUserForTest
-import helper.KtorTestApplication.cleanup
+import com.itomise.test.helper.KtorTestApplication.appTestApplication
+import com.itomise.test.helper.KtorTestApplication.authSessionUserForTest
+import com.itomise.test.helper.KtorTestApplication.cleanup
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -28,7 +28,7 @@ internal class DeletePostTest {
 
         authSessionUserForTest(client)
 
-        client.post("/api/adminApi/posts") {
+        client.post("/api/admin/posts") {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
@@ -42,7 +42,7 @@ internal class DeletePostTest {
             assertEquals(HttpStatusCode.OK, this.status)
         }
 
-        val res1 = client.get("/api/adminApi/posts")
+        val res1 = client.get("/api/admin/posts")
 
         assertEquals(HttpStatusCode.OK, res1.status)
         val result = objectMapper.readValue<GetListPostResponseModel>(res1.bodyAsText())
@@ -52,13 +52,13 @@ internal class DeletePostTest {
         assertEquals("title", post.title)
         assertEquals("<p>test content</p>", post.content)
 
-        client.delete("/api/adminApi/posts/${post.id}") {
+        client.delete("/api/admin/posts/${post.id}") {
             contentType(ContentType.Application.Json)
         }.run {
             assertEquals(HttpStatusCode.OK, this.status)
         }
 
-        val res2 = client.get("/api/adminApi/posts")
+        val res2 = client.get("/api/admin/posts")
 
         assertEquals(HttpStatusCode.OK, res2.status)
         val result2 = objectMapper.readValue<GetListPostResponseModel>(res2.bodyAsText())
@@ -69,7 +69,7 @@ internal class DeletePostTest {
     @Test
     fun `未ログインユーザーで叩くと401になること`() = appTestApplication {
         val client = createClient { install(HttpCookies) }
-        client.delete("/api/adminApi/posts/${UUID.randomUUID()}") {
+        client.delete("/api/admin/posts/${UUID.randomUUID()}") {
             contentType(ContentType.Application.Json)
         }.apply {
             assertEquals(HttpStatusCode.Unauthorized, this.status)
