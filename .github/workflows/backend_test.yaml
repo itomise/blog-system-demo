@@ -11,7 +11,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./backend
+        working-directory: backend
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -32,13 +32,10 @@ jobs:
   admin:
     runs-on: ubuntu-latest
     needs: setup
-    defaults:
-      run:
-        shell: bash
-        working-directory: ./backend
     steps:
       - name: Run AdminApi Tests
         run: ./gradlew :adapters:adminApi:test --stacktrace --no-daemon --build-cache
+        working-directory: backend
         env:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_URL: ${{ secrets.DB_URL }}
