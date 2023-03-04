@@ -5,8 +5,8 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.adminApi.controller.user.CreateUserRequestModel
 import com.itomise.adminApi.controller.user.CreateUserResponseModel
 import com.itomise.adminApi.controller.user.GetListUserResponseModel
-import com.itomise.test.helper.KtorTestApplication.appTestApplication
-import com.itomise.test.helper.KtorTestApplication.authSessionUserForTest
+import helper.AdminApiTestApplication.appTestApplication
+import helper.AdminApiTestApplication.authSessionUserForTest
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*

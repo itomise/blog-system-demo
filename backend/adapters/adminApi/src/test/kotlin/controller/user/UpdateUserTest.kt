@@ -6,9 +6,9 @@ import com.itomise.adminApi.controller.user.CreateUserRequestModel
 import com.itomise.adminApi.controller.user.CreateUserResponseModel
 import com.itomise.adminApi.controller.user.GetListUserResponseModel
 import com.itomise.adminApi.controller.user.UpdateUserRequestModel
-import com.itomise.test.helper.KtorTestApplication
-import com.itomise.test.helper.KtorTestApplication.appTestApplication
-import com.itomise.test.helper.KtorTestApplication.authSessionUserForTest
+import helper.AdminApiTestApplication
+import helper.AdminApiTestApplication.appTestApplication
+import helper.AdminApiTestApplication.authSessionUserForTest
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -41,7 +41,7 @@ internal class UpdateUserTest {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
-                    KtorTestApplication.ActivateTestUserRequest(
+                    AdminApiTestApplication.ActivateTestUserRequest(
                         id = createResBody.id,
                         name = "test太郎",
                         email = email,

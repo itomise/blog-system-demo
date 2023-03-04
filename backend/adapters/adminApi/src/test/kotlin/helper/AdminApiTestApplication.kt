@@ -1,13 +1,12 @@
-package com.itomise.test.helper
+package helper
 
-import com.auth0.jwk.Jwk
-import com.auth0.jwk.JwkProvider
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.blogDb.lib.DataBaseFactory
 import com.itomise.core.domain.user.vo.UserPrincipal
-import com.itomise.eventBus.lib.SendGridClient
-import com.itomise.test.helper.factory.UserFactory
+import com.itomise.test.factory.UserFactory
+import com.itomise.test.helper.DatabaseTestHelper
+import com.itomise.test.mock.SendGridClientMock
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -20,16 +19,13 @@ import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import io.ktor.server.testing.*
 import io.mockk.every
-import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.unmockkAll
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import org.koin.core.context.GlobalContext
 import org.koin.core.context.stopKoin
 import java.util.*
 
-object KtorTestApplication {
+object AdminApiTestApplication {
     fun appTestApplication(
         block: suspend ApplicationTestBuilder.() -> Unit
     ) {
@@ -37,36 +33,23 @@ object KtorTestApplication {
         if (GlobalContext.getOrNull() != null) {
             stopKoin()
         }
-        
+        unmockkAll()
+
         testApplication {
             environment {
                 config = ApplicationConfig("application.test.conf")
             }
             application {
-                val schemaName = "test${UUID.randomUUID().toString().replace("-", "")}"
+                val schemaName = "test_${UUID.randomUUID().toString().replace("-", "")}"
                 mockkObject(DataBaseFactory)
                 every { DataBaseFactory.getMainSchema() } returns schemaName
 
                 // application が起動してからでないと DB などが立ち上がっていないため
                 DatabaseTestHelper.setUpSchema()
 
-                // メールは全てモックをさす
-                mockkObject(SendGridClient)
-                every { SendGridClient.send(any()) } answers {}
+                SendGridClientMock.execute()
 
-                val mockJwkProvider = mockk<JwkProvider>()
-                every { mockJwkProvider.get(any()) } returns Jwk.fromValues(
-                    mapOf(
-                        "use" to "sig",
-                        "kty" to "RSA",
-                        "n" to "ql5HLRkh27pA0zONngdyk_mRo7TgcR7Et31YbqDsWDcfLYN_P1XrdTetg89HHuSC_P_G5rabx3NIzenK_Ej8lZES0F7lpagIwaMZQjPO0urEp53MuRhoogppBr6uxRP_Mkv-bESK_cTNaTgG5nfkWzjfq6Bx1wjNOhWQDONAd81V9jFt8vm0oDzdErsBKUmuysRo7Seuol2mgD5D8AyBYyv79NRaP1anuje4h0DUo45yevxOjjdyAwCcM6uZPPNtDN7AoM469il--rgV-17DJSz3lKnYUdwepqn0ULeqCPORRjJ0p-B5VDJI0_CuYMiO8XsQh43y-znq8pYiIkISow",
-                        "e" to "AQAB",
-                        "kid" to "673a5ea3-a4ae-422b-be55-a9c98e674550",
-                        "alg" to "RS256"
-                    )
-                )
-
-//                jwkProvider = mockJwkProvider
+                JwkProviderMock.handle()
 
                 routing {
                     post("/login-for-testing") {
@@ -143,21 +126,4 @@ object KtorTestApplication {
         val email: String,
         val password: String
     )
-
-    fun cleanup() {
-        // test が fail すると Koin が残ったままになるため
-        if (GlobalContext.getOrNull() != null) {
-            stopKoin()
-        }
-
-        unmockkAll()
-
-        DatabaseTestHelper.cleanupSchema()
-    }
-}
-
-private inline fun <reified T> getKoinInstance(): T {
-    return object : KoinComponent {
-        val value: T by inject()
-    }.value
 }

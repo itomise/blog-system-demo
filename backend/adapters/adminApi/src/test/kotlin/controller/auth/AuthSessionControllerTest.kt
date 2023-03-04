@@ -6,15 +6,13 @@ import com.itomise.adminApi.controller.auth.LoginRequestModel
 import com.itomise.adminApi.controller.auth.MeResponseModel
 import com.itomise.adminApi.controller.auth.SignUpRequestModel
 import com.itomise.adminApi.controller.auth.SignUpResponseModel
-import com.itomise.test.helper.KtorTestApplication
-import com.itomise.test.helper.KtorTestApplication.appTestApplication
-import com.itomise.test.helper.KtorTestApplication.cleanup
+import helper.AdminApiTestApplication
+import helper.AdminApiTestApplication.appTestApplication
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import java.util.*
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -47,7 +45,7 @@ internal class AuthSessionControllerTest {
             contentType(ContentType.Application.Json)
             setBody(
                 objectMapper.writeValueAsString(
-                    KtorTestApplication.ActivateTestUserRequest(
+                    AdminApiTestApplication.ActivateTestUserRequest(
                         id = signUpResBody.userId,
                         name = name,
                         email = email,

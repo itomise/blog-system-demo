@@ -1,4 +1,4 @@
-package com.itomise.test.helper.factory
+package com.itomise.test.factory
 
 import com.itomise.blogDb.lib.dbQuery
 import com.itomise.blogDb.repository.UserRepository

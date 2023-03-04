@@ -2,7 +2,7 @@ package controller.auth
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.itomise.adminApi.controller.auth.SignUpRequestModel
-import com.itomise.test.helper.KtorTestApplication.appTestApplication
+import helper.AdminApiTestApplication.appTestApplication
 import io.ktor.client.request.*
 import io.ktor.http.*
 import java.util.*

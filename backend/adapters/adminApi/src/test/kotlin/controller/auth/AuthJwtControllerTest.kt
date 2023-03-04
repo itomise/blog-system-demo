@@ -4,14 +4,12 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.itomise.adminApi.controller.auth.LoginRequestModel
 import com.itomise.adminApi.controller.authJwt.JwtLoginResponseModel
-import com.itomise.test.helper.KtorTestApplication.appTestApplication
-import com.itomise.test.helper.KtorTestApplication.authSessionUserForTest
-import com.itomise.test.helper.KtorTestApplication.cleanup
+import helper.AdminApiTestApplication.appTestApplication
+import helper.AdminApiTestApplication.authSessionUserForTest
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import java.util.*
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

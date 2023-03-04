@@ -6,8 +6,8 @@ import com.itomise.adminApi.controller.post.CreatePostRequestModel
 import com.itomise.adminApi.controller.post.GetListPostResponseModel
 import com.itomise.core.domain.post.vo.PostStatus
 import com.itomise.core.util.removeHtmlTagFromString
-import com.itomise.test.helper.KtorTestApplication.appTestApplication
-import com.itomise.test.helper.KtorTestApplication.authSessionUserForTest
+import helper.AdminApiTestApplication.appTestApplication
+import helper.AdminApiTestApplication.authSessionUserForTest
 import io.ktor.client.plugins.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
