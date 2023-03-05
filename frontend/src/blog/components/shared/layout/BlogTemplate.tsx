@@ -1,6 +1,6 @@
 import { InternalLink } from '@/admin/components/shared/link/InternalLink'
 import { Box, Container, Header, useMantineTheme, Text, Group, TextInput, ActionIcon } from '@mantine/core'
-import { IconAlien, IconBrandGithub, IconSearch } from '@tabler/icons'
+import { IconAlien, IconBrandGithub, IconBrandTwitter, IconSearch } from '@tabler/icons'
 
 type Props = {
   children: React.ReactNode
@@ -28,11 +28,23 @@ export const BlogTemplate: React.FC<Props> = ({ children }) => {
                 variant="filled"
                 size={36}
                 component="a"
-                href="https://github.com/itomise"
+                color="gray.7"
+                href="https://github.com/itomise/blog-system-demo"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <IconBrandGithub />
+              </ActionIcon>
+              <ActionIcon
+                variant="filled"
+                size={36}
+                color="blue"
+                component="a"
+                href="https://twitter.com/itomise0f"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <IconBrandTwitter />
               </ActionIcon>
             </Group>
           </Group>

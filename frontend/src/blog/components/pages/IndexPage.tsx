@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { Card, Container, Text, Title, Grid } from '@mantine/core'
+import { Card, Text, Title, Grid } from '@mantine/core'
 import Link from 'next/link'
 import { BlogPostListResponse, useGetListBlogPost } from '@/blog/services/post/api/useGetListBlogPost'
 import { formatDate } from '@/shared/utils/dateUtil'
@@ -21,14 +21,14 @@ export const IndexPage: React.FC<PageProps> = ({ posts }) => {
           itomise Blog.
         </Title>
         <Text mt="xs" size="sm">
-          ソフトウェアエンジニアをやっているitomiseのブログです。
+          ソフトウェアエンジニアをやっている itomise のブログです。
           <br />
           記事にならないようなカジュアルな内容のものを書いていきたいです。
         </Text>
 
-        <Grid mt="lg">
+        <Grid mt="lg" grow>
           {posts.map((post) => (
-            <Grid.Col span={5} key={post.id}>
+            <Grid.Col md={5} key={post.id}>
               <Link href={`posts/${post.id}`}>
                 <Card shadow="lg" p="md" component="article">
                   <Title order={3} size="h5">
