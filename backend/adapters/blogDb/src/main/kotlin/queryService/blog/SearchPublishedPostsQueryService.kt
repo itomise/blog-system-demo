@@ -14,15 +14,16 @@ class SearchPublishedPostsQueryService {
         val id: UUID,
         val title: String,
         val content: String,
+        val plainContent: String,
         val publishedAt: LocalDateTime?
     )
 
     fun handle(limit: Int = 10, offset: Long = 0, query: String): List<Output> {
         return PostTable
-            .slice(PostTable.id, PostTable.title, PostTable.content, PostTable.publishedAt)
+            .slice(PostTable.id, PostTable.title, PostTable.content, PostTable.plainContent, PostTable.publishedAt)
             .select {
                 PostTable.status eq PostStatus.PUBLISH.value and (
-                        PostTable.content like "%$query%"
+                        PostTable.plainContent like "%$query%"
                         )
             }
             .limit(n = limit, offset = offset)
@@ -32,6 +33,7 @@ class SearchPublishedPostsQueryService {
                     id = it[PostTable.id].value,
                     title = it[PostTable.title],
                     content = it[PostTable.content],
+                    plainContent = it[PostTable.plainContent],
                     publishedAt = it[PostTable.publishedAt]
                 )
             }

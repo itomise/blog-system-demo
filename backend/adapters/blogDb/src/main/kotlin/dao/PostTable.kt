@@ -9,6 +9,7 @@ object PostTable : UUIDTable(name = "post", columnName = "id") {
     val updatedAt = datetime(name = "updated_at").defaultExpression(CurrentDateTime())
     val title = varchar(name = "title", length = 255)
     val content = text(name = "content")
+    val plainContent = text(name = "plain_content")
     val status = integer(name = "status")
     val publishedAt = datetime(name = "published_at").nullable()
 }

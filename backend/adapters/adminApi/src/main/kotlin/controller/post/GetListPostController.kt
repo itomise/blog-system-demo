@@ -2,7 +2,6 @@ package com.itomise.adminApi.controller.post
 
 import com.itomise.blogDb.lib.dbQuery
 import com.itomise.blogDb.repository.PostRepository
-import com.itomise.core.util.removeHtmlTagFromString
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -27,7 +26,7 @@ fun Route.getListPost() {
                     title = it.title,
                     content = it.content,
                     status = it.status.value,
-                    displayContent = removeHtmlTagFromString(it.content),
+                    plainContent = it.plainContent
                 )
             }
         ))
@@ -42,6 +41,6 @@ data class GetPostResponseModel(
     val id: UUID,
     val title: String,
     val content: String,
-    val displayContent: String,
+    val plainContent: String,
     val status: Int,
 )
