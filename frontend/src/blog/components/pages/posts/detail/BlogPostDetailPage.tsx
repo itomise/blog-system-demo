@@ -1,16 +1,14 @@
 import { GetBlogPostResponse } from '@/blog/services/post/api/useGetBlogPost'
 import { formatDate } from '@/shared/utils/dateUtil'
-import { Box, Container, Title, TypographyStylesProvider, Text, Card, useMantineTheme } from '@mantine/core'
+import { Box, Title, TypographyStylesProvider, Text, Card } from '@mantine/core'
 import Head from 'next/head'
-import { BlogTemplate } from '../../shared/layout/BlogTemplate'
+import { BlogTemplate } from '../../../shared/layout/BlogTemplate'
 
 type PageProps = {
   post: GetBlogPostResponse
 }
 
 export const BlogPostDetailPage: React.FC<PageProps> = ({ post }) => {
-  const theme = useMantineTheme()
-
   return (
     <>
       <Head>

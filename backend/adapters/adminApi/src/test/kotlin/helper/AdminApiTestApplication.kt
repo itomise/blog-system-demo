@@ -2,7 +2,6 @@ package helper
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.itomise.blogDb.lib.DataBaseFactory
 import com.itomise.core.domain.user.vo.UserPrincipal
 import com.itomise.test.factory.UserFactory
 import com.itomise.test.helper.DatabaseTestHelper
@@ -18,8 +17,6 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import io.ktor.server.testing.*
-import io.mockk.every
-import io.mockk.mockkObject
 import io.mockk.unmockkAll
 import org.koin.core.context.GlobalContext
 import org.koin.core.context.stopKoin
@@ -40,9 +37,7 @@ object AdminApiTestApplication {
                 config = ApplicationConfig("application.test.conf")
             }
             application {
-                val schemaName = "test_${UUID.randomUUID().toString().replace("-", "")}"
-                mockkObject(DataBaseFactory)
-                every { DataBaseFactory.getMainSchema() } returns schemaName
+                DatabaseTestHelper.mockNewSchema()
 
                 // application が起動してからでないと DB などが立ち上がっていないため
                 DatabaseTestHelper.setUpSchema()

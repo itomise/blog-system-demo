@@ -27,6 +27,7 @@ object DataBaseFactory {
             isAutoCommit = false
             transactionIsolation = "TRANSACTION_REPEATABLE_READ"
             validate()
+
         }
         config.username = user
         config.password = password
