@@ -2,7 +2,6 @@ package com.itomise.blogApi.controller.post
 
 import com.itomise.blogDb.lib.dbQuery
 import com.itomise.blogDb.queryService.blog.SearchPublishedPostsQueryService
-import com.itomise.core.util.removeHtmlTagFromString
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -10,6 +9,7 @@ import io.ktor.server.routing.*
 import org.jetbrains.exposed.sql.StdOutSqlLogger
 import org.jetbrains.exposed.sql.addLogger
 import org.koin.ktor.ext.inject
+import java.util.*
 
 fun Route.postSearch() {
     val searchPublishedPostsQueryService by inject<SearchPublishedPostsQueryService>()
@@ -27,13 +27,12 @@ fun Route.postSearch() {
             )
         }
 
-        call.respond(HttpStatusCode.OK, PostGetListResponseModel(
+        call.respond(HttpStatusCode.OK, PostSearchResponseModel(
             posts = result.map {
-                PostGetListResponseModelPost(
+                PostSearchResponseModelPost(
                     id = it.id,
                     title = it.title,
-                    content = it.content,
-                    displayContent = removeHtmlTagFromString(it.content),
+                    displayContent = it.plainContent.take(200),
                     publishedAt = it.publishedAt?.toString()
                 )
             }
@@ -41,3 +40,14 @@ fun Route.postSearch() {
     }
 }
 
+
+data class PostSearchResponseModel(
+    val posts: List<PostSearchResponseModelPost>
+)
+
+data class PostSearchResponseModelPost(
+    val id: UUID,
+    val title: String,
+    val displayContent: String,
+    val publishedAt: String?
+)

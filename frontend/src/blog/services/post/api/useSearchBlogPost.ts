@@ -13,7 +13,6 @@ export type SearchBlogPostResponse = {
   posts: {
     id: UUID
     title: string
-    content: string
     displayContent: string
     publishedAt: string
   }[]

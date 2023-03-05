@@ -8,8 +8,6 @@ import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.Database
 import org.jsoup.Jsoup
 
-const val ARTICLE_AMOUNT = 10
-
 fun main(): Unit = runBlocking {
     // Wikipedia APIのURLを生成する
     val urlBuilder = URLBuilder("https://ja.wikipedia.org/w/api.php")
@@ -17,7 +15,7 @@ fun main(): Unit = runBlocking {
         append("action", "query")
         append("format", "json")
         append("list", "random")
-        append("rnlimit", "$ARTICLE_AMOUNT")
+        append("rnlimit", "500")
         append("rnnamespace", "0")
     }
 

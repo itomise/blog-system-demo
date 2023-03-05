@@ -4,6 +4,7 @@ import com.itomise.blogDb.dao.PostTable
 import com.itomise.core.domain.post.vo.PostStatus
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.or
 import org.jetbrains.exposed.sql.select
 import java.time.LocalDateTime
 import java.util.*
@@ -23,7 +24,7 @@ class SearchPublishedPostsQueryService {
             .slice(PostTable.id, PostTable.title, PostTable.content, PostTable.plainContent, PostTable.publishedAt)
             .select {
                 PostTable.status eq PostStatus.PUBLISH.value and (
-                        PostTable.plainContent like "%$query%"
+                        PostTable.plainContent like "%$query%" or (PostTable.title like "%$query%")
                         )
             }
             .limit(n = limit, offset = offset)

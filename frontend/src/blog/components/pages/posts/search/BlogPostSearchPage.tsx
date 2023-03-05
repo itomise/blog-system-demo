@@ -47,7 +47,7 @@ export const BlogPostSearchPage: React.FC<PageProps> = ({ post }) => {
             <Grid grow>
               {data?.posts.map((post) => (
                 <Grid.Col md={5} key={post.id}>
-                  <Link href={`posts/${post.id}`}>
+                  <Link href={`/posts/${post.id}`}>
                     <Card shadow="lg" p="md" component="article">
                       <Title order={3} size="h5">
                         {post.title}
@@ -64,7 +64,7 @@ export const BlogPostSearchPage: React.FC<PageProps> = ({ post }) => {
               ))}
             </Grid>
             {data?.posts.length === 0 && !isBlankSearch && (
-              <Text color="gray.8" size="sm">
+              <Text color="gray.8" size="sm" mt="md">
                 検索結果がありません。
               </Text>
             )}

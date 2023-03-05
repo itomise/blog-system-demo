@@ -13,7 +13,7 @@ const getUserList = async (): Promise<GetListUserResponse> => {
 
 export const useUserList = () => {
   const { data } = useQuery({
-    queryKey: ['/user'] as const,
+    queryKey: ['admin', 'user'] as const,
     queryFn: getUserList,
   })
 
