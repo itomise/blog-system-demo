@@ -14,6 +14,7 @@ jobs:
         project_name:
           - :adapters:adminApi
           - :adapters:blogApi
+          - :adapters:blogDb
           - :core
     with:
       project_name: ${{ matrix.project_name }}
