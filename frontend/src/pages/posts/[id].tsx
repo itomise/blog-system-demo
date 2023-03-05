@@ -1,4 +1,4 @@
-import { BlogPostDetailPage } from '@/blog/components/pages/detail/BlogPostDetailPage'
+import { BlogPostDetailPage } from '@/blog/components/pages/posts/detail/BlogPostDetailPage'
 import { getBlogPostDetail } from '@/blog/services/post/api/useGetBlogPost'
 import { GetServerSideProps } from 'next'
 

@@ -1,13 +1,28 @@
 import { InternalLink } from '@/admin/components/shared/link/InternalLink'
 import { Box, Container, Header, useMantineTheme, Text, Group, TextInput, ActionIcon } from '@mantine/core'
 import { IconAlien, IconBrandGithub, IconBrandTwitter, IconSearch } from '@tabler/icons'
+import { useRouter } from 'next/router'
+import { useCallback } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
+
+type FormType = {
+  query: string
+}
 
 type Props = {
   children: React.ReactNode
 }
 
 export const BlogTemplate: React.FC<Props> = ({ children }) => {
+  const { handleSubmit, register } = useForm<FormType>()
+  const router = useRouter()
+
   const theme = useMantineTheme()
+
+  const onSubmit: SubmitHandler<FormType> = useCallback(({ query }) => {
+    const href = `/posts/search?query=${query}`
+    router.push(href, href, { shallow: true })
+  }, [])
 
   return (
     <Box component="main" sx={{ background: theme.colors.gray[1], minHeight: '100vh' }}>
@@ -23,7 +38,14 @@ export const BlogTemplate: React.FC<Props> = ({ children }) => {
               </Group>
             </InternalLink>
             <Group>
-              <TextInput placeholder="検索する" icon={<IconSearch size={16} />} />
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <TextInput
+                  placeholder="検索する"
+                  icon={<IconSearch size={16} />}
+                  type="search"
+                  {...register('query')}
+                />
+              </form>
               <ActionIcon
                 variant="filled"
                 size={36}

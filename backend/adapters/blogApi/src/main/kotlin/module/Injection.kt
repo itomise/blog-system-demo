@@ -1,6 +1,7 @@
 package com.itomise.blogApi.module
 
 import com.itomise.blogDb.queryService.blog.GetPublishedPostsQueryService
+import com.itomise.blogDb.queryService.blog.SearchPublishedPostsQueryService
 import com.itomise.blogDb.repository.PostRepository
 import com.itomise.blogDb.repository.UserRepository
 import io.ktor.server.application.*
@@ -15,6 +16,7 @@ fun Application.injection() {
             single { GetPublishedPostsQueryService() }
             single { PostRepository() }
             single { UserRepository() }
+            single { SearchPublishedPostsQueryService() }
         })
     }
 }

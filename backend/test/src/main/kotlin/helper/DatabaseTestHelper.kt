@@ -1,12 +1,21 @@
 package com.itomise.test.helper
 
 import com.itomise.blogDb.lib.DataBaseFactory
+import io.mockk.every
+import io.mockk.mockkObject
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.nio.file.Files
 import java.nio.file.Path
+import java.util.*
 
 object DatabaseTestHelper {
+
+    fun mockNewSchema() {
+        val schemaName = "test_${UUID.randomUUID().toString().replace("-", "")}"
+        mockkObject(DataBaseFactory)
+        every { DataBaseFactory.getMainSchema() } returns schemaName
+    }
 
     fun setUpSchema() {
         val mainSchema = DataBaseFactory.getMainSchema()
