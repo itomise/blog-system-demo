@@ -1,10 +1,10 @@
 rootProject.name = "com.itomise"
 
-include(
-    "adapters:adminApi",
-    "adapters:blogApi",
-    "adapters:blogDb",
-    "adapters:eventBus",
-    "core",
-    "test"
-)
+include("adapters:adminApi")
+include("adapters:blogApi")
+include("adapters:blogDb")
+include("adapters:eventBus")
+include("tool")
+include("core")
+include("test")
+include("tool")

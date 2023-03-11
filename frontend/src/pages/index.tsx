@@ -1,5 +1,5 @@
-import { IndexPage } from '@/blog/components/pages/IndexPage'
 import { getListBlogPost } from '@/blog/services/post/api/useGetListBlogPost'
+import { IndexPage } from '@/blog/components/pages/IndexPage'
 
 export default IndexPage
 

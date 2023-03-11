@@ -1,0 +1,1 @@
+alter table post alter column plain_content set not null;

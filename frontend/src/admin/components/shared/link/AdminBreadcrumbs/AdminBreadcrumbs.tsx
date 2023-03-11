@@ -8,24 +8,21 @@ type Props = {
   }[]
 }
 
-export const AdminBreadcrumbs: React.FC<Props> = ({ links }) => {
-  return (
-    <Breadcrumbs>
-      {links.map((l) => {
-        if (l.href !== null) {
-          return (
-            <InternalLink href={l.href} key={l.href} anchorProps={{ color: 'blue' }}>
-              {l.title}
-            </InternalLink>
-          )
-        } else {
-          return (
-            <Title order={1} size="h6" key={l.href}>
-              {l.title}
-            </Title>
-          )
-        }
-      })}
-    </Breadcrumbs>
-  )
-}
+export const AdminBreadcrumbs: React.FC<Props> = ({ links }) => (
+  <Breadcrumbs>
+    {links.map((l) => {
+      if (l.href !== null) {
+        return (
+          <InternalLink href={l.href} key={l.href} anchorProps={{ color: 'blue' }}>
+            {l.title}
+          </InternalLink>
+        )
+      }
+      return (
+        <Title order={1} size="h6" key={l.href}>
+          {l.title}
+        </Title>
+      )
+    })}
+  </Breadcrumbs>
+)

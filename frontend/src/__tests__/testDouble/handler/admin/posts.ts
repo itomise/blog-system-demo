@@ -1,9 +1,9 @@
-import { AdminGetListPostsResponse } from '@/admin/services/post/api/useGetListPost'
 import { rest } from 'msw'
+import { AdminGetListPostsResponse } from '@/admin/services/post/api/useGetListPost'
 
 export const adminPostsHandler = [
-  rest.get('http://localhost:8080/api/admin/posts', (req, res, ctx) => {
-    return res(
+  rest.get('http://localhost:8080/api/admin/posts', (req, res, ctx) =>
+    res(
       ctx.status(200),
       ctx.json<AdminGetListPostsResponse>({
         posts: [
@@ -24,5 +24,5 @@ export const adminPostsHandler = [
         ],
       })
     )
-  }),
+  ),
 ]

@@ -1,7 +1,7 @@
-import { blogAppAxios } from '@/libs/axios'
-import { ExtractFnReturnType } from '@/libs/react-query'
-import { UUID } from '@/shared/types'
 import { useQuery } from '@tanstack/react-query'
+import { UUID } from '@/shared/types'
+import { ExtractFnReturnType } from '@/libs/react-query'
+import { blogAppAxios } from '@/libs/axios'
 
 export type GetBlogPostResponse = {
   id: UUID

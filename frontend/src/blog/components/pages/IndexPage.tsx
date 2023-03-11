@@ -1,32 +1,35 @@
-import Head from 'next/head'
-import { Card, Text, Title, Grid } from '@mantine/core'
 import Link from 'next/link'
-import { BlogPostListResponse, useGetListBlogPost } from '@/blog/services/post/api/useGetListBlogPost'
-import { formatDate } from '@/shared/utils/dateUtil'
+import Head from 'next/head'
+import { Card, Text, Title, Grid, Box } from '@mantine/core'
 import { BlogTemplate } from '../shared/layout/BlogTemplate'
+import { formatDate } from '@/shared/utils/dateUtil'
+import { BlogPostListResponse } from '@/blog/services/post/api/useGetListBlogPost'
 
 type PageProps = {
   posts: BlogPostListResponse['posts']
 }
 
-export const IndexPage: React.FC<PageProps> = ({ posts }) => {
-  return (
-    <>
-      <Head>
-        <title>TOP | TodoList</title>
-      </Head>
+export const IndexPage: React.FC<PageProps> = ({ posts }) => (
+  <>
+    <Head>
+      <title>TOP | TodoList</title>
+    </Head>
 
-      <BlogTemplate>
-        <Title order={1} size="h2">
-          itomise Blog.
+    <BlogTemplate>
+      <Title order={1} size="h2">
+        itomise Blog.
+      </Title>
+      <Text mt="xs" size="sm">
+        ソフトウェアエンジニアをやっている itomise のブログです。
+        <br />
+        記事にならないようなカジュアルな内容のものを書いていきたいです。
+      </Text>
+
+      <Box mt="lg">
+        <Title order={2} size="h4">
+          最近の記事
         </Title>
-        <Text mt="xs" size="sm">
-          ソフトウェアエンジニアをやっている itomise のブログです。
-          <br />
-          記事にならないようなカジュアルな内容のものを書いていきたいです。
-        </Text>
-
-        <Grid mt="lg" grow>
+        <Grid mt="xs" grow>
           {posts.map((post) => (
             <Grid.Col md={5} key={post.id}>
               <Link href={`posts/${post.id}`}>
@@ -45,7 +48,7 @@ export const IndexPage: React.FC<PageProps> = ({ posts }) => {
             </Grid.Col>
           ))}
         </Grid>
-      </BlogTemplate>
-    </>
-  )
-}
+      </Box>
+    </BlogTemplate>
+  </>
+)

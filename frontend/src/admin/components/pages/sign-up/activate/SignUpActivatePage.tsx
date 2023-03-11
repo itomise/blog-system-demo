@@ -1,16 +1,16 @@
 import { z } from 'zod'
+import { useMemo } from 'react'
 import { useRouter } from 'next/router'
+import jwtDecode from 'jwt-decode'
 import { showNotification } from '@mantine/notifications'
 import { Button, Stack, Title } from '@mantine/core'
+import { onMutateError } from '@/shared/api/onMutateError'
+import { UserLoginType, UserLoginTypeValue } from '@/admin/services/user/types'
 import { DecodedActivateTokenType, PasswordRegex } from '@/admin/services/auth/constant'
 import { useActivateUser } from '@/admin/services/auth/api/useActivateUser'
+import { SystemTemplate } from '@/admin/components/shared/layout/SystemTemplate'
 import { InputField } from '@/admin/components/shared/form/InputField'
 import { Form } from '@/admin/components/shared/form/Form'
-import { useMemo } from 'react'
-import jwtDecode from 'jwt-decode'
-import { SystemTemplate } from '@/admin/components/shared/layout/SystemTemplate'
-import { UserLoginType } from '@/admin/services/user/types'
-import { onMutateError } from '@/shared/api/onMutateError'
 
 const schema = z.object({
   name: z.string().min(1).max(50),
@@ -35,9 +35,10 @@ export const SignUpActivatePage: React.FC = () => {
   const loginType = useMemo((): UserLoginType => {
     if (router.isReady) {
       const decodedJwt = jwtDecode<DecodedActivateTokenType>(token)
-      if (decodedJwt.loginType === UserLoginType.EXTERNAL_GOOGLE.toString()) return UserLoginType.EXTERNAL_GOOGLE
+      if (decodedJwt.loginType === UserLoginTypeValue.EXTERNAL_GOOGLE.toString())
+        return UserLoginTypeValue.EXTERNAL_GOOGLE
     }
-    return UserLoginType.INTERNAL
+    return UserLoginTypeValue.INTERNAL
   }, [router.isReady, token])
 
   return (
@@ -61,7 +62,7 @@ export const SignUpActivatePage: React.FC = () => {
           {({ register, formState: { errors } }) => (
             <Stack spacing="md" mt="md">
               <InputField label="名前" error={errors.name} registration={register('name')} required />
-              {loginType === UserLoginType.INTERNAL && (
+              {loginType === UserLoginTypeValue.INTERNAL && (
                 <InputField
                   label="パスワード"
                   type="password"

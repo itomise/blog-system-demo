@@ -3,8 +3,8 @@ import { IconTrash } from '@tabler/icons'
 import { showNotification } from '@mantine/notifications'
 import { Popover, Button, Group, Text, ActionIcon, Tooltip, Box } from '@mantine/core'
 import { queryClient } from '@/libs/react-query'
-import { useDeleteUser } from '@/admin/services/user/api/useDeleteUser'
 import { User } from '@/admin/services/user/types'
+import { useDeleteUser } from '@/admin/services/user/api/useDeleteUser'
 
 type Props = {
   user: User

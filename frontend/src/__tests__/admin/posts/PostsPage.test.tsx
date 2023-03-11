@@ -1,7 +1,7 @@
+import { expect, vi, describe, it } from 'vitest'
+import { render, screen, within } from '@testing-library/react'
 import PostsPage from '@/pages/admin/posts'
 import { TestApp } from '@/__tests__/helper/TestApp'
-import { render, screen, within } from '@testing-library/react'
-import { expect, vi, describe, it } from 'vitest'
 
 // モック用に追記
 vi.mock('next/router', () => ({

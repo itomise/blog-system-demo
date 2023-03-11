@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
+import { UUID } from '@/shared/types'
 import { MutationConfig, queryClient } from '@/libs/react-query'
 import { adminAppAxios } from '@/libs/axios'
-import { UUID } from '@/shared/types'
 
 export type CreateUserRequest = {
   email: string

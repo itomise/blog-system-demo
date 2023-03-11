@@ -1,10 +1,10 @@
 import { UUID } from '@/shared/types'
 
-export const UserLoginType = {
+export const UserLoginTypeValue = {
   INTERNAL: 1,
   EXTERNAL_GOOGLE: 2,
 } as const
-export type UserLoginType = typeof UserLoginType[keyof typeof UserLoginType]
+export type UserLoginType = typeof UserLoginTypeValue[keyof typeof UserLoginTypeValue]
 
 export type User = {
   id: UUID

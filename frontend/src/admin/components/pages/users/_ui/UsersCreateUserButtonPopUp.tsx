@@ -3,9 +3,9 @@ import { useRef } from 'react'
 import { showNotification } from '@mantine/notifications'
 import { Popover, Button, Stack, Group } from '@mantine/core'
 import { queryClient } from '@/libs/react-query'
+import { useCreateUser } from '@/admin/services/user/api/useCreateUser'
 import { InputField } from '@/admin/components/shared/form/InputField'
 import { Form } from '@/admin/components/shared/form/Form'
-import { useCreateUser } from '@/admin/services/user/api/useCreateUser'
 
 const schema = z.object({
   email: z.string().email(),

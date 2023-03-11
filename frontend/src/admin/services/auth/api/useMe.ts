@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
+import { User } from '../../user/types'
 import { ExtractFnReturnType } from '@/libs/react-query'
 import { adminAppAxios } from '@/libs/axios'
-import { User } from '../../user/types'
 
 export type GetMeResponse = {
   id: string

@@ -1,10 +1,10 @@
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
 import { QueryClientProvider } from '@tanstack/react-query'
+import { Noto_Sans, Roboto } from '@next/font/google'
 import { NotificationsProvider } from '@mantine/notifications'
 import { MantineProvider, MantineThemeOverride } from '@mantine/core'
 import { queryClient } from '@/libs/react-query'
-import { Noto_Sans, Roboto } from '@next/font/google'
 
 const noto = Noto_Sans({
   subsets: ['latin'],

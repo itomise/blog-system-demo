@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { RichTextEditor } from '@mantine/rte'
 import { useMantineTheme } from '@mantine/core'
 
@@ -7,6 +6,7 @@ type Props = {
   onChange: (value: string) => void
 }
 
+// eslint-disable-next-line react/function-component-definition
 export default function PostRichTextEditor({ value, onChange }: Props) {
   const theme = useMantineTheme()
 

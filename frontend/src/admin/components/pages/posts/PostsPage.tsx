@@ -1,11 +1,11 @@
+import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { Box, Button, Text, Group, Table, Badge } from '@mantine/core'
-import { AdminTemplate } from '@/admin/components/shared/layout/AdminTemplate'
-import { AdminBreadcrumbs } from '@/admin/components/shared/link/AdminBreadcrumbs'
-import { InternalLink } from '@/admin/components/shared/link/InternalLink'
-import { useRouter } from 'next/router'
-import { useGetListPost } from '@/admin/services/post/api/useGetListPost'
 import { PostStatus, PostStatusLabel } from '@/admin/services/post/types'
+import { useGetListPost } from '@/admin/services/post/api/useGetListPost'
+import { InternalLink } from '@/admin/components/shared/link/InternalLink'
+import { AdminBreadcrumbs } from '@/admin/components/shared/link/AdminBreadcrumbs'
+import { AdminTemplate } from '@/admin/components/shared/layout/AdminTemplate'
 
 export const PostsPage: React.FC = () => {
   const data = useGetListPost()

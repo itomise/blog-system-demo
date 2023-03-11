@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
-import { MutationConfig } from '@/libs/react-query'
 import { UUID } from '@/shared/types'
+import { MutationConfig } from '@/libs/react-query'
 import { adminAppAxios } from '@/libs/axios'
 
 export type LoginWithSessionRequest = {

@@ -1,30 +1,25 @@
-import { GetBlogPostResponse } from '@/blog/services/post/api/useGetBlogPost'
-import { formatDate } from '@/shared/utils/dateUtil'
-import { Box, Title, Text, Card, TextInput, Loader, Grid } from '@mantine/core'
-import { IconSearch } from '@tabler/icons'
-import Head from 'next/head'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
+import Head from 'next/head'
+import { IconSearch } from '@tabler/icons'
+import { Box, Title, Text, Card, TextInput, Loader, Grid } from '@mantine/core'
 import { BlogTemplate } from '../../../shared/layout/BlogTemplate'
 import { usePostSearchState } from './BlogPostSearchPage.hooks'
+import { formatDate } from '@/shared/utils/dateUtil'
 
-type PageProps = {
-  post: GetBlogPostResponse
-}
-
-export const BlogPostSearchPage: React.FC<PageProps> = ({ post }) => {
+export const BlogPostSearchPage: React.FC = () => {
   const { query, replace } = useRouter()
   const { register, data, isLoading, searchedQuery } = usePostSearchState(query.query as string | undefined)
   const isBlankSearch = !searchedQuery
 
   useEffect(() => {
     if (searchedQuery) {
-      replace('/posts/search?query=' + searchedQuery)
+      replace(`/posts/search?query=${searchedQuery}`)
     } else if (searchedQuery === '') {
       replace('/posts/search')
     }
-  }, [searchedQuery])
+  }, [replace, searchedQuery])
 
   return (
     <>
@@ -47,7 +42,7 @@ export const BlogPostSearchPage: React.FC<PageProps> = ({ post }) => {
             <Grid grow>
               {data?.posts.map((post) => (
                 <Grid.Col md={5} key={post.id}>
-                  <Link href={`posts/${post.id}`}>
+                  <Link href={`/posts/${post.id}`}>
                     <Card shadow="lg" p="md" component="article">
                       <Title order={3} size="h5">
                         {post.title}
@@ -64,7 +59,7 @@ export const BlogPostSearchPage: React.FC<PageProps> = ({ post }) => {
               ))}
             </Grid>
             {data?.posts.length === 0 && !isBlankSearch && (
-              <Text color="gray.8" size="sm">
+              <Text color="gray.8" size="sm" mt="md">
                 検索結果がありません。
               </Text>
             )}

@@ -1,15 +1,15 @@
-import Head from 'next/head'
-import { Box, Button, Stack, Group } from '@mantine/core'
-import { AdminTemplate } from '@/admin/components/shared/layout/AdminTemplate'
-import { AdminBreadcrumbs } from '@/admin/components/shared/link/AdminBreadcrumbs'
-import { Form } from '@/admin/components/shared/form/Form'
-import { InputField } from '@/admin/components/shared/form/InputField'
 import { z } from 'zod'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 import { showNotification } from '@mantine/notifications'
-import { useCreatePost } from '@/admin/services/post/api/useCreatePost'
-import { PostRichTextEditor } from '@/admin/services/post/components/PostRichTextEditor'
+import { Box, Button, Stack, Group } from '@mantine/core'
 import { onMutateError } from '@/shared/api/onMutateError'
+import { PostRichTextEditor } from '@/admin/services/post/components/PostRichTextEditor'
+import { useCreatePost } from '@/admin/services/post/api/useCreatePost'
+import { AdminBreadcrumbs } from '@/admin/components/shared/link/AdminBreadcrumbs'
+import { AdminTemplate } from '@/admin/components/shared/layout/AdminTemplate'
+import { InputField } from '@/admin/components/shared/form/InputField'
+import { Form } from '@/admin/components/shared/form/Form'
 
 const schema = z.object({
   title: z.string().min(1).max(255),

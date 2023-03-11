@@ -3,9 +3,9 @@ export const PostStatus = {
   PUBLISHED: 2,
 } as const
 
-export type PostStatus = typeof PostStatus[keyof typeof PostStatus]
+export type PostStatusType = typeof PostStatus[keyof typeof PostStatus]
 
-export const PostStatusLabel: Record<PostStatus, string> = {
+export const PostStatusLabel: Record<PostStatusType, string> = {
   [PostStatus.UN_PUBLISHED]: '非公開中',
   [PostStatus.PUBLISHED]: '公開中',
 }

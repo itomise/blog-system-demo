@@ -1,5 +1,5 @@
-import { Center, Text, Loader, Skeleton } from '@mantine/core'
 import dynamic from 'next/dynamic'
+import { Skeleton } from '@mantine/core'
 
 export const PostRichTextEditor = dynamic(
   () => import('@/admin/services/post/components/PostRichTextEditor/PostRichTextEditor'),

@@ -4,9 +4,9 @@ import { showNotification } from '@mantine/notifications'
 import { Button, Center, Stack, Title } from '@mantine/core'
 import { useSignup } from '@/admin/services/auth/api/useSignup'
 import { InternalLink } from '@/admin/components/shared/link/InternalLink'
+import { SystemTemplate } from '@/admin/components/shared/layout/SystemTemplate'
 import { InputField } from '@/admin/components/shared/form/InputField'
 import { Form } from '@/admin/components/shared/form/Form'
-import { SystemTemplate } from '@/admin/components/shared/layout/SystemTemplate'
 
 const schema = z.object({
   email: z.string().email(),

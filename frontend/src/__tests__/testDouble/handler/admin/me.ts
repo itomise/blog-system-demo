@@ -1,9 +1,8 @@
-import { GetMeResponse } from '@/admin/services/auth/api/useMe'
 import { rest } from 'msw'
+import { GetMeResponse } from '@/admin/services/auth/api/useMe'
 
 export const adminMeHandler = [
-  rest.get('http://localhost:8080/api/admin/auth/me', (req, res, ctx) => {
-    return res(
+  rest.get('http://localhost:8080/api/admin/auth/me', (req, res, ctx) => res(
       ctx.status(200),
       ctx.json<GetMeResponse>({
         id: '118f310c-a327-4189-a9f6-864f01cf46e5',
@@ -11,6 +10,5 @@ export const adminMeHandler = [
         name: 'テスト太郎',
         isActive: true,
       })
-    )
-  }),
+    )),
 ]

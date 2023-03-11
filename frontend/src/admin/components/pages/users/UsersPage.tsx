@@ -1,13 +1,12 @@
-import { useRef } from 'react'
 import Head from 'next/head'
 import { Card, Text, Group, Badge, Box, List } from '@mantine/core'
 import { UsersEditUserButtonPopUp } from './_ui/UsersEditUserButtonPopUp'
 import { UsersDeleteUserButtonPopUp } from './_ui/UsersDeleteUserButtonPopUp'
 import { UsersCreateUserButtonPopUp } from './_ui/UsersCreateUserButtonPopUp'
-import { useCheckMe } from '@/admin/services/auth/api/useMe'
-import { AdminTemplate } from '@/admin/components/shared/layout/AdminTemplate'
-import { AdminBreadcrumbs } from '@/admin/components/shared/link/AdminBreadcrumbs'
 import { useUserList } from '@/admin/services/user/api/useUserList'
+import { useCheckMe } from '@/admin/services/auth/api/useMe'
+import { AdminBreadcrumbs } from '@/admin/components/shared/link/AdminBreadcrumbs'
+import { AdminTemplate } from '@/admin/components/shared/layout/AdminTemplate'
 
 export const UsersPage: React.FC = () => {
   const allUsers = useUserList()

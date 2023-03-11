@@ -1,7 +1,7 @@
-import { SearchBlogPostResponse, useFetchSearchBlogPost } from '@/blog/services/post/api/useSearchBlogPost'
-import { useDebouncedValue } from '@mantine/hooks'
-import { useEffect } from 'react'
 import { useForm, UseFormRegisterReturn } from 'react-hook-form'
+import { useEffect } from 'react'
+import { useDebouncedValue } from '@mantine/hooks'
+import { SearchBlogPostResponse, useFetchSearchBlogPost } from '@/blog/services/post/api/useSearchBlogPost'
 
 type FormType = {
   query: string
@@ -21,6 +21,7 @@ export const usePostSearchState = (
 
   useEffect(() => {
     if (queryParam) setValue('query', queryParam)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryParam])
 
   return {

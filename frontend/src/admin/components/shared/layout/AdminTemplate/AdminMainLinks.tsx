@@ -1,8 +1,8 @@
 import { FC } from 'react'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { IconBook, IconUsers } from '@tabler/icons'
 import { UnstyledButton, Group, ThemeIcon, Text, DefaultMantineColor } from '@mantine/core'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 
 type MainLinkProps = {
   icon: React.ReactNode

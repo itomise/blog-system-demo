@@ -1,7 +1,7 @@
-import { blogAppAxios } from '@/libs/axios'
-import { ExtractFnReturnType } from '@/libs/react-query'
-import { UUID } from '@/shared/types'
 import { useQuery } from '@tanstack/react-query'
+import { UUID } from '@/shared/types'
+import { ExtractFnReturnType } from '@/libs/react-query'
+import { blogAppAxios } from '@/libs/axios'
 
 type SearchBlogPostRequest = {
   query: string | undefined
@@ -13,7 +13,6 @@ export type SearchBlogPostResponse = {
   posts: {
     id: UUID
     title: string
-    content: string
     displayContent: string
     publishedAt: string
   }[]

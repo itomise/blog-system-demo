@@ -1,9 +1,9 @@
-import { InternalLink } from '@/admin/components/shared/link/InternalLink'
-import { Box, Container, Header, useMantineTheme, Text, Group, TextInput, ActionIcon } from '@mantine/core'
-import { IconAlien, IconBrandGithub, IconBrandTwitter, IconSearch } from '@tabler/icons'
-import { useRouter } from 'next/router'
-import { useCallback } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useCallback } from 'react'
+import { useRouter } from 'next/router'
+import { IconAlien, IconBrandGithub, IconBrandTwitter, IconSearch } from '@tabler/icons'
+import { Box, Container, Header, useMantineTheme, Text, Group, TextInput, ActionIcon } from '@mantine/core'
+import { InternalLink } from '@/admin/components/shared/link/InternalLink'
 
 type FormType = {
   query: string
@@ -19,10 +19,13 @@ export const BlogTemplate: React.FC<Props> = ({ children }) => {
 
   const theme = useMantineTheme()
 
-  const onSubmit: SubmitHandler<FormType> = useCallback(({ query }) => {
-    const href = `/posts/search?query=${query}`
-    router.push(href, href, { shallow: true })
-  }, [])
+  const onSubmit: SubmitHandler<FormType> = useCallback(
+    ({ query }) => {
+      const href = `/posts/search?query=${query}`
+      router.push(href, href, { shallow: true })
+    },
+    [router]
+  )
 
   return (
     <Box component="main" sx={{ background: theme.colors.gray[1], minHeight: '100vh' }}>

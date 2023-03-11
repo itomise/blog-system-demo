@@ -1,6 +1,6 @@
-import { adminAppAxios } from '@/libs/axios'
-import { MutationConfig } from '@/libs/react-query'
 import { useMutation } from '@tanstack/react-query'
+import { MutationConfig } from '@/libs/react-query'
+import { adminAppAxios } from '@/libs/axios'
 
 type Request = {
   title: string
