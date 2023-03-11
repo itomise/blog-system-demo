@@ -1,9 +1,9 @@
-import { GetListUserResponse } from '@/admin/services/user/api/useUserList'
 import { rest } from 'msw'
+import { GetListUserResponse } from '@/admin/services/user/api/useUserList'
 
 export const adminUsersHandler = [
-  rest.get('http://localhost:8080/api/admin/users', (req, res, ctx) => {
-    return res(
+  rest.get('http://localhost:8080/api/admin/users', (req, res, ctx) =>
+    res(
       ctx.status(200),
       ctx.json<GetListUserResponse>({
         users: [
@@ -28,5 +28,5 @@ export const adminUsersHandler = [
         ],
       })
     )
-  }),
+  ),
 ]

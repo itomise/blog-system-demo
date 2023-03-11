@@ -1,23 +1,23 @@
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import { useRouter } from 'next/router'
 import { IconChevronRight, IconChevronLeft, IconLogout } from '@tabler/icons'
 import { useDisclosure } from '@mantine/hooks'
 import { Box, Group, UnstyledButton, useMantineTheme, Text, Menu } from '@mantine/core'
+import { queryClient } from '@/libs/react-query'
 import { useMe } from '@/admin/services/auth/api/useMe'
 import { useLogout } from '@/admin/services/auth/api/useLogout'
-import { queryClient } from '@/libs/react-query'
 
 export const AdminBottomMenu: FC = () => {
   const theme = useMantineTheme()
   const me = useMe()
   const [opened, { close, open }] = useDisclosure(false)
+  const router = useRouter()
   const { mutate, isLoading } = useLogout({
     onSuccess: async () => {
       await router.push('/')
       queryClient.removeQueries({ queryKey: ['admin'] })
     },
   })
-  const router = useRouter()
 
   const onLogout = async () => {
     mutate(undefined)

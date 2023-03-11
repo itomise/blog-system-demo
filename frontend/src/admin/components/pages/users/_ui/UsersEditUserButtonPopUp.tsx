@@ -2,13 +2,13 @@ import { z } from 'zod'
 import { useRef } from 'react'
 import { IconPencil } from '@tabler/icons'
 import { showNotification } from '@mantine/notifications'
-import { Popover, ActionIcon, Stack, Button, Group, Box, Tooltip, Text } from '@mantine/core'
+import { Popover, ActionIcon, Stack, Button, Group, Box, Tooltip } from '@mantine/core'
 import { queryClient } from '@/libs/react-query'
+import { User } from '@/admin/services/user/types'
+import { useUpdateUser } from '@/admin/services/user/api/useUpdateUser'
+import { useMe } from '@/admin/services/auth/api/useMe'
 import { InputField } from '@/admin/components/shared/form/InputField'
 import { Form } from '@/admin/components/shared/form/Form'
-import { useMe } from '@/admin/services/auth/api/useMe'
-import { useUpdateUser } from '@/admin/services/user/api/useUpdateUser'
-import { User } from '@/admin/services/user/types'
 
 const schema = z.object({
   name: z.string().min(5).max(255),

@@ -6,7 +6,7 @@
     "start": "next start",
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint": "next lint --dir src",
+    "lint": "next lint --fix --dir src",
     "scaffdog": "scaffdog generate",
     "vitest-preview": "vitest-preview"
   },
@@ -41,6 +41,7 @@
   "devDependencies": {
     "@babel/core": "^7.19.6",
     "@next/env": "^13.1.6",
+    "@tanstack/eslint-plugin-query": "^4.24.11",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
     "@types/node": "18.11.3",

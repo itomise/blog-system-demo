@@ -1,6 +1,6 @@
-import { MantineProvider } from '@mantine/core'
-import { NotificationsProvider } from '@mantine/notifications'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { NotificationsProvider } from '@mantine/notifications'
+import { MantineProvider } from '@mantine/core'
 
 type Props = {
   children: React.ReactNode

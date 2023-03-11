@@ -1,21 +1,34 @@
-import { PostStatus } from "@/admin/services/post/types"
-import { Tooltip, Button } from "@mantine/core"
+import { Tooltip, Button } from '@mantine/core'
+import { PostStatus, PostStatusType } from '@/admin/services/post/types'
 
-type Props = { 
-  status: PostStatus
+type Props = {
+  status: PostStatusType
   unPublishLoading: boolean
   publishLoading: boolean
   otherLoading: boolean
   onPublish: () => void
-  onUnPublish: () => void 
+  onUnPublish: () => void
 }
 
-export const PublishOrUnPublishButton: React.FC<Props> = ({ status, unPublishLoading, otherLoading, publishLoading, onPublish, onUnPublish }) => {
-  switch(status) {
+export const PublishOrUnPublishButton: React.FC<Props> = ({
+  status,
+  unPublishLoading,
+  otherLoading,
+  publishLoading,
+  onPublish,
+  onUnPublish,
+}) => {
+  switch (status) {
     case PostStatus.PUBLISHED:
       return (
         <Tooltip label="非公開にする" position="bottom">
-          <Button color="green" type="button" loading={unPublishLoading} onClick={onUnPublish} disabled={otherLoading || publishLoading}>
+          <Button
+            color="green"
+            type="button"
+            loading={unPublishLoading}
+            onClick={onUnPublish}
+            disabled={otherLoading || publishLoading}
+          >
             公開中
           </Button>
         </Tooltip>
@@ -23,13 +36,18 @@ export const PublishOrUnPublishButton: React.FC<Props> = ({ status, unPublishLoa
     case PostStatus.UN_PUBLISHED:
       return (
         <Tooltip label="公開にする" position="bottom">
-          <Button color="gray" type="button" loading={publishLoading} onClick={onPublish} disabled={otherLoading || unPublishLoading}>
+          <Button
+            color="gray"
+            type="button"
+            loading={publishLoading}
+            onClick={onPublish}
+            disabled={otherLoading || unPublishLoading}
+          >
             非公開
           </Button>
         </Tooltip>
       )
     default:
-      throw new Error(status satisfies never)
+      throw new Error(status)
   }
-  
 }

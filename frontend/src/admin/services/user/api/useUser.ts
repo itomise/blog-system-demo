@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { adminAppAxios } from '@/libs/axios'
 import { User } from '../types'
+import { adminAppAxios } from '@/libs/axios'
 
 const getUser = async (userId: string): Promise<User> => {
   const { data } = await adminAppAxios.get(`/users/${userId}`)

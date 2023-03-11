@@ -1,14 +1,14 @@
-import { adminAppAxios } from '@/libs/axios'
-import { ExtractFnReturnType, MutationConfig } from '@/libs/react-query'
-import { UUID } from '@/shared/types'
 import { useQuery } from '@tanstack/react-query'
-import { PostStatus } from '../types'
+import { PostStatusType } from '../types'
+import { UUID } from '@/shared/types'
+import { ExtractFnReturnType } from '@/libs/react-query'
+import { adminAppAxios } from '@/libs/axios'
 
 type Response = {
   id: UUID
   title: string
   content: string
-  status: PostStatus
+  status: PostStatusType
   displayContent: string
 }
 

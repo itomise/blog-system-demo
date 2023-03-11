@@ -1,18 +1,18 @@
 import { z } from 'zod'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import { IconBrandGoogle } from '@tabler/icons'
 import { showNotification } from '@mantine/notifications'
-import { Anchor, Button, Center, Divider, Paper, Stack, Title, useMantineTheme } from '@mantine/core'
+import { useToggle } from '@mantine/hooks'
+import { Button, Center, Divider, Stack, Title } from '@mantine/core'
+import { useCheckMe } from '@/admin/services/auth/api/useMe'
 import { useLoginWithSession } from '@/admin/services/auth/api/useLoginWithSession'
+import { onGoogleOAuth2Request } from '@/admin/services/auth/api/onGoogleOAuth2Request'
+import { InternalLink } from '@/admin/components/shared/link/InternalLink'
+import { SystemTemplate } from '@/admin/components/shared/layout/SystemTemplate'
 import { InputField } from '@/admin/components/shared/form/InputField'
 import { Form } from '@/admin/components/shared/form/Form'
-import { IconBrandGoogle } from '@tabler/icons'
-import { useToggle } from '@mantine/hooks'
-import { SystemTemplate } from '@/admin/components/shared/layout/SystemTemplate'
-import { InternalLink } from '@/admin/components/shared/link/InternalLink'
-import { onGoogleOAuth2Request } from '@/admin/services/auth/api/onGoogleOAuth2Request'
-import { useCheckMe } from '@/admin/services/auth/api/useMe'
-import { useEffect } from 'react'
 
 const schema = z.object({
   email: z.string().min(5).max(255).email(),
@@ -41,7 +41,7 @@ export const LoginPage: React.FC = () => {
 
   useEffect(() => {
     if (me) router.push('/admin/users')
-  }, [me])
+  }, [me, router])
 
   const onClickGoogleLogin = () => {
     setIsGoogleLoginStart(true)

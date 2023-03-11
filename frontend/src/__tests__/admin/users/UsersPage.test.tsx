@@ -1,12 +1,12 @@
-import UsersPage from '@/pages/admin/users'
-import { TestApp } from '@/__tests__/helper/TestApp'
-import { render, screen, within, cleanup } from '@testing-library/react'
 import { expect, vi, describe, beforeEach, it, afterEach } from 'vitest'
-import { server } from '@/__tests__/testDouble/server'
 import { rest } from 'msw'
-import { GetListUserResponse } from '@/admin/services/user/api/useUserList'
-import { queryClient } from '@/libs/react-query'
 import userEvent from '@testing-library/user-event'
+import { render, screen, within, cleanup } from '@testing-library/react'
+import UsersPage from '@/pages/admin/users'
+import { queryClient } from '@/libs/react-query'
+import { GetListUserResponse } from '@/admin/services/user/api/useUserList'
+import { server } from '@/__tests__/testDouble/server'
+import { TestApp } from '@/__tests__/helper/TestApp'
 
 vi.mock('next/router', () => ({
   useRouter() {
@@ -26,8 +26,8 @@ const usersPageRender = () =>
 describe('admin/users ページ', async () => {
   beforeEach(() => {
     server.use(
-      rest.get('http://localhost:8080/api/admin/users', (req, res, ctx) => {
-        return res(
+      rest.get('http://localhost:8080/api/admin/users', (req, res, ctx) =>
+        res(
           ctx.status(200),
           ctx.json<GetListUserResponse>({
             users: [
@@ -52,10 +52,8 @@ describe('admin/users ページ', async () => {
             ],
           })
         )
-      }),
-      rest.put('http://localhost:8080/api/admin/users/:userId', (req, res, ctx) => {
-        return res(ctx.status(200))
-      })
+      ),
+      rest.put('http://localhost:8080/api/admin/users/:userId', (req, res, ctx) => res(ctx.status(200)))
     )
   })
   afterEach(() => cleanup())
