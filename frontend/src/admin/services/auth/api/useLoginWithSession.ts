@@ -26,3 +26,18 @@ export const useLoginWithSession = ({ config }: Options = {}) =>
     ...config,
     mutationFn: loginWithSession,
   })
+
+const loginWithJwt = async (payload: LoginWithSessionRequest) => {
+  const { data } = await adminAppAxios.post<{ token: string }>('/auth-jwt/login', payload)
+  return data
+}
+
+type JwtOptions = {
+  config?: MutationConfig<typeof loginWithJwt>
+}
+
+export const useLoginWithJwt = ({ config }: JwtOptions = {}) =>
+  useMutation({
+    ...config,
+    mutationFn: loginWithJwt,
+  })

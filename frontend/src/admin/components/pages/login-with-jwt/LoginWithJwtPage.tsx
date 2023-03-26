@@ -3,14 +3,10 @@ import { useState } from 'react'
 import Head from 'next/head'
 import { Button, Center, Container, Paper, Stack, Title, useMantineTheme, Text, List, Box } from '@mantine/core'
 import { useGetMeWithJwt } from '@/admin/services/auth/api/useMe'
+import { useLoginWithJwt } from '@/admin/services/auth/api/useLoginWithSession'
 import { InternalLink } from '@/admin/components/shared/link/InternalLink'
 import { InputField } from '@/admin/components/shared/form/InputField'
 import { Form } from '@/admin/components/shared/form/Form'
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function useLoginWithJwt(arg0: { config: { onSuccess: (res: any) => void } }): { mutate: any; isLoading: any } {
-  throw new Error('Function not implemented.')
-}
 
 const schema = z.object({
   email: z.string().min(5).max(255).email(),
