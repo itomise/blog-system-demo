@@ -2,10 +2,10 @@ package com.itomise.adminApi.module
 
 import com.auth0.jwk.JwkProvider
 import com.auth0.jwk.JwkProviderBuilder
-import com.itomise.core.domain.user.vo.UserPrincipal
+import com.itomise.blogDb.lib.SessionStorageDatabase
+import com.itomise.core.domain.security.entities.Session.Companion.SESSION_EXPIRATION_SECONDS
 import com.itomise.core.domain.security.vo.TokenConfig
-import com.itomise.blogDb.lib.RedisFactory
-import com.itomise.blogDb.lib.SessionStorageRedis
+import com.itomise.core.domain.user.vo.UserPrincipal
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -23,9 +23,9 @@ fun Application.authentication() {
     val secretSignKey = hex(adminApiEnvConfig.session.signKey)
 
     install(Sessions) {
-        cookie<UserPrincipal>("user_session", SessionStorageRedis()) {
+        cookie<UserPrincipal>("user_session", SessionStorageDatabase()) {
             cookie.path = "/"
-            cookie.maxAgeInSeconds = RedisFactory.SESSION_EXPIRES_DURATION
+            cookie.maxAgeInSeconds = SESSION_EXPIRATION_SECONDS
             cookie.httpOnly = true
             if (!isDev) {
                 cookie.secure = true
