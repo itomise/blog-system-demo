@@ -2,8 +2,8 @@
 
 色々使ってみるためのサンプルプロジェクト
 
-https://itomise.com
-https://itomise.com/admin/login
+- https://itomise.com (blog top)
+- https://itomise.com/admin/login (blog admin)
 
 ## 技術構成
 
