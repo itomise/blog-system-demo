@@ -3,7 +3,6 @@ package com.itomise.adminApi
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.itomise.adminApi.module.*
 import com.itomise.blogDb.lib.DataBaseFactory
-import com.itomise.blogDb.lib.RedisFactory
 import com.itomise.core.module.RequestLoggingPlugin
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
@@ -71,9 +70,9 @@ fun Application.module() {
 
     statusPage()
 
-    RedisFactory.init(
-        endpoint = adminApiEnvConfig.redis.endpoint
-    )
+//    RedisFactory.init(
+//        endpoint = adminApiEnvConfig.redis.endpoint
+//    )
 
     DataBaseFactory.init(
         url = adminApiEnvConfig.db.url,

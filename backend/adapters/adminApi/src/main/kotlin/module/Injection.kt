@@ -1,6 +1,7 @@
 package com.itomise.adminApi.module
 
 import com.itomise.blogDb.repository.PostRepository
+import com.itomise.blogDb.repository.SessionRepository
 import com.itomise.blogDb.repository.UserRepository
 import com.itomise.core.domain.security.services.HashingService
 import com.itomise.core.domain.security.services.JwtTokenService
@@ -20,6 +21,7 @@ val useCaseModule = module {
 val repositoryModule = module {
     single { UserRepository() }
     single { PostRepository() }
+    single { SessionRepository() }
 }
 
 val serviceModule = module {

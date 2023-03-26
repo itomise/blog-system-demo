@@ -9,7 +9,7 @@ data class AdminEnvConfig(
     val isTest: Boolean,
     val allowHost: String,
     val db: EnvConfigDb,
-    val redis: EnvConfigRedis,
+//    val redis: EnvConfigRedis,
     val session: EnvConfigSession,
     val jwt: EnvConfigJwt,
     val urls: Urls,
@@ -24,9 +24,9 @@ data class AdminEnvConfig(
         val instanceConnectionName: String?,
     )
 
-    data class EnvConfigRedis(
-        val endpoint: String
-    )
+//    data class EnvConfigRedis(
+//        val endpoint: String
+//    )
 
     data class EnvConfigSession(
         val signKey: String
@@ -80,9 +80,9 @@ fun initializeEnvConfig(config: ApplicationConfig) {
             instanceUnixSocket = fromConfigOrNull("app.db.instanceUnixSocket"),
             instanceConnectionName = fromConfigOrNull("app.db.instanceConnectionName"),
         ),
-        redis = AdminEnvConfig.EnvConfigRedis(
-            endpoint = fromConfig("app.redis.endpoint"),
-        ),
+//        redis = AdminEnvConfig.EnvConfigRedis(
+//            endpoint = fromConfig("app.redis.endpoint"),
+//        ),
         session = AdminEnvConfig.EnvConfigSession(
             signKey = fromConfig("app.sessionSignKey"),
         ),
