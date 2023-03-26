@@ -1,5 +1,6 @@
 package com.itomise.adminApi.controller.auth
 
+import com.itomise.adminApi.module.adminApiEnvConfig
 import com.itomise.core.lib.google.GoogleOAuth2Authentication
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -16,6 +17,9 @@ fun Route.startGoogleOAuth2() {
         val state = BigInteger(130, SecureRandom()).toString(32)
 
         val authenticationURI = googleOAuth2Authentication.createOpenConnectAuthURI(state)
+
+        val url = adminApiEnvConfig.urls.googleOAuth2CallbackUrl
+        call.application.environment.log.info("Environment Variable log : $url")
 
         call.response.cookies.append(
             Cookie(

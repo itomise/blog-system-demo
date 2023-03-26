@@ -24,7 +24,14 @@ export const BlogPostDetailPage: React.FC<PageProps> = ({ post }) => (
       </Text>
       <Box mt="lg">
         <Card>
-          <TypographyStylesProvider>
+          <TypographyStylesProvider
+            sx={{
+              iframe: {
+                width: '100%',
+                aspectRatio: '16 / 9',
+              },
+            }}
+          >
             {/* eslint-disable-next-line react/no-danger */}
             <div dangerouslySetInnerHTML={{ __html: post.content }} className="postEditor" />
           </TypographyStylesProvider>

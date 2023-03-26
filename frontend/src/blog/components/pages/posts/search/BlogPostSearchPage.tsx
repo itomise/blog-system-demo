@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Head from 'next/head'
@@ -10,7 +10,8 @@ import { formatDate } from '@/shared/utils/dateUtil'
 
 export const BlogPostSearchPage: React.FC = () => {
   const { query, replace } = useRouter()
-  const { register, data, isLoading, searchedQuery } = usePostSearchState(query.query as string | undefined)
+  const pageQuery = useMemo(() => query.query, [query.query])
+  const { register, data, isLoading, searchedQuery } = usePostSearchState(pageQuery as string | undefined)
   const isBlankSearch = !searchedQuery
 
   useEffect(() => {
@@ -19,7 +20,9 @@ export const BlogPostSearchPage: React.FC = () => {
     } else if (searchedQuery === '') {
       replace('/posts/search')
     }
-  }, [replace, searchedQuery])
+    // 無限ループになるため
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchedQuery])
 
   return (
     <>
