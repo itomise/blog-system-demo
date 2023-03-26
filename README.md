@@ -2,6 +2,9 @@
 
 色々使ってみるためのサンプルプロジェクト
 
+https://itomise.com
+https://itomise.com/admin/login
+
 ## 技術構成
 
 - backend
