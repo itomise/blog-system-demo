@@ -28,7 +28,7 @@ export const LoginWithJwtPage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>login with jwt</title>
+        <title>login | itomise admin</title>
       </Head>
       <Container sx={{ background: theme.colors.gray[2] }}>
         <main>

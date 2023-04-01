@@ -51,7 +51,7 @@ export const LoginPage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>login with session</title>
+        <title>login | itomise admin</title>
       </Head>
 
       <main>

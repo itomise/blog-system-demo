@@ -12,7 +12,7 @@ type PageProps = {
 export const BlogPostDetailPage: React.FC<PageProps> = ({ post }) => (
   <>
     <Head>
-      <title>{post.title} | itomise blog</title>
+      <title>{post.title} | itomise blog demo</title>
     </Head>
 
     <BlogTemplate>

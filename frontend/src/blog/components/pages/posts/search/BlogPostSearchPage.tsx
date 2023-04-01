@@ -27,7 +27,7 @@ export const BlogPostSearchPage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Search | itomise blog</title>
+        <title>Search | itomise blog demo</title>
       </Head>
 
       <BlogTemplate>
