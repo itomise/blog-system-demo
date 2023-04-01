@@ -1,7 +1,7 @@
 import { expect, vi, describe, beforeEach, it, afterEach } from 'vitest'
 import { rest } from 'msw'
 import userEvent from '@testing-library/user-event'
-import { render, screen, within, cleanup } from '@testing-library/react'
+import { render, screen, within, cleanup, waitFor } from '@testing-library/react'
 import UsersPage from '@/pages/admin/users'
 import { queryClient } from '@/libs/react-query'
 import { GetListUserResponse } from '@/admin/services/user/api/useUserList'
@@ -74,9 +74,11 @@ describe('admin/users ページ', async () => {
     await userEvent.type(modal.querySelector('input')!!, 'test')
     await userEvent.click(screen.getByText('送信'))
 
-    expect(screen.getByText(/ユーザー情報を更新しました/i)).toBeDefined()
-    expect(spy).toHaveBeenCalledTimes(1)
-    expect(spy).toHaveBeenCalledWith(['admin', 'user'])
+    waitFor(() => {
+      expect(screen.getByText(/ユーザー情報を更新しました/i)).toBeDefined()
+      expect(spy).toHaveBeenCalledTimes(1)
+      expect(spy).toHaveBeenCalledWith(['admin', 'user'])
+    })
   })
 
   it('ユーザー編集の名前が空だった場合送信できないこと', async () => {
