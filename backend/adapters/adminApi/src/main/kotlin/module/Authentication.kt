@@ -20,14 +20,17 @@ lateinit var jwtTokenConfig: TokenConfig
 
 fun Application.authentication() {
     val isDev = environment.developmentMode
+    val isTesting = adminApiEnvConfig.isTest
     val secretSignKey = hex(adminApiEnvConfig.session.signKey)
 
     install(Sessions) {
         cookie<UserPrincipal>("user_session", SessionStorageDatabase()) {
             cookie.path = "/"
             cookie.maxAgeInSeconds = SESSION_EXPIRATION_SECONDS
+            cookie.extensions["SameSite"] = "None"
             cookie.httpOnly = true
-            if (!isDev) {
+            if (!isDev && !isTesting) {
+                cookie.domain = "itomise.com"
                 cookie.secure = true
             }
             transform(SessionTransportTransformerMessageAuthentication(secretSignKey))

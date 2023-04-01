@@ -12,12 +12,8 @@ data class Session internal constructor(
 ) {
     fun isValidExpireAt() = expireAt > LocalDateTime.now()
 
-    fun refresh() = this.copy(
-        expireAt = LocalDateTime.now()
-    )
-
     companion object {
-        const val SESSION_EXPIRATION_SECONDS: Long = 60 * 60 * 24 * 30
+        const val SESSION_EXPIRATION_SECONDS: Long = 60 * 60 * 24 * 7
 
         fun new(id: SessionId, userId: UUID) = Session(
             id = id,

@@ -6,6 +6,7 @@ import com.itomise.core.domain.security.entities.SessionId
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import java.time.LocalDateTime
+import java.util.*
 
 class SessionRepository {
     private fun resultRowToPostEntity(row: ResultRow): Session {
@@ -19,6 +20,13 @@ class SessionRepository {
     suspend fun findById(id: SessionId): Session? {
         return SessionTable
             .select(SessionTable.id eq id)
+            .map(::resultRowToPostEntity)
+            .firstOrNull()
+    }
+
+    suspend fun findByUserId(userId: UUID): Session? {
+        return SessionTable
+            .select(SessionTable.userId eq userId)
             .map(::resultRowToPostEntity)
             .firstOrNull()
     }
