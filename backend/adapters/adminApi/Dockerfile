@@ -15,8 +15,8 @@ WORKDIR /app
 RUN groupadd -r appuser && useradd -r -g appuser appuser
 
 # JAR ファイルをコピー
-COPY --from=builder /app/adapters/adminApi/build/libs/*-all.jar /app/app.jar
-COPY ./src/main/resources/application.prod.conf /app/application.prod.conf
+COPY --from=build /app/adapters/adminApi/build/libs/*-all.jar /app/app.jar
+COPY --from=build /app/adapters/adminApi/src/main/resources/application.prod.conf /app/application.prod.conf
 
 # ファイルの所有権を appuser に変更
 RUN chown -R appuser:appuser /app
