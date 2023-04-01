@@ -1,3 +1,12 @@
+# ビルドステージ
+FROM openjdk:17-slim as build
+WORKDIR /app
+
+COPY . .
+
+RUN ./gradlew :adapters:blogApi:build -x test
+
+# ランタイムステージ
 FROM openjdk:17-slim
 
 WORKDIR /app
@@ -6,8 +15,8 @@ WORKDIR /app
 RUN groupadd -r appuser && useradd -r -g appuser appuser
 
 # JAR ファイルをコピー
-COPY ./build/libs/*-all.jar /app/app.jar
-COPY ./src/main/resources/application.prod.conf /app/application.prod.conf
+COPY --from=build /app/adapters/blogApi/build/libs/*-all.jar /app/app.jar
+COPY --from=build /app/adapters/blogApi/src/main/resources/application.prod.conf /app/application.prod.conf
 
 # ファイルの所有権を appuser に変更
 RUN chown -R appuser:appuser /app
