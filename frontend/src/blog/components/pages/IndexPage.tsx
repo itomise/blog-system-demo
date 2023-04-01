@@ -12,7 +12,7 @@ type PageProps = {
 export const IndexPage: React.FC<PageProps> = ({ posts }) => (
   <>
     <Head>
-      <title>TOP | TodoList</title>
+      <title>TOP | itomise blog demo</title>
     </Head>
 
     <BlogTemplate>
