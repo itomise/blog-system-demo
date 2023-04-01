@@ -12,25 +12,29 @@ import java.net.ConnectException
 fun Application.statusPage() {
     install(StatusPages) {
         exception<IllegalArgumentException> { call, e ->
-            this@statusPage.log.info("BadRequest : ${e.localizedMessage}")
+            call.application.environment.log.info("BadRequest : ${e.localizedMessage}")
             call.respond(HttpStatusCode.BadRequest)
         }
         exception<IllegalInvalidCsrfHeaderException> { call, _ ->
             call.respond(HttpStatusCode.Forbidden)
         }
         exception<CustomBadRequestException> { call, e ->
-            this@statusPage.log.info("BadRequest : ${e.localizedMessage}")
+            call.application.environment.log.info("BadRequest : ${e.localizedMessage}")
             call.respond(HttpStatusCode.BadRequest, e.message.toString())
         }
         exception<NotFoundException> { call, _ ->
             call.respond(HttpStatusCode.NotFound)
         }
         exception<ConnectException> { call, connectException ->
-            this@statusPage.log.error(connectException.message)
+            call.application.environment.log.error(connectException.message)
             call.respond(HttpStatusCode.InternalServerError)
         }
         exception<Throwable> { call, throwable ->
-            this@statusPage.log.error(throwable.message)
+            call.application.environment.log.error(throwable.message)
+            call.respond(HttpStatusCode.InternalServerError)
+        }
+        exception<Exception> { call, exception ->
+            call.application.environment.log.error(exception.message)
             call.respond(HttpStatusCode.InternalServerError)
         }
     }

@@ -26,6 +26,8 @@ fun Application.authentication() {
         cookie<UserPrincipal>("user_session", SessionStorageDatabase()) {
             cookie.path = "/"
             cookie.maxAgeInSeconds = SESSION_EXPIRATION_SECONDS
+            cookie.extensions["SameSite"] = "None"
+            cookie.domain = ".itomise.com"
             cookie.httpOnly = true
             if (!isDev) {
                 cookie.secure = true
