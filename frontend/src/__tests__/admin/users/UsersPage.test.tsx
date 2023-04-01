@@ -74,7 +74,7 @@ describe('admin/users ページ', async () => {
     await userEvent.type(modal.querySelector('input')!!, 'test')
     await userEvent.click(screen.getByText('送信'))
 
-    waitFor(() => {
+    await waitFor(() => {
       expect(screen.getByText(/ユーザー情報を更新しました/i)).toBeDefined()
       expect(spy).toHaveBeenCalledTimes(1)
       expect(spy).toHaveBeenCalledWith(['admin', 'user'])
@@ -91,7 +91,9 @@ describe('admin/users ページ', async () => {
     await userEvent.clear(modal.querySelector('input')!!)
     await userEvent.click(screen.getByText('送信'))
 
-    expect(spy).toHaveBeenCalledTimes(0)
-    expect(screen.getByText(/must contain at least 5 character/i)).toBeDefined()
+    await waitFor(() => {
+      expect(spy).toHaveBeenCalledTimes(0)
+      expect(screen.getByText(/must contain at least 5 character/i)).toBeDefined()
+    })
   })
 })
