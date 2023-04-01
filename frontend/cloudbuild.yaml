@@ -1,7 +1,7 @@
 steps:
 # Build the container image
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/itomise-blog/frontend', '.']
+  args: ['build', '-t', 'gcr.io/itomise-blog/frontend', '-f', './Dockerfile', '.']
 # Push the container image to Container Registry
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/itomise-blog/frontend']
