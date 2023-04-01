@@ -5,6 +5,8 @@ on:
   pull_request:
     paths:
       - 'frontend/**'
+    branches-ignore:
+      - main
 
 jobs:
   test:

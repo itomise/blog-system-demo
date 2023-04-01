@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - 'backend/**'
+    branches-ignore:
+      - main
 
 jobs:
   call_all_tests:
