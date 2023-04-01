@@ -15,7 +15,7 @@ class SessionStorageDatabase : SessionStorage, KoinComponent {
     // ktor の仕様変更で壊れやすくなりそうなので要注意
     private val ktorSessionValuePrefix = "id=%23s"
 
-    override suspend fun write(id: String, value: String) {
+    override suspend fun write(id: String, value: String) = runBlocking {
         val userId = value.substringAfterLast(ktorSessionValuePrefix, "")
 
         val session = Session.new(
@@ -28,7 +28,7 @@ class SessionStorageDatabase : SessionStorage, KoinComponent {
         }
     }
 
-    override suspend fun read(id: String): String {
+    override suspend fun read(id: String): String = runBlocking {
         val session = dbQuery {
             sessionRepository.findById(id)
         }
@@ -44,11 +44,11 @@ class SessionStorageDatabase : SessionStorage, KoinComponent {
             dbQuery {
                 sessionRepository.save(updatedSession)
             }
-            return ktorSessionValuePrefix + updatedSession.userId.toString()
+            return@runBlocking ktorSessionValuePrefix + updatedSession.userId.toString()
         } else throw NoSuchElementException("Session $id not found.")
     }
 
-    override suspend fun invalidate(id: String) {
+    override suspend fun invalidate(id: String) = runBlocking {
         dbQuery {
             sessionRepository.delete(id)
         }
