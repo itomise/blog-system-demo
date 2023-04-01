@@ -39,3 +39,8 @@
   - Load Balancer
   - Cloud SQL
   - MemoryStore (Redis)
+- ci/cd
+  - test
+    - Github Actions
+  - build - deploy
+    - Cloud build
