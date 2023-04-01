@@ -74,11 +74,9 @@ describe('admin/users ページ', async () => {
     await userEvent.type(modal.querySelector('input')!!, 'test')
     await userEvent.click(screen.getByText('送信'))
 
-    await waitFor(() => {
-      expect(screen.getByText(/ユーザー情報を更新しました/i)).toBeDefined()
-      expect(spy).toHaveBeenCalledTimes(1)
-      expect(spy).toHaveBeenCalledWith(['admin', 'user'])
-    })
+    expect(await screen.findByText(/ユーザー情報を更新しました/i)).toBeDefined()
+    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledWith(['admin', 'user'])
   })
 
   it('ユーザー編集の名前が空だった場合送信できないこと', async () => {
