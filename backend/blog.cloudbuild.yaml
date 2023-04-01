@@ -1,0 +1,24 @@
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'gcr.io/itomise-blog/blog-api', '-f', 'backend/adapters/blogApi/Dockerfile', 'backend' ]
+  # Push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'push', 'gcr.io/itomise-blog/blog-api' ]
+  # Deploy container image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: [
+      'run', 'deploy', 'blog-api',
+      '--project', 'itomise-blog',
+      '--image', 'gcr.io/itomise-blog/blog-api:latest',
+      '--memory', '512Mi',
+      '--max-instances', '4',
+      '--add-cloudsql-instances', 'itomise-blog:us-central1:blog',
+      '--region', 'us-central1',
+      '--platform', 'managed',
+      '--allow-unauthenticated',
+      '--update-secrets', 'DB_PASSWORD=db-user-password:latest,DB_USER=db-user-name:latest,INSTANCE_UNIX_SOCKET=instance-unix-socket:latest,INSTANCE_CONNECTION_NAME=instance-connection-name:latest,DB_URL=db-url:latest,JWT_PRIVATE_KEY=jwt-private-key:latest,SENDGRID_API_KEY=sendgrid-api-key:latest,SESSION_SIGN_KEY=session-sign-key:latest,JWT_ENCRYPTION_KEY=jwt-encryption-key:latest,REDIS_ENDPOINT=redis-endpoint:latest,GOOGLE_OAUTH2_CLIENT_SECRET=google-oauth2-client-secret:latest'
+    ]
+images:
+  - gcr.io/itomise-blog/blog-api
