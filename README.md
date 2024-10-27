@@ -1,11 +1,11 @@
-# blog system
+# Blog System Demo
 
-色々使ってみるためのサンプルプロジェクト
+Currently not open to the public
 
 - https://blog-demo.itomise.com (blog top)
 - https://blog-demo.itomise.com/admin/login (blog admin)
 
-## 技術構成
+## Architecture
 
 - backend
   - Kotlin / Ktor
