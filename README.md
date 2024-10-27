@@ -18,7 +18,7 @@ Currently not open to the public
     - session
       - Redis
     - jwt
-  - test
+  - Test
     - Ktor
     - JUnit
     - mockk
