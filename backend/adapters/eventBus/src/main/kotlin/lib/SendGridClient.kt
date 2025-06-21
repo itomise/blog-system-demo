@@ -15,6 +15,8 @@ object SendGridClient {
         val from = Email("no-reply@itomise.com")
         val subject = command.subject
         val to = Email(command.to.value)
+        // NOTE: sendgrid が長期間未利用で review 状態となってしまったため、ログで確認する
+        println("content: ${command.content}")
         val content = Content("text/plain", command.content)
         val mail = Mail(from, subject, to, content)
         val sg = SendGrid(sendGridApiKey)

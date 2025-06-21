@@ -27,11 +27,14 @@ fun Application.authentication() {
         cookie<UserPrincipal>("user_session", SessionStorageDatabase()) {
             cookie.path = "/"
             cookie.maxAgeInSeconds = SESSION_EXPIRATION_SECONDS
-            cookie.extensions["SameSite"] = "None"
             cookie.httpOnly = true
             if (!isDev && !isTesting) {
                 cookie.domain = "itomise.com"
                 cookie.secure = true
+                cookie.extensions["SameSite"] = "None"
+            } else {
+                // Development environment: use Lax instead of None to avoid Secure requirement
+                cookie.extensions["SameSite"] = "Lax"
             }
             transform(SessionTransportTransformerMessageAuthentication(secretSignKey))
         }
