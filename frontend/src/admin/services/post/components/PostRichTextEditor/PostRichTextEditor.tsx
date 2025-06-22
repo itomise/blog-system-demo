@@ -7,7 +7,6 @@ type Props = {
 
 // eslint-disable-next-line react/function-component-definition
 export default function PostRichTextEditor({ value, onChange }: Props) {
-
   return (
     <RichTextEditor
       value={value}

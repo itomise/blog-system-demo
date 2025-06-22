@@ -7,7 +7,7 @@ import reactHooks from 'eslint-plugin-react-hooks'
 export default [
   // Base JavaScript configuration
   js.configs.recommended,
-  
+
   // Configuration for all files
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
@@ -55,7 +55,7 @@ export default [
       // TypeScript rules
       '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/no-explicit-any': 'warn',
-      
+
       // React rules
       'react/function-component-definition': [2, { namedComponents: 'arrow-function' }],
       'react/require-default-props': 'off',
@@ -64,11 +64,11 @@ export default [
       'react/prop-types': 'off',
       'react/jsx-uses-react': 'error',
       'react/jsx-uses-vars': 'error',
-      
+
       // React Hooks rules
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
-      
+
       // General rules
       'no-unused-vars': 'off', // Use TypeScript version instead
       'no-console': 'warn',
@@ -81,7 +81,7 @@ export default [
       },
     },
   },
-  
+
   // Next.js specific configuration
   {
     files: ['pages/**/*.{js,jsx,ts,tsx}', 'src/pages/**/*.{js,jsx,ts,tsx}'],
@@ -89,7 +89,7 @@ export default [
       'react/function-component-definition': 'off',
     },
   },
-  
+
   // Test files configuration
   {
     files: ['**/*.test.{js,jsx,ts,tsx}', '**/__tests__/**/*.{js,jsx,ts,tsx}'],
@@ -111,18 +111,9 @@ export default [
       'no-console': 'off',
     },
   },
-  
+
   // Ignore patterns
   {
-    ignores: [
-      'node_modules/',
-      '.next/',
-      'out/',
-      'build/',
-      'dist/',
-      '*.config.{js,mjs}',
-      'coverage/',
-      '.turbo/',
-    ],
+    ignores: ['node_modules/', '.next/', 'out/', 'build/', 'dist/', '*.config.{js,mjs}', 'coverage/', '.turbo/'],
   },
 ]

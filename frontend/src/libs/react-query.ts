@@ -12,9 +12,9 @@ const queryConfig: DefaultOptions = {
 
 export const queryClient = new QueryClient({ defaultOptions: queryConfig })
 
-export type ExtractFnReturnType<FnType extends (...args: any) => any> = AsyncReturnType<FnType>
+export type ExtractFnReturnType<FnType extends (...args: unknown[]) => unknown> = AsyncReturnType<FnType>
 
-export type MutationConfig<MutationFnType extends (...args: any) => any> = UseMutationOptions<
+export type MutationConfig<MutationFnType extends (...args: unknown[]) => unknown> = UseMutationOptions<
   ExtractFnReturnType<MutationFnType>,
   AxiosError,
   Parameters<MutationFnType>[0]

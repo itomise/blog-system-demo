@@ -23,8 +23,6 @@ const blogAppAxios = axios.create({
 
 const onErrorInterceptor = (error: AxiosError) => {
   // eslint-disable-next-line no-console
-  console.error('=== FETCH_CUSTOM_ERROR ===')
-  // eslint-disable-next-line no-console
   console.error(error)
 
   throw error
