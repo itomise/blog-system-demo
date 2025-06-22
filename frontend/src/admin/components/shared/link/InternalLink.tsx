@@ -1,5 +1,5 @@
 import Link, { LinkProps } from 'next/link'
-import { Anchor, AnchorProps, useMantineTheme } from '@mantine/core'
+import { AnchorProps, useMantineTheme } from '@mantine/core'
 
 type Props = LinkProps & {
   children: React.ReactNode
@@ -7,9 +7,11 @@ type Props = LinkProps & {
   unstyled?: boolean
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const InternalLink: React.FC<Props> = ({ children, anchorProps, unstyled, ...restLinkProps }) => {
   const theme = useMantineTheme()
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const anchorBase: AnchorProps = unstyled
     ? {
         size: 'md',
@@ -20,11 +22,5 @@ export const InternalLink: React.FC<Props> = ({ children, anchorProps, unstyled,
       }
     : {}
 
-  return (
-    <Link {...restLinkProps}>
-      <Anchor size="sm" {...anchorBase} {...anchorProps}>
-        {children}
-      </Anchor>
-    </Link>
-  )
+  return <Link {...restLinkProps}>{children}</Link>
 }

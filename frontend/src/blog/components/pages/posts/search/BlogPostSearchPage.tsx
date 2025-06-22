@@ -44,7 +44,7 @@ export const BlogPostSearchPage: React.FC = () => {
             <Grid grow>
               {data?.posts.map((post) => (
                 <Grid.Col span={{ md: 5 }} key={post.id}>
-                  <Link href={`/posts/${post.id}`} legacyBehavior>
+                  <Link href={`/posts/${post.id}`}>
                     <Card shadow="lg" p="md" component="article">
                       <Title order={3} size="h5">
                         {post.title}
@@ -69,5 +69,5 @@ export const BlogPostSearchPage: React.FC = () => {
         </Box>
       </BlogTemplate>
     </>
-  );
+  )
 }
