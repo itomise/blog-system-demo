@@ -29,7 +29,6 @@ export const BlogPostSearchPage: React.FC = () => {
       <Head>
         <title>Search | itomise blog demo</title>
       </Head>
-
       <BlogTemplate>
         <Title order={1} style={{ visibility: 'hidden', position: 'absolute' }}>
           Search
@@ -45,7 +44,7 @@ export const BlogPostSearchPage: React.FC = () => {
             <Grid grow>
               {data?.posts.map((post) => (
                 <Grid.Col span={{ md: 5 }} key={post.id}>
-                  <Link href={`/posts/${post.id}`}>
+                  <Link href={`/posts/${post.id}`} legacyBehavior>
                     <Card shadow="lg" p="md" component="article">
                       <Title order={3} size="h5">
                         {post.title}
@@ -70,5 +69,5 @@ export const BlogPostSearchPage: React.FC = () => {
         </Box>
       </BlogTemplate>
     </>
-  )
+  );
 }

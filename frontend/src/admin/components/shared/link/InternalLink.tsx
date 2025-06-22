@@ -21,7 +21,7 @@ export const InternalLink: React.FC<Props> = ({ children, anchorProps, unstyled,
     : {}
 
   return (
-    <Link {...restLinkProps} legacyBehavior passHref>
+    <Link {...restLinkProps} passHref>
       <Anchor size="sm" {...anchorBase} {...anchorProps}>
         {children}
       </Anchor>

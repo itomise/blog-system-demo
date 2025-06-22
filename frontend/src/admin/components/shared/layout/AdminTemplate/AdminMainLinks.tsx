@@ -12,7 +12,7 @@ type MainLinkProps = {
 }
 
 const MainLink: FC<MainLinkProps & { current: boolean }> = ({ icon, color, label, href, current }) => (
-  <Link href={href} legacyBehavior passHref>
+  <Link href={href} passHref>
     <UnstyledButton
       style={(theme) => ({
         display: 'block',
