@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import { showNotification } from '@mantine/notifications'
+import { notifications } from '@mantine/notifications'
 import { Box, Button, Stack, Group } from '@mantine/core'
 import { onMutateError } from '@/shared/api/onMutateError'
 import { PostRichTextEditor } from '@/admin/services/post/components/PostRichTextEditor'
@@ -20,10 +20,10 @@ type FormType = z.infer<typeof schema>
 
 export const PostsNewPage: React.FC = () => {
   const router = useRouter()
-  const { mutate, isLoading } = useCreatePost({
+  const { mutate, isPending } = useCreatePost({
     onSuccess: () => {
       router.push('/admin/posts')
-      showNotification({
+      notifications.show({
         color: 'green',
         message: 'ポストを作成しました。',
       })
@@ -46,7 +46,7 @@ export const PostsNewPage: React.FC = () => {
         >
           {({ register, setValue, formState: { errors }, watch }) => (
             <>
-              <Group position="apart" align="flex-start">
+              <Group justify="space-between" align="flex-start">
                 <AdminBreadcrumbs
                   links={[
                     { title: 'ポスト一覧', href: '/admin/posts' },
@@ -54,12 +54,12 @@ export const PostsNewPage: React.FC = () => {
                   ]}
                 />
                 <Box>
-                  <Button color="blue" type="submit" loading={isLoading}>
+                  <Button color="blue" type="submit" loading={isPending}>
                     保存する
                   </Button>
                 </Box>
               </Group>
-              <Stack spacing="sm" mt="sm">
+              <Stack gap="sm" mt="sm">
                 <InputField
                   label="タイトル"
                   size="xs"

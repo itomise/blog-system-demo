@@ -2,7 +2,7 @@ import { z } from 'zod'
 import React from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import { showNotification } from '@mantine/notifications'
+import { notifications } from '@mantine/notifications'
 import { Group, Box, Button, Stack } from '@mantine/core'
 import { PublishOrUnPublishButton } from './_ui/PublishOrUnPublishButton'
 import { onMutateError } from '@/shared/api/onMutateError'
@@ -28,33 +28,33 @@ export const PostsDetailPage: React.FC = () => {
   const router = useRouter()
   const postId = router.query.id as string
   const post = useGetPost(postId)
-  const { mutate, isLoading } = useUpdatePost({
+  const { mutate, isPending } = useUpdatePost({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'posts'] })
       router.push('/admin/posts')
-      showNotification({
+      notifications.show({
         color: 'green',
         message: 'ポストを更新しました。',
       })
     },
     onError: onMutateError('ポストの更新に失敗しました。'),
   })
-  const { mutate: publishMutate, isLoading: publishing } = usePublishPost({
+  const { mutate: publishMutate, isPending: publishing } = usePublishPost({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'posts'] })
       router.push('/admin/posts')
-      showNotification({
+      notifications.show({
         color: 'green',
         message: 'ポストを公開にしました。',
       })
     },
     onError: onMutateError('ポストの公開に失敗しました。'),
   })
-  const { mutate: unPublishMutate, isLoading: unPublishing } = useUnPublishPost({
+  const { mutate: unPublishMutate, isPending: unPublishing } = useUnPublishPost({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin', '/posts'] })
       router.push('/admin/posts')
-      showNotification({
+      notifications.show({
         color: 'green',
         message: 'ポストを非公開にしました。',
       })
@@ -84,7 +84,7 @@ export const PostsDetailPage: React.FC = () => {
           >
             {({ register, setValue, formState: { errors }, watch }) => (
               <>
-                <Group position="apart" align="flex-start">
+                <Group justify="space-between" align="flex-start">
                   <AdminBreadcrumbs
                     links={[
                       { title: 'ポスト一覧', href: '/admin/posts' },
@@ -94,7 +94,7 @@ export const PostsDetailPage: React.FC = () => {
                   <Group>
                     <PublishOrUnPublishButton
                       status={post.status}
-                      otherLoading={isLoading}
+                      otherLoading={isPending}
                       publishLoading={publishing}
                       unPublishLoading={unPublishing}
                       onPublish={() =>
@@ -110,12 +110,12 @@ export const PostsDetailPage: React.FC = () => {
                         })
                       }
                     />
-                    <Button color="blue" type="submit" loading={isLoading} disabled={isLoading}>
+                    <Button color="blue" type="submit" loading={isPending} disabled={isPending}>
                       保存する
                     </Button>
                   </Group>
                 </Group>
-                <Stack spacing="sm" mt="sm">
+                <Stack gap="sm" mt="sm">
                   <InputField
                     label="タイトル"
                     size="xs"

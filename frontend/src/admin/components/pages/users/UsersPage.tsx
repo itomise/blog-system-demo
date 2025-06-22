@@ -22,19 +22,19 @@ export const UsersPage: React.FC = () => {
         <Group mt="lg">
           <UsersCreateUserButtonPopUp />
         </Group>
-        <List mt="md" listStyleType="none" spacing="sm" styles={{ itemWrapper: { width: '100%' } }}>
+        <List mt="md" listStyleType="none" styles={{ itemWrapper: { width: '100%' } }}>
           {allUsers?.map((user) => (
             <List.Item key={user.id}>
-              <Card shadow="sm" p="md" radius="md" withBorder sx={{ width: '100%', overflow: 'initial' }}>
-                <Group position="apart" align="center" noWrap>
+              <Card shadow="sm" p="md" radius="md" withBorder style={{ width: '100%', overflow: 'initial' }}>
+                <Group justify="space-between" align="center" wrap="nowrap">
                   <Box>
-                    <Group spacing="xs" aria-label="名前">
-                      <Text weight={500} sx={{ wordBreak: 'break-all' }}>
+                    <Group gap="xs" aria-label="名前">
+                      <Text fw={500} style={{ wordBreak: 'break-all' }}>
                         {user.name ?? '( 未設定 )'}
                       </Text>
                       {me?.id === user.id && <Badge color="blue">Me</Badge>}
                     </Group>
-                    <Text color="gray" size="xs">
+                    <Text c="gray" size="xs">
                       {user.email}
                     </Text>
                   </Box>

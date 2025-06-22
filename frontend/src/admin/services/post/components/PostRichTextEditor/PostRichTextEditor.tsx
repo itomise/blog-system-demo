@@ -1,5 +1,4 @@
 import { RichTextEditor } from '@mantine/rte'
-import { useMantineTheme } from '@mantine/core'
 
 type Props = {
   value: string
@@ -8,18 +7,12 @@ type Props = {
 
 // eslint-disable-next-line react/function-component-definition
 export default function PostRichTextEditor({ value, onChange }: Props) {
-  const theme = useMantineTheme()
 
   return (
     <RichTextEditor
       value={value}
       onChange={onChange}
-      sx={{
-        '.ql-editor a': {
-          color: theme.colors.blue,
-          textDecoration: 'underline',
-        },
-      }}
+      className="rich-text-editor"
       controls={[
         ['bold', 'strike', 'italic', 'underline', 'link', 'clean'],
         ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],

@@ -6,8 +6,6 @@ const queryConfig: DefaultOptions = {
   queries: {
     refetchOnWindowFocus: false,
     retry: false,
-    useErrorBoundary: false, // TODO: 後で true にする
-    suspense: false, // TODO: 後で true にする
     staleTime: 1000,
   },
 }

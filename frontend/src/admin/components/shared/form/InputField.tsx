@@ -7,6 +7,7 @@ type InputFieldProps = FieldWrapperPassThroughProps & {
   className?: string
   registration: Partial<UseFormRegisterReturn>
   inputProps?: InputProps
+  placeholder?: string
 }
 
 export const InputField: React.FC<InputFieldProps> = ({

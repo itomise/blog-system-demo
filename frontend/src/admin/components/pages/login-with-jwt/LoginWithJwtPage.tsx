@@ -18,7 +18,7 @@ type FormType = z.infer<typeof schema>
 export const LoginWithJwtPage: React.FC = () => {
   const [jwtToken, setJwtToken] = useState<string | undefined>()
   const getMeRes = useGetMeWithJwt(jwtToken)
-  const { mutate, isLoading } = useLoginWithJwt({
+  const { mutate, isPending } = useLoginWithJwt({
     config: {
       onSuccess: (res) => setJwtToken(res.token),
     },
@@ -30,11 +30,11 @@ export const LoginWithJwtPage: React.FC = () => {
       <Head>
         <title>login | itomise admin</title>
       </Head>
-      <Container sx={{ background: theme.colors.gray[2] }}>
+      <Container style={{ background: theme.colors.gray[2] }}>
         <main>
-          <Center sx={{ width: '100%', height: '100vh' }}>
-            <Paper p={80} radius="md" sx={{ maxWidth: 500, width: '100%' }}>
-              <Title order={1} align="center">
+          <Center style={{ width: '100%', height: '100vh' }}>
+            <Paper p={80} radius="md" style={{ maxWidth: 500, width: '100%' }}>
+              <Title order={1} ta="center">
                 ログイン (Jwt)
               </Title>
               <Form<FormType>
@@ -44,7 +44,7 @@ export const LoginWithJwtPage: React.FC = () => {
                 schema={schema}
               >
                 {({ register, formState: { errors } }) => (
-                  <Stack spacing="md" mt="md">
+                  <Stack gap="md" mt="md">
                     <InputField
                       label="メールアドレス"
                       type="email"
@@ -60,13 +60,13 @@ export const LoginWithJwtPage: React.FC = () => {
                       registration={register('password')}
                       required
                     />
-                    <Button type="submit" mt="lg" loading={isLoading}>
+                    <Button type="submit" mt="lg" loading={isPending}>
                       送信
                     </Button>
                   </Stack>
                 )}
               </Form>
-              <Stack spacing={2} mt="lg">
+              <Stack gap={2} mt="lg">
                 <Button onClick={async () => setJwtToken(undefined)}>ログアウト</Button>
                 <InternalLink href="/">
                   <Button fullWidth>Topへ戻る</Button>

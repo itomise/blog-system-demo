@@ -21,7 +21,11 @@ export const Form = <TFormValues extends Record<string, unknown> = Record<string
   schema,
   defaultValues,
 }: FormProps<TFormValues>) => {
-  const methods = useForm<TFormValues>({ ...options, resolver: schema && zodResolver(schema), defaultValues })
+  const methods = useForm<TFormValues>({ 
+    ...options, 
+    resolver: schema ? zodResolver(schema as any) : undefined, 
+    defaultValues: defaultValues as any
+  })
   return (
     <form className={className} onSubmit={methods.handleSubmit(onSubmit)} id={id} noValidate>
       {children(methods)}

@@ -2,8 +2,8 @@ import { z } from 'zod'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import { IconBrandGoogle } from '@tabler/icons'
-import { showNotification } from '@mantine/notifications'
+import { IconBrandGoogle } from '@tabler/icons-react'
+import { notifications } from '@mantine/notifications'
 import { useToggle } from '@mantine/hooks'
 import { Button, Center, Divider, Stack, Title } from '@mantine/core'
 import { useCheckMe } from '@/admin/services/auth/api/useMe'
@@ -24,13 +24,13 @@ type FormType = z.infer<typeof schema>
 export const LoginPage: React.FC = () => {
   const router = useRouter()
   const [isGoogleLoginStart, setIsGoogleLoginStart] = useToggle()
-  const { mutate, isLoading } = useLoginWithSession({
+  const { mutate, isPending } = useLoginWithSession({
     config: {
       onSuccess: () => {
         router.push('/admin/users')
       },
       onError: () => {
-        showNotification({
+        notifications.show({
           color: 'red',
           message: 'ユーザー名かパスワードが間違っています。',
         })
@@ -56,12 +56,12 @@ export const LoginPage: React.FC = () => {
 
       <main>
         <SystemTemplate>
-          <Title order={1} align="center">
+          <Title order={1} ta="center">
             ログイン
           </Title>
           <Button
             onClick={onClickGoogleLogin}
-            leftIcon={<IconBrandGoogle />}
+            leftSection={<IconBrandGoogle />}
             color="blue"
             mt="lg"
             loading={isGoogleLoginStart}
@@ -78,7 +78,7 @@ export const LoginPage: React.FC = () => {
             schema={schema}
           >
             {({ register, formState: { errors } }) => (
-              <Stack spacing="md" mt="md">
+              <Stack gap="md" mt="md">
                 <InputField
                   label="メールアドレス"
                   type="email"
@@ -94,7 +94,7 @@ export const LoginPage: React.FC = () => {
                   registration={register('password')}
                   required
                 />
-                <Button type="submit" loading={isLoading} mt="sm" color="blue">
+                <Button type="submit" loading={isPending} mt="sm" color="blue">
                   ログイン
                 </Button>
 

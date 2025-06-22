@@ -1,0 +1,10 @@
+/* Global styles to replace what was previously in MantineProvider globalStyles */
+a {
+  text-decoration: none;
+}
+
+/* Rich text editor styles */
+.rich-text-editor .ql-editor a {
+  color: var(--mantine-color-blue-filled);
+  text-decoration: underline;
+}

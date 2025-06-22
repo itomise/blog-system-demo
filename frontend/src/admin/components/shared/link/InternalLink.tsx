@@ -13,7 +13,7 @@ export const InternalLink: React.FC<Props> = ({ children, anchorProps, unstyled,
   const anchorBase: AnchorProps = unstyled
     ? {
         size: 'md',
-        sx: {
+        style: {
           color: theme.colors.dark[9],
           ':hover': { textDecoration: 'none' },
         },

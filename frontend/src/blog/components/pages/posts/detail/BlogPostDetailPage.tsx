@@ -19,20 +19,20 @@ export const BlogPostDetailPage: React.FC<PageProps> = ({ post }) => (
       <Title order={1} size="h2">
         {post.title}
       </Title>
-      <Text mt="xs" size="sm" color="gray.6 ">
+      <Text mt="xs" size="sm" c="gray.6">
         投稿日 : {formatDate(post.publishedAt)}
       </Text>
       <Box mt="lg">
         <Card>
           <TypographyStylesProvider
-            sx={{
+            style={{
               iframe: {
                 width: '100%',
                 aspectRatio: '16 / 9',
               },
             }}
           >
-            {/* eslint-disable-next-line react/no-danger */}
+            { }
             <div dangerouslySetInnerHTML={{ __html: post.content }} className="postEditor" />
           </TypographyStylesProvider>
         </Card>

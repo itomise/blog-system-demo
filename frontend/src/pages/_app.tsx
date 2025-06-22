@@ -1,22 +1,19 @@
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { NotificationsProvider } from '@mantine/notifications'
+import { Notifications } from '@mantine/notifications'
 import { MantineProvider, MantineThemeOverride } from '@mantine/core'
+import '@mantine/core/styles.css'
+import '@mantine/notifications/styles.css'
+import '../styles/globals.css'
 import { queryClient } from '@/libs/react-query'
 
 export const theme: MantineThemeOverride = {
-  colorScheme: 'light',
   primaryColor: 'gray',
   headings: {
     fontFamily: 'inherit',
     fontWeight: '700',
   },
-  globalStyles: () => ({
-    a: {
-      textDecoration: 'none',
-    },
-  }),
 }
 
 const MyApp = ({ Component, pageProps }: AppProps) => (
@@ -26,10 +23,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
       <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
     </Head>
     <QueryClientProvider client={queryClient}>
-      <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
-        <NotificationsProvider position="bottom-left">
-          <Component {...pageProps} />
-        </NotificationsProvider>
+      <MantineProvider theme={theme}>
+        <Component {...pageProps} />
+        <Notifications />
       </MantineProvider>
     </QueryClientProvider>
   </>

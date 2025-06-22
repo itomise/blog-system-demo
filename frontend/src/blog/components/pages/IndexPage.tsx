@@ -31,7 +31,7 @@ export const IndexPage: React.FC<PageProps> = ({ posts }) => (
         </Title>
         <Grid mt="xs" grow>
           {posts.map((post) => (
-            <Grid.Col md={5} key={post.id}>
+            <Grid.Col span={{ md: 5 }} key={post.id}>
               <Link href={`posts/${post.id}`}>
                 <Card shadow="lg" p="md" component="article">
                   <Title order={3} size="h5">
@@ -40,7 +40,7 @@ export const IndexPage: React.FC<PageProps> = ({ posts }) => (
                   <Text lineClamp={2} size="xs" mt="xs">
                     {post.displayContent}
                   </Text>
-                  <Text color="gray.6" size="xs" mt="xs">
+                  <Text c="gray.6" size="xs" mt="xs">
                     {post.publishedAt && formatDate(post.publishedAt)}
                   </Text>
                 </Card>

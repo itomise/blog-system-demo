@@ -1,8 +1,8 @@
 import { AxiosError } from 'axios'
-import { NotificationProps, showNotification } from '@mantine/notifications'
+import { NotificationData, notifications } from '@mantine/notifications'
 
 export const onMutateError = (toastTitle: string) => (e: AxiosError<unknown, any>) => {
-  const base: NotificationProps = {
+  const base: NotificationData = {
     color: 'red',
     title: toastTitle,
     message: '',
@@ -18,5 +18,5 @@ export const onMutateError = (toastTitle: string) => (e: AxiosError<unknown, any
     }
   }
 
-  showNotification(base)
+  notifications.show(base)
 }

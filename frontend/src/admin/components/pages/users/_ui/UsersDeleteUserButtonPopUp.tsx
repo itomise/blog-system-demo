@@ -1,6 +1,6 @@
 import { FC, useRef } from 'react'
-import { IconTrash } from '@tabler/icons'
-import { showNotification } from '@mantine/notifications'
+import { IconTrash } from '@tabler/icons-react'
+import { notifications } from '@mantine/notifications'
 import { Popover, Button, Group, Text, ActionIcon, Tooltip, Box } from '@mantine/core'
 import { queryClient } from '@/libs/react-query'
 import { User } from '@/admin/services/user/types'
@@ -13,17 +13,17 @@ type Props = {
 
 export const UsersDeleteUserButtonPopUp: FC<Props> = ({ user, isMe }) => {
   const buttonRef = useRef<HTMLButtonElement>(null)
-  const { mutate: deleteUserMutate, isLoading: deleteUserLoading } = useDeleteUser({
+  const { mutate: deleteUserMutate, isPending: deleteUserLoading } = useDeleteUser({
     onSuccess: () => {
-      showNotification({
+      notifications.show({
         message: 'User deleted.',
         color: 'green',
       })
       buttonRef.current?.click()
-      queryClient.invalidateQueries(['admin', 'user'])
+      queryClient.invalidateQueries({ queryKey: ['admin', 'user'] })
     },
     onError: (e) => {
-      showNotification({
+      notifications.show({
         color: 'red',
         title: 'User deletion failed.',
         message: e.message,
@@ -44,7 +44,7 @@ export const UsersDeleteUserButtonPopUp: FC<Props> = ({ user, isMe }) => {
       </Popover.Target>
       <Popover.Dropdown>
         <Text size="xs">本当に削除しますか？</Text>
-        <Group mt="sm" position="right">
+        <Group mt="sm" justify="flex-end">
           <Button type="button" size="xs" onClick={() => buttonRef.current?.click()}>
             キャンセル
           </Button>

@@ -1,8 +1,8 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useCallback } from 'react'
 import { useRouter } from 'next/router'
-import { IconAlien, IconBrandGithub, IconBrandTwitter, IconSearch } from '@tabler/icons'
-import { Box, Container, Header, useMantineTheme, Text, Group, TextInput, ActionIcon } from '@mantine/core'
+import { IconAlien, IconBrandGithub, IconBrandTwitter, IconSearch } from '@tabler/icons-react'
+import { Container, useMantineTheme, Text, Group, TextInput, ActionIcon, AppShell } from '@mantine/core'
 import { InternalLink } from '@/admin/components/shared/link/InternalLink'
 
 type FormType = {
@@ -28,14 +28,19 @@ export const BlogTemplate: React.FC<Props> = ({ children }) => {
   )
 
   return (
-    <Box component="main" sx={{ background: theme.colors.gray[1], minHeight: '100vh' }}>
-      <Header height={60}>
-        <Container sx={{ height: '100%' }}>
-          <Group position="apart" align="center" sx={{ height: '100%' }}>
+    <AppShell
+      header={{ height: 60 }}
+      styles={{
+        main: { background: theme.colors.gray[1], minHeight: '100vh' },
+      }}
+    >
+      <AppShell.Header>
+        <Container style={{ height: '100%' }}>
+          <Group justify="space-between" align="center" style={{ height: '100%' }}>
             <InternalLink href="/" unstyled>
-              <Group align="center" spacing="xs">
+              <Group align="center" gap="xs">
                 <IconAlien size={24} />
-                <Text weight="bold" size="md">
+                <Text fw="bold" size="md">
                   itomise
                 </Text>
               </Group>
@@ -44,7 +49,7 @@ export const BlogTemplate: React.FC<Props> = ({ children }) => {
               <form onSubmit={handleSubmit(onSubmit)}>
                 <TextInput
                   placeholder="検索する"
-                  icon={<IconSearch size={16} />}
+                  leftSection={<IconSearch size={16} />}
                   type="search"
                   {...register('query')}
                 />
@@ -74,8 +79,10 @@ export const BlogTemplate: React.FC<Props> = ({ children }) => {
             </Group>
           </Group>
         </Container>
-      </Header>
-      <Container py={24}>{children}</Container>
-    </Box>
+      </AppShell.Header>
+      <AppShell.Main>
+        <Container py={24}>{children}</Container>
+      </AppShell.Main>
+    </AppShell>
   )
 }

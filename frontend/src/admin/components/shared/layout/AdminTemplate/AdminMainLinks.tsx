@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { IconBook, IconUsers } from '@tabler/icons'
+import { IconBook, IconUsers } from '@tabler/icons-react'
 import { UnstyledButton, Group, ThemeIcon, Text, DefaultMantineColor } from '@mantine/core'
 
 type MainLinkProps = {
@@ -14,12 +14,12 @@ type MainLinkProps = {
 const MainLink: FC<MainLinkProps & { current: boolean }> = ({ icon, color, label, href, current }) => (
   <Link href={href} legacyBehavior passHref>
     <UnstyledButton
-      sx={(theme) => ({
+      style={(theme) => ({
         display: 'block',
         width: '100%',
         padding: theme.spacing.xs,
         borderRadius: theme.radius.sm,
-        color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
+        color: theme.black,
         background: current ? theme.colors.blue[0] : undefined,
 
         '&:hover': {

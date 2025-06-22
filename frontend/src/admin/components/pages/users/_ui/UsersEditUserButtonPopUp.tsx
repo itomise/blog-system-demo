@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { useRef } from 'react'
-import { IconPencil } from '@tabler/icons'
-import { showNotification } from '@mantine/notifications'
+import { IconPencil } from '@tabler/icons-react'
+import { notifications } from '@mantine/notifications'
 import { Popover, ActionIcon, Stack, Button, Group, Box, Tooltip } from '@mantine/core'
 import { queryClient } from '@/libs/react-query'
 import { User } from '@/admin/services/user/types'
@@ -23,20 +23,20 @@ type Props = {
 export const UsersEditUserButtonPopUp: React.FC<Props> = ({ user }) => {
   const buttonRef = useRef<HTMLButtonElement>(null)
   const me = useMe()
-  const { mutate, isLoading } = useUpdateUser({
+  const { mutate, isPending } = useUpdateUser({
     onSuccess: () => {
-      showNotification({
+      notifications.show({
         message: 'ユーザー情報を更新しました。',
         color: 'green',
       })
       buttonRef.current?.click()
-      queryClient.invalidateQueries(['admin', 'user'])
+      queryClient.invalidateQueries({ queryKey: ['admin', 'user'] })
       if (me.id === user.id) {
-        queryClient.invalidateQueries(['admin', 'auth', 'me'])
+        queryClient.invalidateQueries({ queryKey: ['admin', 'auth', 'me'] })
       }
     },
     onError: (e) => {
-      showNotification({
+      notifications.show({
         color: 'red',
         title: 'ユーザー情報の更新に失敗しました。',
         message: e.message,
@@ -69,10 +69,10 @@ export const UsersEditUserButtonPopUp: React.FC<Props> = ({ user }) => {
           }}
         >
           {({ register, formState: { errors } }) => (
-            <Stack spacing="sm">
+            <Stack gap="sm">
               <InputField label="名前" error={errors.name} registration={register('name')} required size="xs" />
-              <Group position="right">
-                <Button type="submit" size="xs" loading={isLoading}>
+              <Group justify="flex-end">
+                <Button type="submit" size="xs" loading={isPending}>
                   送信
                 </Button>
               </Group>

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { useRef } from 'react'
-import { showNotification } from '@mantine/notifications'
+import { notifications } from '@mantine/notifications'
 import { Popover, Button, Stack, Group } from '@mantine/core'
 import { queryClient } from '@/libs/react-query'
 import { useCreateUser } from '@/admin/services/user/api/useCreateUser'
@@ -14,17 +14,17 @@ type FormType = z.infer<typeof schema>
 
 export const UsersCreateUserButtonPopUp: React.FC = () => {
   const buttonRef = useRef<HTMLButtonElement>(null)
-  const { mutate, isLoading } = useCreateUser({
+  const { mutate, isPending } = useCreateUser({
     onSuccess: () => {
-      showNotification({
+      notifications.show({
         message: '入力したメールアドレスに本登録のメールを送信しました。',
         color: 'green',
       })
       buttonRef.current?.click()
-      queryClient.invalidateQueries(['admin', '/user'])
+      queryClient.invalidateQueries({ queryKey: ['admin', '/user'] })
     },
     onError: (e) => {
-      showNotification({
+      notifications.show({
         color: 'red',
         title: 'ユーザー作成に失敗しました。',
         message: e.message,
@@ -45,7 +45,7 @@ export const UsersCreateUserButtonPopUp: React.FC = () => {
           schema={schema}
         >
           {({ register, formState: { errors } }) => (
-            <Stack spacing="sm">
+            <Stack gap="sm">
               <InputField
                 label="メールアドレス"
                 type="email"
@@ -55,8 +55,8 @@ export const UsersCreateUserButtonPopUp: React.FC = () => {
                 required
                 size="xs"
               />
-              <Group position="right">
-                <Button type="submit" size="xs" loading={isLoading}>
+              <Group justify="flex-end">
+                <Button type="submit" size="xs" loading={isPending}>
                   送信
                 </Button>
               </Group>

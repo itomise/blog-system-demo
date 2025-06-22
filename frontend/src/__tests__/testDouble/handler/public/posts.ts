@@ -1,5 +1,9 @@
-import { rest } from 'msw'
+import { http, HttpResponse } from 'msw'
 
 export const publicPostsHandler = [
-  rest.get('http://localhost:8081/api/public/posts', (req, res, ctx) => res(ctx.text('OK'))),
+  http.get('http://localhost:8081/api/public/posts', () => new HttpResponse('OK', {
+      headers: {
+        'Content-Type': 'text/plain',
+      },
+    })),
 ]

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { useRouter } from 'next/router'
-import { showNotification } from '@mantine/notifications'
+import { notifications } from '@mantine/notifications'
 import { Button, Center, Stack, Title } from '@mantine/core'
 import { useSignup } from '@/admin/services/auth/api/useSignup'
 import { InternalLink } from '@/admin/components/shared/link/InternalLink'
@@ -16,16 +16,16 @@ type FormType = z.infer<typeof schema>
 
 export const SignUpPage: React.FC = () => {
   const router = useRouter()
-  const { mutate, isLoading } = useSignup({
+  const { mutate, isPending } = useSignup({
     onSuccess: () => {
-      showNotification({
+      notifications.show({
         message: '仮登録が完了しました。メールアドレスを確認して登録を完了してください。',
         color: 'green',
       })
       router.push('/admin/sign-up/sent')
     },
     onError: (e) => {
-      showNotification({
+      notifications.show({
         color: 'red',
         title: 'Registration failed.',
         message: e.message,
@@ -36,12 +36,12 @@ export const SignUpPage: React.FC = () => {
   return (
     <main>
       <SystemTemplate>
-        <Title order={1} align="center">
+        <Title order={1} ta="center">
           アカウント作成
         </Title>
         <Form<FormType> onSubmit={(data) => mutate(data)} schema={schema}>
           {({ register, formState: { errors } }) => (
-            <Stack spacing="md" mt="md">
+            <Stack gap="md" mt="md">
               <InputField
                 label="メールアドレス"
                 placeholder="example@example.com"
@@ -50,7 +50,7 @@ export const SignUpPage: React.FC = () => {
                 registration={register('email')}
                 required
               />
-              <Button type="submit" loading={isLoading} color="blue">
+              <Button type="submit" loading={isPending} color="blue">
                 アカウント作成
               </Button>
               <Center>

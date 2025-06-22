@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Head from 'next/head'
-import { IconSearch } from '@tabler/icons'
+import { IconSearch } from '@tabler/icons-react'
 import { Box, Title, Text, Card, TextInput, Loader, Grid } from '@mantine/core'
 import { BlogTemplate } from '../../../shared/layout/BlogTemplate'
 import { usePostSearchState } from './BlogPostSearchPage.hooks'
@@ -31,20 +31,20 @@ export const BlogPostSearchPage: React.FC = () => {
       </Head>
 
       <BlogTemplate>
-        <Title order={1} sx={{ visibility: 'hidden', position: 'absolute' }}>
+        <Title order={1} style={{ visibility: 'hidden', position: 'absolute' }}>
           Search
         </Title>
         <Box>
           <TextInput
             {...register}
-            icon={isLoading ? <Loader size={20} /> : <IconSearch size={20} />}
+            leftSection={isLoading ? <Loader size={20} /> : <IconSearch size={20} />}
             placeholder="キーワードを入力..."
             size="lg"
           />
           <Box mt="md">
             <Grid grow>
               {data?.posts.map((post) => (
-                <Grid.Col md={5} key={post.id}>
+                <Grid.Col span={{ md: 5 }} key={post.id}>
                   <Link href={`/posts/${post.id}`}>
                     <Card shadow="lg" p="md" component="article">
                       <Title order={3} size="h5">
@@ -53,7 +53,7 @@ export const BlogPostSearchPage: React.FC = () => {
                       <Text lineClamp={2} size="xs" mt="xs">
                         {post.displayContent}
                       </Text>
-                      <Text color="gray.6" size="xs" mt="xs">
+                      <Text c="gray.6" size="xs" mt="xs">
                         {post.publishedAt && formatDate(post.publishedAt)}
                       </Text>
                     </Card>
@@ -62,7 +62,7 @@ export const BlogPostSearchPage: React.FC = () => {
               ))}
             </Grid>
             {data?.posts.length === 0 && !isBlankSearch && (
-              <Text color="gray.8" size="sm" mt="md">
+              <Text c="gray.8" size="sm" mt="md">
                 検索結果がありません。
               </Text>
             )}

@@ -19,7 +19,7 @@ type Options = MutationConfig<typeof createUser>
 export const useCreateUser = (props: Options = {}) =>
   useMutation({
     onSuccess: () => {
-      queryClient.invalidateQueries(['admin', 'user'])
+      queryClient.invalidateQueries({ queryKey: ['admin', 'user'] })
     },
     ...props,
     mutationFn: createUser,

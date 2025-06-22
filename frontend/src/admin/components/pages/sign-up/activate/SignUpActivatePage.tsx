@@ -1,8 +1,8 @@
 import { z } from 'zod'
 import { useMemo } from 'react'
 import { useRouter } from 'next/router'
-import jwtDecode from 'jwt-decode'
-import { showNotification } from '@mantine/notifications'
+import { jwtDecode } from 'jwt-decode'
+import { notifications } from '@mantine/notifications'
 import { Button, Stack, Title } from '@mantine/core'
 import { onMutateError } from '@/shared/api/onMutateError'
 import { UserLoginType, UserLoginTypeValue } from '@/admin/services/user/types'
@@ -22,9 +22,9 @@ type FormType = z.infer<typeof schema>
 export const SignUpActivatePage: React.FC = () => {
   const router = useRouter()
   const token = router.query.token as string
-  const { mutate, isLoading } = useActivateUser({
+  const { mutate, isPending } = useActivateUser({
     onSuccess: () => {
-      showNotification({
+      notifications.show({
         message: 'ユーザー登録が完了しました。',
         color: 'green',
       })
@@ -44,7 +44,7 @@ export const SignUpActivatePage: React.FC = () => {
   return (
     <main>
       <SystemTemplate>
-        <Title order={1} align="center">
+        <Title order={1} ta="center">
           ユーザー初期設定
         </Title>
         <Form<FormType>
@@ -60,7 +60,7 @@ export const SignUpActivatePage: React.FC = () => {
           schema={schema}
         >
           {({ register, formState: { errors } }) => (
-            <Stack spacing="md" mt="md">
+            <Stack gap="md" mt="md">
               <InputField label="名前" error={errors.name} registration={register('name')} required />
               {loginType === UserLoginTypeValue.INTERNAL && (
                 <InputField
@@ -78,7 +78,7 @@ export const SignUpActivatePage: React.FC = () => {
                   }}
                 />
               )}
-              <Button type="submit" mt="md" loading={isLoading} color="blue">
+              <Button type="submit" mt="md" loading={isPending} color="blue">
                 送信
               </Button>
             </Stack>
